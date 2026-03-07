@@ -1,0 +1,158 @@
+[
+  {
+    "id": "cgdcont",
+    "category": "Network Configuration",
+    "command": "AT+CGDCONT=1,\"IP\",\"your.apn.here\"",
+    "description": "Define a PDP context with APN. Sets the bearer type and APN for data sessions.",
+    "parameters": [
+      { "name": "cid", "description": "Context ID (1–16)" },
+      { "name": "PDP_type", "description": "Packet data protocol type: IP, IPV6, IPV4V6" },
+      { "name": "APN", "description": "Access Point Name from your carrier" }
+    ],
+    "example": "AT+CGDCONT=1,\"IP\",\"hologram\"\r\nOK",
+    "guide": "asset-tracker"
+  },
+  {
+    "id": "qiact",
+    "category": "Network Configuration",
+    "command": "AT+QIACT=1",
+    "description": "Activate a PDP context to establish a data connection.",
+    "parameters": [
+      { "name": "contextID", "description": "PDP context ID to activate (1–16)" }
+    ],
+    "example": "AT+QIACT=1\r\nOK",
+    "guide": "asset-tracker"
+  },
+  {
+    "id": "cgpaddr",
+    "category": "Network Configuration",
+    "command": "AT+CGPADDR=1",
+    "description": "Query IP address of the activated PDP context.",
+    "parameters": [
+      { "name": "cid", "description": "Context ID to query" }
+    ],
+    "example": "AT+CGPADDR=1\r\n+CGPADDR: 1,\"10.128.0.1\"\r\nOK",
+    "guide": "asset-tracker"
+  },
+  {
+    "id": "cops",
+    "category": "Network Configuration",
+    "command": "AT+COPS?",
+    "description": "Query the current operator and network registration status.",
+    "parameters": [],
+    "example": "AT+COPS?\r\n+COPS: 0,0,\"Hologram\",7\r\nOK",
+    "guide": "asset-tracker"
+  },
+  {
+    "id": "cpsms",
+    "category": "Power Management",
+    "command": "AT+CPSMS=1,,,\"00111000\",\"00000001\"",
+    "description": "Enable Power Saving Mode (PSM). Configure T3412 (TAU) and T3324 (Active Time) timers.",
+    "parameters": [
+      { "name": "mode", "description": "0=disable, 1=enable PSM" },
+      { "name": "reqPeriodicRAU", "description": "Periodic RAU timer (GERAN/UTRAN only)" },
+      { "name": "reqGPRSReadyTimer", "description": "GPRS Ready timer (GERAN/UTRAN only)" },
+      { "name": "reqPeriodicTAU", "description": "T3412 timer in binary encoding" },
+      { "name": "reqActiveTime", "description": "T3324 active time in binary encoding" }
+    ],
+    "example": "AT+CPSMS=1,,,\"00111000\",\"00000001\"\r\nOK",
+    "guide": "asset-tracker"
+  },
+  {
+    "id": "cedrxs",
+    "category": "Power Management",
+    "command": "AT+CEDRXS=2,4,\"0101\"",
+    "description": "Configure eDRX (extended Discontinuous Reception) parameters for LTE-M.",
+    "parameters": [
+      { "name": "mode", "description": "0=disable, 1=enable, 2=enable+URC" },
+      { "name": "AcT-type", "description": "4=LTE-M, 5=NB-IoT" },
+      { "name": "reqEdrxValue", "description": "Requested eDRX cycle length in binary" }
+    ],
+    "example": "AT+CEDRXS=2,4,\"0101\"\r\nOK",
+    "guide": "asset-tracker"
+  },
+  {
+    "id": "qiopen",
+    "category": "Data Transmission",
+    "command": "AT+QIOPEN=1,0,\"TCP\",\"mqtt.server.io\",1883,0,1",
+    "description": "Open a socket service connection (TCP/UDP).",
+    "parameters": [
+      { "name": "contextID", "description": "PDP context ID" },
+      { "name": "connectID", "description": "Socket service index (0–11)" },
+      { "name": "service_type", "description": "TCP, UDP, TCP LISTENER, UDP SERVICE" },
+      { "name": "IP_address", "description": "Remote hostname or IP" },
+      { "name": "remote_port", "description": "Remote port" },
+      { "name": "local_port", "description": "0 = auto-assigned" },
+      { "name": "access_mode", "description": "0=buffer, 1=direct push, 2=transparent" }
+    ],
+    "example": "AT+QIOPEN=1,0,\"TCP\",\"mqtt.hologram.io\",1883,0,1\r\nOK\r\n+QIOPEN: 0,0",
+    "guide": "asset-tracker"
+  },
+  {
+    "id": "qisendex",
+    "category": "Data Transmission",
+    "command": "AT+QISENDEX=0,\"7B226964223A313233...\"",
+    "description": "Send data in hex string format over an open socket.",
+    "parameters": [
+      { "name": "connectID", "description": "Socket connection index" },
+      { "name": "hex_string", "description": "Data payload as hex-encoded string" }
+    ],
+    "example": "AT+QISENDEX=0,\"48656C6C6F\"\r\nSEND OK",
+    "guide": "asset-tracker"
+  },
+  {
+    "id": "qiclose",
+    "category": "Data Transmission",
+    "command": "AT+QICLOSE=0",
+    "description": "Close a socket connection to release resources and reduce power draw.",
+    "parameters": [
+      { "name": "connectID", "description": "Socket connection index to close" }
+    ],
+    "example": "AT+QICLOSE=0\r\nOK",
+    "guide": "asset-tracker"
+  },
+  {
+    "id": "qcfg-servicedomain",
+    "category": "Security",
+    "command": "AT+QCFG=\"servicedomain\",1",
+    "description": "Restrict modem to Packet Switched (PS) only. Disables Circuit Switched (voice/SMS) to reduce attack surface.",
+    "parameters": [
+      { "name": "servicedomain", "description": "1=PS only, 2=CS only, 3=CS+PS" }
+    ],
+    "example": "AT+QCFG=\"servicedomain\",1\r\nOK",
+    "guide": "asset-tracker"
+  },
+  {
+    "id": "qcfg-band",
+    "category": "Security",
+    "command": "AT+QCFG=\"band\",0,80000,80000",
+    "description": "Lock modem to specific frequency bands, reducing rogue tower attack surface.",
+    "parameters": [
+      { "name": "GSM_bandval", "description": "GSM band bitmask (0=no change)" },
+      { "name": "eMTC_bandval", "description": "LTE-M band bitmask" },
+      { "name": "NB_bandval", "description": "NB-IoT band bitmask" }
+    ],
+    "example": "AT+QCFG=\"band\",0,80000,80000\r\nOK",
+    "guide": "asset-tracker"
+  },
+  {
+    "id": "qgps",
+    "category": "GPS",
+    "command": "AT+QGPS=1",
+    "description": "Enable the integrated GNSS receiver.",
+    "parameters": [
+      { "name": "gnssmode", "description": "1=standalone, 2=MS-Based, 3=MS-Assisted, 4=Speed Optimal" }
+    ],
+    "example": "AT+QGPS=1\r\nOK",
+    "guide": "asset-tracker"
+  },
+  {
+    "id": "qgpsloc",
+    "category": "GPS",
+    "command": "AT+QGPSLOC?",
+    "description": "Query current GPS location. Returns UTC time, lat/lon in DDMM format, HDOP, altitude, fix type, speed, and satellite count.",
+    "parameters": [],
+    "example": "AT+QGPSLOC?\r\n+QGPSLOC: 092204.0,3150.7820N,11711.9310E,0.6,121.1,2,0.0,0.0,0.0,250326,04\r\nOK",
+    "guide": "asset-tracker"
+  }
+]

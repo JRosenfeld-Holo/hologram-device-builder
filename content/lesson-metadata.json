@@ -1,0 +1,137 @@
+[
+  {
+    "id": "architecture",
+    "title": "IoT Architecture & Protocol Stack",
+    "href": "/learn/foundations/architecture",
+    "duration": "12 min",
+    "difficulty": "Beginner",
+    "label": "FOUNDATIONS",
+    "description": "The 4-layer IoT stack and 5-layer protocol breakdown. Understand how data flows from sensor to cloud."
+  },
+  {
+    "id": "cellular-networks",
+    "title": "Cellular Networks Deep-Dive",
+    "href": "/learn/foundations/cellular-networks",
+    "duration": "15 min",
+    "difficulty": "Intermediate",
+    "label": "FOUNDATIONS",
+    "description": "EPC architecture, RAN, MME, SGW, and how your device authenticates with the network."
+  },
+  {
+    "id": "lpwa-technologies",
+    "title": "LTE-M vs NB-IoT",
+    "href": "/learn/foundations/lpwa-technologies",
+    "duration": "10 min",
+    "difficulty": "Beginner",
+    "label": "FOUNDATIONS",
+    "description": "Interactive comparison of LPWA technologies with a guided decision tool to pick the right one."
+  },
+  {
+    "id": "5g-redcap",
+    "title": "5G RedCap for IoT",
+    "href": "/learn/foundations/5g-redcap",
+    "duration": "8 min",
+    "difficulty": "Advanced",
+    "label": "FOUNDATIONS",
+    "description": "How Reduced Capability 5G targets IoT with lower cost, lower power, and network slicing."
+  },
+  {
+    "id": "psm-edrx",
+    "title": "PSM / eDRX Power Simulator",
+    "href": "/learn/power/psm-edrx",
+    "duration": "20 min",
+    "difficulty": "Intermediate",
+    "label": "POWER",
+    "description": "Configure PSM and eDRX parameters and see real-time battery life estimates for your device."
+  },
+  {
+    "id": "battery-calculator",
+    "title": "Battery Life Calculator",
+    "href": "/learn/power/battery-calculator",
+    "duration": "10 min",
+    "difficulty": "Beginner",
+    "label": "POWER",
+    "description": "Estimate battery life for any device profile with adjustable consumption parameters."
+  },
+  {
+    "id": "sim-evolution",
+    "title": "SIM → eSIM → iSIM Timeline",
+    "href": "/learn/identity/sim-evolution",
+    "duration": "8 min",
+    "difficulty": "Beginner",
+    "label": "IDENTITY",
+    "description": "How SIM technology evolved and why it matters for manufacturing and global deployment."
+  },
+  {
+    "id": "sgp32",
+    "title": "SGP.32 eSIM Standard",
+    "href": "/learn/identity/sgp32",
+    "duration": "12 min",
+    "difficulty": "Intermediate",
+    "label": "IDENTITY",
+    "description": "The eSIM IoT standard purpose-built for headless devices — remote provisioning at scale."
+  },
+  {
+    "id": "security-endpoint",
+    "title": "Endpoint Security Checklist",
+    "href": "/learn/security/endpoint",
+    "duration": "15 min",
+    "difficulty": "Intermediate",
+    "label": "SECURITY",
+    "description": "Secure boot, hardware root of trust, TRE, and firmware storage security for IoT endpoints."
+  },
+  {
+    "id": "security-network",
+    "title": "Network Security",
+    "href": "/learn/security/network",
+    "duration": "12 min",
+    "difficulty": "Intermediate",
+    "label": "SECURITY",
+    "description": "Private APNs, VPN tunnels, static IPs, and isolating your device fleet from the public internet."
+  },
+  {
+    "id": "security-application",
+    "title": "Application-Layer Security",
+    "href": "/learn/security/application",
+    "duration": "10 min",
+    "difficulty": "Intermediate",
+    "label": "SECURITY",
+    "description": "TLS/DTLS encryption, certificate pinning, mutual auth, and payload-level encryption."
+  },
+  {
+    "id": "pilot-playbook",
+    "title": "From POC to Production",
+    "href": "/deploy/pilot-playbook",
+    "duration": "18 min",
+    "difficulty": "Intermediate",
+    "label": "DEPLOY",
+    "description": "Strategic scoping, hardware selection, security architecture, zero-touch provisioning, validation phases, and regulatory certification."
+  },
+  {
+    "id": "lifecycle",
+    "title": "Fleet Lifecycle Management",
+    "href": "/deploy/lifecycle",
+    "duration": "15 min",
+    "difficulty": "Advanced",
+    "label": "DEPLOY",
+    "description": "Operational monitoring, predictive maintenance, FOTA updates, supply chain resilience, and secure decommissioning."
+  },
+  {
+    "id": "smart-agriculture",
+    "title": "Smart Agriculture Sensor Node",
+    "href": "/build/smart-agriculture",
+    "duration": "30 min",
+    "difficulty": "Intermediate",
+    "label": "BUILD",
+    "description": "Build a solar-powered sensor node for precision agriculture — soil moisture, NPK, weather monitoring with ruggedized enclosures and cellular connectivity."
+  },
+  {
+    "id": "micromobility",
+    "title": "Connected Micromobility Vehicle",
+    "href": "/build/micromobility",
+    "duration": "40 min",
+    "difficulty": "Advanced",
+    "label": "BUILD",
+    "description": "Build a cellular IoT-enabled scooter or e-bike — FOC motor control, BMS, centimeter GNSS, Zephyr RTOS, fleet security, and PTCRB certification."
+  }
+]
