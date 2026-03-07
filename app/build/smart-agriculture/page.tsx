@@ -310,17 +310,30 @@ export default function SmartAgriculturePage() {
             </nav>
 
             {/* Header */}
-            <div className="mb-12">
-                <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
-                    Build Guide · Agriculture
-                </p>
-                <h1 className="text-4xl font-semibold mb-5 leading-tight">
-                    Smart Agriculture Sensor Node
-                </h1>
-                <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
-                    Build a ruggedized, solar-powered sensor node for precision agriculture — soil moisture,
-                    NPK nutrients, and weather monitoring with cellular connectivity for remote fields.
-                </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center mb-12">
+                <div>
+                    <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
+                        Build Guide · Agriculture
+                    </p>
+                    <h1 className="text-4xl font-semibold mb-5 leading-tight">
+                        Smart Agriculture Sensor Node
+                    </h1>
+                    <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+                        Build a ruggedized, solar-powered sensor node for precision agriculture — soil moisture,
+                        NPK nutrients, and weather monitoring with cellular connectivity for remote fields.
+                    </p>
+                </div>
+                <div className="hidden lg:flex justify-center items-center">
+                    <img
+                        src="/smart_agriculture_hero.png"
+                        alt="Smart Agriculture Illustration"
+                        className="w-full scale-110"
+                        style={{
+                            maskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
+                            WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
+                        }}
+                    />
+                </div>
             </div>
 
             {/* Step Progress Bar */}

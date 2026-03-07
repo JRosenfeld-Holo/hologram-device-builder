@@ -307,18 +307,31 @@ export default function MicromobilityPage() {
             </nav>
 
             {/* Header */}
-            <div className="mb-12">
-                <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
-                    Build Guide · Micromobility
-                </p>
-                <h1 className="text-4xl font-semibold mb-5 leading-tight">
-                    Connected Micromobility Vehicle
-                </h1>
-                <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
-                    Build a cellular IoT-enabled electric scooter or e-bike from motor control and BMS
-                    through global connectivity, centimeter-level positioning, and fleet-scale cloud
-                    management.
-                </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center mb-12">
+                <div>
+                    <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
+                        Build Guide · Micromobility
+                    </p>
+                    <h1 className="text-4xl font-semibold mb-5 leading-tight">
+                        Connected Micromobility Vehicle
+                    </h1>
+                    <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+                        Build a cellular IoT-enabled electric scooter or e-bike from motor control and BMS
+                        through global connectivity, centimeter-level positioning, and fleet-scale cloud
+                        management.
+                    </p>
+                </div>
+                <div className="hidden lg:flex justify-center items-center">
+                    <img
+                        src="/micromobility_hero.png"
+                        alt="Micromobility Illustration"
+                        className="w-full scale-110"
+                        style={{
+                            maskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
+                            WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
+                        }}
+                    />
+                </div>
             </div>
 
             {/* Step Progress Bar */}

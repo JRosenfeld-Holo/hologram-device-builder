@@ -20,9 +20,9 @@ function BandwidthCalculator() {
 
   // Bitrate lookup table (Mbps)
   const bitrates: Record<string, Record<string, number>> = {
-    "720p":  { "H.264": 2.5,  "H.265": 1.5,  "AV1": 1.0  },
-    "1080p": { "H.264": 6.0,  "H.265": 3.5,  "AV1": 2.2  },
-    "4K":    { "H.264": 25.0, "H.265": 12.0, "AV1": 8.0  },
+    "720p": { "H.264": 2.5, "H.265": 1.5, "AV1": 1.0 },
+    "1080p": { "H.264": 6.0, "H.265": 3.5, "AV1": 2.2 },
+    "4K": { "H.264": 25.0, "H.265": 12.0, "AV1": 8.0 },
   };
 
   const baseBitrateMbps = bitrates[resolution][compression] * (fps / 30);
@@ -44,13 +44,13 @@ function BandwidthCalculator() {
 
   const networkLabel =
     monthlyGB > 50 ? "5G NR required" :
-    monthlyGB > 10 ? "LTE Cat 4+ recommended" :
-    "LTE Cat 1 / LTE-M sufficient";
+      monthlyGB > 10 ? "LTE Cat 4+ recommended" :
+        "LTE Cat 1 / LTE-M sufficient";
 
   const networkColor =
     monthlyGB > 50 ? "#ef4444" :
-    monthlyGB > 10 ? "#f59e0b" :
-    "#BFFD11";
+      monthlyGB > 10 ? "#f59e0b" :
+        "#BFFD11";
 
   return (
     <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] overflow-hidden">
@@ -71,9 +71,8 @@ function BandwidthCalculator() {
                 <button
                   key={m}
                   onClick={() => setMode(m)}
-                  className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer capitalize ${
-                    mode === m ? "bg-[#BFFD11] text-[#00040F]" : "border border-[#3A3C46]/40 text-white/45 hover:text-white/70"
-                  }`}
+                  className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer capitalize ${mode === m ? "bg-[#BFFD11] text-[#00040F]" : "border border-[#3A3C46]/40 text-white/45 hover:text-white/70"
+                    }`}
                 >
                   {m}
                 </button>
@@ -89,9 +88,8 @@ function BandwidthCalculator() {
                 <button
                   key={r}
                   onClick={() => setResolution(r)}
-                  className={`flex-1 py-2 rounded-lg text-sm font-mono font-medium transition-all duration-150 cursor-pointer ${
-                    resolution === r ? "bg-[#BFFD11] text-[#00040F]" : "border border-[#3A3C46]/40 text-white/45 hover:text-white/70"
-                  }`}
+                  className={`flex-1 py-2 rounded-lg text-sm font-mono font-medium transition-all duration-150 cursor-pointer ${resolution === r ? "bg-[#BFFD11] text-[#00040F]" : "border border-[#3A3C46]/40 text-white/45 hover:text-white/70"
+                    }`}
                 >
                   {r}
                 </button>
@@ -107,9 +105,8 @@ function BandwidthCalculator() {
                 <button
                   key={c}
                   onClick={() => setCompression(c)}
-                  className={`flex-1 py-2 rounded-lg text-xs font-mono font-medium transition-all duration-150 cursor-pointer ${
-                    compression === c ? "bg-[#BFFD11] text-[#00040F]" : "border border-[#3A3C46]/40 text-white/45 hover:text-white/70"
-                  }`}
+                  className={`flex-1 py-2 rounded-lg text-xs font-mono font-medium transition-all duration-150 cursor-pointer ${compression === c ? "bg-[#BFFD11] text-[#00040F]" : "border border-[#3A3C46]/40 text-white/45 hover:text-white/70"
+                    }`}
                 >
                   {c}
                 </button>
@@ -241,15 +238,28 @@ export default function SmartCameraPage() {
       </nav>
 
       {/* Header */}
-      <div className="mb-12">
-        <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
-          Build Guide · Advanced · 25 min
-        </p>
-        <h1 className="text-4xl font-semibold mb-5 leading-tight">Smart Camera</h1>
-        <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
-          IoT-enabled cameras demand the right combination of connectivity, architecture, and
-          bandwidth strategy. The critical design decision: process on-device or stream to cloud?
-        </p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center mb-12">
+        <div>
+          <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
+            Build Guide · Advanced · 25 min
+          </p>
+          <h1 className="text-4xl font-semibold mb-5 leading-tight">Smart Camera</h1>
+          <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+            IoT-enabled cameras demand the right combination of connectivity, architecture, and
+            bandwidth strategy. The critical design decision: process on-device or stream to cloud?
+          </p>
+        </div>
+        <div className="hidden lg:flex justify-center items-center">
+          <img
+            src="/smart_camera_hero.png"
+            alt="Smart Camera Illustration"
+            className="w-full scale-110"
+            style={{
+              maskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
+              WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
+            }}
+          />
+        </div>
       </div>
 
       {/* ── Architecture Decision ── */}
