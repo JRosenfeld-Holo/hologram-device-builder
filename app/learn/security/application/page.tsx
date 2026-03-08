@@ -1,22 +1,22 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-
-export const metadata = {
-  title: "Application-Layer Security — Hologram IoT Device Builder",
-};
+import { motion } from "framer-motion";
+import { staggerContainer, staggerItem } from "@/lib/animations";
 
 export default function LearnSecurityApplicationPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
-      <div className="mb-12">
-        <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
+      <motion.div className="mb-12" variants={staggerContainer} initial="hidden" animate="visible">
+        <motion.p variants={staggerItem} className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
           SECURITY
-        </p>
-        <h1 className="text-4xl font-semibold mb-5">Application-Layer Security</h1>
-        <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+        </motion.p>
+        <motion.h1 variants={staggerItem} className="text-4xl font-semibold mb-5">Application-Layer Security</motion.h1>
+        <motion.p variants={staggerItem} className="text-lg text-white/55 leading-relaxed max-w-2xl">
           TLS/DTLS encryption, certificate pinning, mutual TLS authentication, and payload-level encryption for IoT applications.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] p-8 text-center">
         <p className="text-white/30 text-sm mb-6">This lesson is coming soon.</p>

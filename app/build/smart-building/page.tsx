@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check, ChevronDown, ChevronUp, Building2 } from "lucide-react";
+import { motion } from "framer-motion";
 import FreePilotCTA from "@/components/ui/FreePilotCTA";
 import InfoCallout from "@/components/ui/InfoCallout";
 import ComparisonTable from "@/components/ui/ComparisonTable";
@@ -618,8 +619,15 @@ export default function BuildSmartBuildingPage() {
 
       {/* Header */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center mb-14">
-        <div>
-          <div className="flex items-center gap-3 mb-4">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
+        >
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
+            className="flex items-center gap-3 mb-4"
+          >
             <div
               className="w-10 h-10 rounded-[8px] flex items-center justify-center"
               style={{ background: "rgba(191,253,17,0.1)", border: "1px solid rgba(191,253,17,0.2)" }}
@@ -635,16 +643,25 @@ export default function BuildSmartBuildingPage() {
               </span>
               <span className="text-[11px] text-white/30 font-mono">20 min</span>
             </div>
-          </div>
-          <h1 className="text-4xl font-semibold mb-5">Smart Building Sensor</h1>
-          <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+          </motion.div>
+          <motion.h1
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
+            className="text-4xl font-semibold mb-5"
+          >Smart Building Sensor</motion.h1>
+          <motion.p
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
+            className="text-lg text-white/55 leading-relaxed max-w-2xl"
+          >
             NB-IoT sensors for air quality, occupancy, metering, and lighting. Deep indoor coverage
             via Coverage Extension mode, UDP-based protocols, and CBOR payload optimization for
             10-year battery life.
-          </p>
+          </motion.p>
 
           {/* Highlights */}
-          <div className="flex flex-wrap gap-x-5 gap-y-2 mt-6">
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
+            className="flex flex-wrap gap-x-5 gap-y-2 mt-6"
+          >
             {[
               "Coverage Extension (CE) mode setup",
               "JSON vs CBOR payload comparison",
@@ -657,10 +674,15 @@ export default function BuildSmartBuildingPage() {
                 {h}
               </span>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <div className="hidden lg:flex justify-center items-center">
+        <motion.div
+          className="hidden lg:flex justify-center items-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+        >
           <img
             src="/smart_building_hero.png"
             alt="Smart Building Sensor Illustration"
@@ -670,7 +692,7 @@ export default function BuildSmartBuildingPage() {
               WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
             }}
           />
-        </div>
+        </motion.div>
       </div>
 
       {/* ── Section 1: Why NB-IoT ── */}

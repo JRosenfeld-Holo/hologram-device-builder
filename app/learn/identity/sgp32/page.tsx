@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, ChevronRight, Check, Server, Cpu, Cloud, Radio, ShieldCheck } from "lucide-react";
+import { motion } from "framer-motion";
 import InfoCallout from "@/components/ui/InfoCallout";
+import { staggerContainer, staggerItem } from "@/lib/animations";
 
 /* ── Standards Evolution ── */
 const standardsComparison = [
@@ -144,20 +146,20 @@ export default function SGP32Page() {
       </nav>
 
       {/* Header */}
-      <div className="mb-12">
-        <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
+      <motion.div className="mb-12" variants={staggerContainer} initial="hidden" animate="visible">
+        <motion.p variants={staggerItem} className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
           Identity · 12 min
-        </p>
-        <h1 className="text-4xl font-semibold mb-5 leading-tight">
+        </motion.p>
+        <motion.h1 variants={staggerItem} className="text-4xl font-semibold mb-5 leading-tight">
           SGP.32 eSIM Standard
-        </h1>
-        <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+        </motion.h1>
+        <motion.p variants={staggerItem} className="text-lg text-white/55 leading-relaxed max-w-2xl">
           The GSMA SGP.32 specification is the first eSIM standard designed from the ground up for
           headless IoT devices. It introduces a server-driven architecture for zero-touch provisioning
-          at scale — enabling remote carrier management across millions of devices without physical
+          at scale &mdash; enabling remote carrier management across millions of devices without physical
           access.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       {/* ── Section 1: Standards Evolution ── */}
       <section className="mb-20">
@@ -211,8 +213,8 @@ export default function SGP32Page() {
               <div
                 key={comp.id}
                 className={`rounded-xl border transition-all duration-200 cursor-pointer ${isActive
-                    ? "border-[#BFFD11]/40 bg-[#BFFD11]/4"
-                    : "border-[#3A3C46]/40 bg-[#060a14] hover:border-[#3A3C46]/70"
+                  ? "border-[#BFFD11]/40 bg-[#BFFD11]/4"
+                  : "border-[#3A3C46]/40 bg-[#060a14] hover:border-[#3A3C46]/70"
                   }`}
                 onClick={() => setActiveComponent(isActive ? null : comp.id)}
               >
@@ -383,8 +385,8 @@ export default function SGP32Page() {
               <div
                 key={step.step}
                 className={`rounded-xl border transition-all duration-200 cursor-pointer ${isActive
-                    ? "border-[#BFFD11]/40 bg-[#BFFD11]/4"
-                    : "border-[#3A3C46]/40 bg-[#060a14] hover:border-[#3A3C46]/70"
+                  ? "border-[#BFFD11]/40 bg-[#BFFD11]/4"
+                  : "border-[#3A3C46]/40 bg-[#060a14] hover:border-[#3A3C46]/70"
                   }`}
                 onClick={() => setActiveProvStep(isActive ? null : idx)}
               >
@@ -575,14 +577,14 @@ export default function SGP32Page() {
                 key={idx}
                 onClick={() => toggleTest(idx)}
                 className={`w-full text-left rounded-xl border p-5 transition-all duration-200 cursor-pointer flex items-start gap-4 ${checked
-                    ? "border-[#4ade80]/30 bg-[#4ade80]/4"
-                    : "border-[#3A3C46]/40 bg-[#060a14] hover:border-[#3A3C46]/70"
+                  ? "border-[#4ade80]/30 bg-[#4ade80]/4"
+                  : "border-[#3A3C46]/40 bg-[#060a14] hover:border-[#3A3C46]/70"
                   }`}
               >
                 <div
                   className={`w-5 h-5 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-all duration-200 ${checked
-                      ? "bg-[#4ade80] border-[#4ade80]"
-                      : "border-[#3A3C46] bg-transparent"
+                    ? "bg-[#4ade80] border-[#4ade80]"
+                    : "border-[#3A3C46] bg-transparent"
                     }`}
                 >
                   {checked && <Check size={12} className="text-[#00040F]" strokeWidth={3} />}

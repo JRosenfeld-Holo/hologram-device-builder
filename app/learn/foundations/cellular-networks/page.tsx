@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, ChevronRight, Check, Radio, Globe, TrendingUp, Wifi, Zap, Shield, BrainCircuit } from "lucide-react";
+import { motion } from "framer-motion";
 import InfoCallout from "@/components/ui/InfoCallout";
+import { staggerContainer, staggerItem } from "@/lib/animations";
 
 /* ── 2G/3G Sunset Status ── */
 const sunsetStatus = [
@@ -139,20 +141,20 @@ export default function CellularNetworksPage() {
       </nav>
 
       {/* Header */}
-      <div className="mb-12">
-        <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
+      <motion.div className="mb-12" variants={staggerContainer} initial="hidden" animate="visible">
+        <motion.p variants={staggerItem} className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
           Foundations · 15 min
-        </p>
-        <h1 className="text-4xl font-semibold mb-5 leading-tight">
+        </motion.p>
+        <motion.h1 variants={staggerItem} className="text-4xl font-semibold mb-5 leading-tight">
           Cellular Networks Deep-Dive
-        </h1>
-        <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+        </motion.h1>
+        <motion.p variants={staggerItem} className="text-lg text-white/55 leading-relaxed max-w-2xl">
           The cellular IoT ecosystem supports 18.5 billion endpoints in a $1 trillion market.
           The choice of radio access technology (RAT) is no longer a simple engineering decision
-          — it&apos;s a strategic maneuver that dictates total cost of ownership, fleet resilience,
+          &mdash; it&apos;s a strategic maneuver that dictates total cost of ownership, fleet resilience,
           and long-term viability.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       {/* ── Section 1: The Great Migration ── */}
       <section className="mb-20">
@@ -210,8 +212,8 @@ export default function CellularNetworksPage() {
               <div
                 key={tier.id}
                 className={`rounded-xl border transition-all duration-200 cursor-pointer ${isActive
-                    ? "border-[#BFFD11]/40 bg-[#BFFD11]/4"
-                    : "border-[#3A3C46]/40 bg-[#060a14] hover:border-[#3A3C46]/70"
+                  ? "border-[#BFFD11]/40 bg-[#BFFD11]/4"
+                  : "border-[#3A3C46]/40 bg-[#060a14] hover:border-[#3A3C46]/70"
                   }`}
                 onClick={() => setActiveTier(isActive ? null : tier.id)}
               >

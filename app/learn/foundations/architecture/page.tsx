@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 import InfoCallout from "@/components/ui/InfoCallout";
+import { staggerContainer, staggerItem } from "@/lib/animations";
 
 // 4-Layer IoT Stack
 const iotLayers = [
@@ -103,19 +105,19 @@ export default function ArchitecturePage() {
       </nav>
 
       {/* Header */}
-      <div className="mb-12">
-        <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
+      <motion.div className="mb-12" variants={staggerContainer} initial="hidden" animate="visible">
+        <motion.p variants={staggerItem} className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
           Foundations · 12 min
-        </p>
-        <h1 className="text-4xl font-semibold mb-5 leading-tight">
+        </motion.p>
+        <motion.h1 variants={staggerItem} className="text-4xl font-semibold mb-5 leading-tight">
           IoT Architecture &amp; Protocol Stack
-        </h1>
-        <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+        </motion.h1>
+        <motion.p variants={staggerItem} className="text-lg text-white/55 leading-relaxed max-w-2xl">
           Every cellular IoT system follows the same fundamental architecture. Understanding the
           4-layer IoT stack and 5-layer protocol stack tells you exactly where your device sits —
           and how data flows from silicon to dashboard.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       {/* ── 4-Layer Stack ── */}
       <section className="mb-20">
@@ -130,11 +132,10 @@ export default function ArchitecturePage() {
             return (
               <div
                 key={layer.id}
-                className={`rounded-xl border transition-all duration-200 cursor-pointer ${
-                  isActive
+                className={`rounded-xl border transition-all duration-200 cursor-pointer ${isActive
                     ? "border-[#BFFD11]/40 bg-[#BFFD11]/4"
                     : "border-[#3A3C46]/40 bg-[#060a14] hover:border-[#3A3C46]/70"
-                }`}
+                  }`}
                 onClick={() => setActiveLayer(isActive ? null : layer.id)}
               >
                 {/* Collapsed header */}

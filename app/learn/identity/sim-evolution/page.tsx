@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, ChevronRight, Check, CreditCard, Cpu, Cloud, Shield, Factory, TrendingUp, Globe, Zap } from "lucide-react";
+import { motion } from "framer-motion";
 import InfoCallout from "@/components/ui/InfoCallout";
+import { staggerContainer, staggerItem } from "@/lib/animations";
 
 /* ── Form Factor Timeline ── */
 const formFactors = [
@@ -113,20 +115,20 @@ export default function SimEvolutionPage() {
       </nav>
 
       {/* Header */}
-      <div className="mb-12">
-        <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
+      <motion.div className="mb-12" variants={staggerContainer} initial="hidden" animate="visible">
+        <motion.p variants={staggerItem} className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
           Identity · 12 min
-        </p>
-        <h1 className="text-4xl font-semibold mb-5 leading-tight">
+        </motion.p>
+        <motion.h1 variants={staggerItem} className="text-4xl font-semibold mb-5 leading-tight">
           SIM → eSIM → iSIM
-        </h1>
-        <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+        </motion.h1>
+        <motion.p variants={staggerItem} className="text-lg text-white/55 leading-relaxed max-w-2xl">
           The SIM has evolved from a credit-card-sized token to a silicon-integrated identity
           layer within the modem&apos;s SoC. This isn&apos;t just miniaturization — it&apos;s a fundamental
           redesign of device lifecycles, global logistics, and hardware security that enables
           software-defined connectivity at massive IoT scale.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       {/* ── Section 1: Physical Evolution Timeline ── */}
       <section className="mb-20">
@@ -141,8 +143,8 @@ export default function SimEvolutionPage() {
             <div
               key={idx}
               className={`rounded-xl border p-4 flex items-center gap-4 ${ff.active
-                  ? "border-[#BFFD11]/30 bg-[#BFFD11]/4"
-                  : "border-[#3A3C46]/40 bg-[#060a14]"
+                ? "border-[#BFFD11]/30 bg-[#BFFD11]/4"
+                : "border-[#3A3C46]/40 bg-[#060a14]"
                 }`}
             >
               <div className={`w-14 text-center shrink-0 ${ff.active ? "text-[#BFFD11]" : "text-white/30"}`}>
@@ -268,8 +270,8 @@ export default function SimEvolutionPage() {
               <div
                 key={era.id}
                 className={`rounded-xl border transition-all duration-200 cursor-pointer ${isActive
-                    ? "border-[#BFFD11]/40 bg-[#BFFD11]/4"
-                    : "border-[#3A3C46]/40 bg-[#060a14] hover:border-[#3A3C46]/70"
+                  ? "border-[#BFFD11]/40 bg-[#BFFD11]/4"
+                  : "border-[#3A3C46]/40 bg-[#060a14] hover:border-[#3A3C46]/70"
                   }`}
                 onClick={() => setActiveEra(isActive ? null : era.id)}
               >
@@ -571,6 +573,6 @@ export default function SimEvolutionPage() {
           <ArrowRight size={16} />
         </Link>
       </div>
-    </div>
+    </div >
   );
 }

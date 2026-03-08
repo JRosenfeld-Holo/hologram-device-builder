@@ -3,8 +3,10 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { ChevronRight, MapPin } from "lucide-react";
+import { motion } from "framer-motion";
 import CodeBlock from "@/components/ui/CodeBlock";
 import { parseQGPSLOC } from "@/lib/calculations";
+import { staggerContainer, staggerItem } from "@/lib/animations";
 
 const SAMPLE_INPUT = "+QGPSLOC: 092204.0,3150.7820N,11711.9310E,0.6,121.1,2,0.0,0.0,0.0,250326,04";
 
@@ -79,16 +81,16 @@ export default function GPSParserPage() {
         <span className="text-[#BFFD11]">GPS Parser</span>
       </nav>
 
-      <div className="mb-12">
-        <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
+      <motion.div className="mb-12" variants={staggerContainer} initial="hidden" animate="visible">
+        <motion.p variants={staggerItem} className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
           Tool
-        </p>
-        <h1 className="text-4xl font-semibold mb-5">GPS Coordinate Parser</h1>
-        <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+        </motion.p>
+        <motion.h1 variants={staggerItem} className="text-4xl font-semibold mb-5">GPS Coordinate Parser</motion.h1>
+        <motion.p variants={staggerItem} className="text-lg text-white/55 leading-relaxed max-w-2xl">
           Paste a raw <code className="font-mono bg-white/5 px-1 rounded text-base">+QGPSLOC</code> response from a
           Quectel module. Parsed fields update instantly.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       <div className="grid lg:grid-cols-2 gap-8 mb-12">
         {/* Input */}

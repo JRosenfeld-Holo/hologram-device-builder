@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ChevronRight, ArrowLeft, ArrowRight, Check, Camera } from "lucide-react";
+import { motion } from "framer-motion";
 import InfoCallout from "@/components/ui/InfoCallout";
 import ComparisonTable from "@/components/ui/ComparisonTable";
 import InteractiveToggle from "@/components/ui/InteractiveToggle";
@@ -239,8 +240,15 @@ export default function SmartCameraPage() {
 
       {/* Header */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center mb-12">
-        <div>
-          <div className="flex items-center gap-3 mb-4">
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
+        >
+          <motion.div
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
+            className="flex items-center gap-3 mb-4"
+          >
             <div
               className="w-10 h-10 rounded-[8px] flex items-center justify-center"
               style={{ background: "rgba(83,242,250,0.1)", border: "1px solid rgba(83,242,250,0.2)" }}
@@ -256,14 +264,25 @@ export default function SmartCameraPage() {
               </span>
               <span className="text-[11px] text-white/30 font-mono">25 min</span>
             </div>
-          </div>
-          <h1 className="text-4xl font-semibold mb-5 leading-tight">Smart Camera</h1>
-          <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+          </motion.div>
+          <motion.h1
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
+            className="text-4xl font-semibold mb-5 leading-tight"
+          >Smart Camera</motion.h1>
+          <motion.p
+            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
+            className="text-lg text-white/55 leading-relaxed max-w-2xl"
+          >
             IoT-enabled cameras demand the right combination of connectivity, architecture, and
             bandwidth strategy. The critical design decision: process on-device or stream to cloud?
-          </p>
-        </div>
-        <div className="hidden lg:flex justify-center items-center">
+          </motion.p>
+        </motion.div>
+        <motion.div
+          className="hidden lg:flex justify-center items-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+        >
           <img
             src="/smart_camera_hero.png"
             alt="Smart Camera Illustration"
@@ -273,7 +292,7 @@ export default function SmartCameraPage() {
               WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
             }}
           />
-        </div>
+        </motion.div>
       </div>
 
       {/* ── Architecture Decision ── */}
@@ -449,6 +468,6 @@ export default function SmartCameraPage() {
       <div className="-mx-4 sm:-mx-6 lg:-mx-8">
         <FreePilotCTA />
       </div>
-    </div>
+    </div >
   );
 }

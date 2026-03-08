@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, ChevronRight, Check, Cpu, Radio, Zap, Signal, Crosshair, Layers } from "lucide-react";
+import { motion } from "framer-motion";
 import InfoCallout from "@/components/ui/InfoCallout";
+import { staggerContainer, staggerItem } from "@/lib/animations";
 
 /* ── Spec Comparison ── */
 const specComparison = [
@@ -178,20 +180,20 @@ export default function RedCapPage() {
       </nav>
 
       {/* Header */}
-      <div className="mb-12">
-        <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
+      <motion.div className="mb-12" variants={staggerContainer} initial="hidden" animate="visible">
+        <motion.p variants={staggerItem} className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
           Foundations · 8 min
-        </p>
-        <h1 className="text-4xl font-semibold mb-5 leading-tight">
+        </motion.p>
+        <motion.h1 variants={staggerItem} className="text-4xl font-semibold mb-5 leading-tight">
           5G RedCap for IoT
-        </h1>
-        <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+        </motion.h1>
+        <motion.p variants={staggerItem} className="text-lg text-white/55 leading-relaxed max-w-2xl">
           5G Reduced Capability (RedCap), standardized in 3GPP Release 17, bridges the gap between
           high-throughput 5G NR and low-power LPWA technologies. It delivers the right-sized
-          connectivity for industrial sensors, wearables, and smart cameras — with ~65% lower modem
+          connectivity for industrial sensors, wearables, and smart cameras &mdash; with ~65% lower modem
           complexity and native support for network slicing.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       {/* ── Section 1: Performance at a Glance ── */}
       <section className="mb-20">
@@ -279,8 +281,8 @@ export default function RedCapPage() {
               <div
                 key={item.id}
                 className={`rounded-xl border transition-all duration-200 cursor-pointer ${isActive
-                    ? "border-[#BFFD11]/40 bg-[#BFFD11]/4"
-                    : "border-[#3A3C46]/40 bg-[#060a14] hover:border-[#3A3C46]/70"
+                  ? "border-[#BFFD11]/40 bg-[#BFFD11]/4"
+                  : "border-[#3A3C46]/40 bg-[#060a14] hover:border-[#3A3C46]/70"
                   }`}
                 onClick={() => setActiveReduction(isActive ? null : item.id)}
               >

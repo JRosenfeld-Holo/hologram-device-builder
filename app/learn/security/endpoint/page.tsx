@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Check, Shield } from "lucide-react";
+import { motion } from "framer-motion";
 import InfoCallout from "@/components/ui/InfoCallout";
 import CodeBlock from "@/components/ui/CodeBlock";
+import { staggerContainer, staggerItem } from "@/lib/animations";
 
 const securityLayers = [
   {
@@ -123,16 +125,16 @@ export default function SecurityEndpointPage() {
         <span className="text-[#BFFD11]">Audit Checklist</span>
       </nav>
 
-      <div className="mb-12">
-        <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
+      <motion.div className="mb-12" variants={staggerContainer} initial="hidden" animate="visible">
+        <motion.p variants={staggerItem} className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
           Security · Interactive Audit
-        </p>
-        <h1 className="text-4xl font-semibold mb-5 leading-tight">Security Audit Checklist</h1>
-        <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+        </motion.p>
+        <motion.h1 variants={staggerItem} className="text-4xl font-semibold mb-5 leading-tight">Security Audit Checklist</motion.h1>
+        <motion.p variants={staggerItem} className="text-lg text-white/55 leading-relaxed max-w-2xl">
           Three layers of IoT security: endpoint hardening, network isolation, and application-layer
           encryption. Check off items as you implement them.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
 
       {/* Score gauge */}
       <div
@@ -198,11 +200,10 @@ export default function SecurityEndpointPage() {
                         <div className="flex items-start gap-4">
                           <button
                             onClick={() => toggle(key)}
-                            className={`mt-0.5 w-5 h-5 rounded flex items-center justify-center shrink-0 transition-all duration-150 cursor-pointer ${
-                              isChecked
+                            className={`mt-0.5 w-5 h-5 rounded flex items-center justify-center shrink-0 transition-all duration-150 cursor-pointer ${isChecked
                                 ? "bg-[#BFFD11] border-[#BFFD11]"
                                 : "border border-[#3A3C46]/60 hover:border-[#BFFD11]/40"
-                            }`}
+                              }`}
                             aria-label={isChecked ? "Uncheck" : "Check"}
                           >
                             {isChecked && (
@@ -211,9 +212,8 @@ export default function SecurityEndpointPage() {
                           </button>
                           <div className="flex-1">
                             <p
-                              className={`text-sm font-medium mb-1.5 transition-colors ${
-                                isChecked ? "text-white/35 line-through" : "text-white/80"
-                              }`}
+                              className={`text-sm font-medium mb-1.5 transition-colors ${isChecked ? "text-white/35 line-through" : "text-white/80"
+                                }`}
                             >
                               {item.label}
                             </p>
