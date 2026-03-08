@@ -109,6 +109,16 @@ body {
   animation: drift-4 32s ease-in-out infinite;
 }
 
+@keyframes hero-spin {
+  from {
+    transform: rotate(0deg) scale(1.1);
+  }
+
+  to {
+    transform: rotate(360deg) scale(1.1);
+  }
+}
+
 @keyframes drift-1 {
 
   0%,

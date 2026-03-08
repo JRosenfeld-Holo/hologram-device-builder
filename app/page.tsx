@@ -308,23 +308,23 @@ export default function HomePage() {
             </motion.div>
           </motion.div>
 
-          {/* Hero Video */}
+          {/* Hero Illustration */}
           <motion.div
             className="hidden lg:flex justify-center items-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
+            style={{
+              maskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
+              WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
+            }}
           >
-            <video
-              src="/hero_video.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
+            <img
+              src="/hero_compilation.png"
+              alt="IoT Device Ecosystem — Asset Tracker, Smart Camera, Building Sensor, Agriculture Drone, Micromobility, RPM"
               className="w-full scale-110"
               style={{
-                maskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
-                WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
+                animation: "hero-spin 60s linear infinite",
               }}
             />
           </motion.div>
