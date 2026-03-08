@@ -97,7 +97,7 @@ export default function Navbar() {
             aria-label="Hologram IoT Device Builder home"
           >
             <Image
-              src="/hologram-logo.svg"
+              src="/hologram-logo-white.png"
               alt="Hologram"
               width={120}
               height={32}
