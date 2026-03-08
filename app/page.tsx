@@ -401,7 +401,7 @@ export default function HomePage() {
               <h2 className="text-2xl font-semibold">Jump right in.</h2>
             </div>
             <Link
-              href="/learn/foundations/architecture"
+              href="/learn"
               className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors cursor-pointer"
             >
               View all lessons <ArrowRight size={14} />
