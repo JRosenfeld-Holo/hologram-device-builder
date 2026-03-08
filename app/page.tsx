@@ -306,16 +306,6 @@ export default function HomePage() {
                 </Link>
               </motion.div>
             </motion.div>
-
-            {/* Stats row — animated counters */}
-            <motion.div
-              variants={staggerContainer}
-              className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-[#3A3C46]/30"
-            >
-              {stats.map((s) => (
-                <AnimatedStat key={s.label} value={s.value} label={s.label} />
-              ))}
-            </motion.div>
           </motion.div>
 
           {/* Hero Video */}

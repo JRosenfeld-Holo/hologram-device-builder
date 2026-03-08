@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronRight, ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { ChevronRight, ArrowLeft, ArrowRight, Check, Camera } from "lucide-react";
 import InfoCallout from "@/components/ui/InfoCallout";
 import ComparisonTable from "@/components/ui/ComparisonTable";
 import InteractiveToggle from "@/components/ui/InteractiveToggle";
@@ -229,7 +229,7 @@ const archRows = [
 
 export default function SmartCameraPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-xs text-white/30 mb-10" aria-label="Breadcrumb">
         <Link href="/build" className="hover:text-white/60 transition-colors cursor-pointer">Build</Link>
@@ -240,9 +240,23 @@ export default function SmartCameraPage() {
       {/* Header */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center mb-12">
         <div>
-          <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">
-            Build Guide · Advanced · 25 min
-          </p>
+          <div className="flex items-center gap-3 mb-4">
+            <div
+              className="w-10 h-10 rounded-[8px] flex items-center justify-center"
+              style={{ background: "rgba(83,242,250,0.1)", border: "1px solid rgba(83,242,250,0.2)" }}
+            >
+              <Camera size={18} color="#53F2FA" strokeWidth={1.75} />
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11]">
+                Build Guide
+              </span>
+              <span className="text-[10px] font-mono font-semibold tracking-wider uppercase px-2 py-0.5 rounded text-[#ef4444] bg-[#ef4444]/10">
+                Advanced
+              </span>
+              <span className="text-[11px] text-white/30 font-mono">25 min</span>
+            </div>
+          </div>
           <h1 className="text-4xl font-semibold mb-5 leading-tight">Smart Camera</h1>
           <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
             IoT-enabled cameras demand the right combination of connectivity, architecture, and

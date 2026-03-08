@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, ChevronLeft, Check, CheckCircle, Circle, ArrowRight, PartyPopper } from "lucide-react";
+import { ChevronRight, ChevronLeft, Check, CheckCircle, Circle, ArrowRight, PartyPopper, Radio } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CodeBlock from "@/components/ui/CodeBlock";
 import InfoCallout from "@/components/ui/InfoCallout";
@@ -301,7 +301,7 @@ export default function AssetTrackerPage() {
   const displayedScore = useAnimatedScore(securityScore);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-xs text-white/30 mb-10" aria-label="Breadcrumb">
         <Link href="/build" className="hover:text-white/60 transition-colors cursor-pointer">Build</Link>
@@ -316,12 +316,26 @@ export default function AssetTrackerPage() {
           animate="visible"
           variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
         >
-          <motion.p
+          <motion.div
             variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
-            className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3"
+            className="flex items-center gap-3 mb-4"
           >
-            Build Guide · Flagship
-          </motion.p>
+            <div
+              className="w-10 h-10 rounded-[8px] flex items-center justify-center"
+              style={{ background: "rgba(191,253,17,0.1)", border: "1px solid rgba(191,253,17,0.2)" }}
+            >
+              <Radio size={18} color="#BFFD11" strokeWidth={1.75} />
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11]">
+                Flagship Guide
+              </span>
+              <span className="text-[10px] font-mono font-semibold tracking-wider uppercase px-2 py-0.5 rounded text-[#eab308] bg-[#eab308]/10">
+                Intermediate
+              </span>
+              <span className="text-[11px] text-white/30 font-mono">45 min</span>
+            </div>
+          </motion.div>
           <motion.h1
             variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
             className="text-4xl font-semibold mb-5 leading-tight"

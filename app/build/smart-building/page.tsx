@@ -606,7 +606,7 @@ function DeploymentPlanner() {
 
 export default function BuildSmartBuildingPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
       {/* Back link */}
       <Link
         href="/build"

@@ -133,7 +133,7 @@ export default function SGP32Page() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-xs text-white/30 mb-10" aria-label="Breadcrumb">
         <Link href="/learn" className="hover:text-white/60 transition-colors cursor-pointer">Learn</Link>
