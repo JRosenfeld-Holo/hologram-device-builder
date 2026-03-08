@@ -314,13 +314,8 @@ export default function SmartCameraPage() {
 
       {/* Header */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center mb-12">
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
-        >
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
+        <div>
+          <div
             className="flex items-center gap-3 mb-4"
           >
             <div
@@ -338,25 +333,18 @@ export default function SmartCameraPage() {
               </span>
               <span className="text-[11px] text-white/30 font-mono">25 min</span>
             </div>
-          </motion.div>
-          <motion.h1
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
+          </div>
+          <h1
             className="text-4xl font-semibold mb-5 leading-tight"
-          >Smart Camera</motion.h1>
-          <motion.p
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
+          >Smart Camera</h1>
+          <p
             className="text-lg text-white/55 leading-relaxed max-w-2xl"
           >
             IoT-enabled cameras demand the right combination of connectivity, architecture, and
             bandwidth strategy. The critical design decision: process on-device or stream to cloud?
-          </motion.p>
-        </motion.div>
-        <motion.div
-          className="hidden lg:flex justify-center items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-        >
+          </p>
+        </div>
+        <div className="hidden lg:flex justify-center items-center">
           <img
             src="/smart_camera_hero.png"
             alt="Smart Camera Illustration"
@@ -366,7 +354,7 @@ export default function SmartCameraPage() {
               WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
             }}
           />
-        </motion.div>
+        </div>
       </div>
 
       {/* ── Step Progress Bar ── */}

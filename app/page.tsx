@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import FreePilotCTA from "@/components/ui/FreePilotCTA";
+import HeroMedia from "@/components/ui/HeroMedia";
 import { staggerContainer, staggerItem, fadeUp } from "@/lib/animations";
 
 // ─── Animated counter hook ─────────────────────────────────────────────────────
@@ -308,26 +309,10 @@ export default function HomePage() {
             </motion.div>
           </motion.div>
 
-          {/* Hero Illustration */}
-          <motion.div
-            className="hidden lg:flex justify-center items-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-            style={{
-              maskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
-              WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
-            }}
-          >
-            <img
-              src="/hero_compilation.png"
-              alt="IoT Device Ecosystem — Asset Tracker, Smart Camera, Building Sensor, Agriculture Drone, Micromobility, RPM"
-              className="w-full scale-110"
-              style={{
-                animation: "hero-spin 60s linear infinite",
-              }}
-            />
-          </motion.div>
+          {/* Hero Media — video → particle explosion → 3D tilt image */}
+          <div className="hidden lg:block">
+            <HeroMedia />
+          </div>
         </div>
       </section>
 

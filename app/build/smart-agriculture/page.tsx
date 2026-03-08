@@ -312,15 +312,8 @@ export default function SmartAgriculturePage() {
 
             {/* Header */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center mb-12">
-                <motion.div
-                    initial="hidden"
-                    animate="visible"
-                    variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
-                >
-                    <motion.div
-                        variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
-                        className="flex items-center gap-3 mb-4"
-                    >
+                <div>
+                    <div className="flex items-center gap-3 mb-4">
                         <div
                             className="w-10 h-10 rounded-[8px] flex items-center justify-center"
                             style={{ background: "rgba(191,253,17,0.1)", border: "1px solid rgba(191,253,17,0.2)" }}
@@ -336,27 +329,16 @@ export default function SmartAgriculturePage() {
                             </span>
                             <span className="text-[11px] text-white/30 font-mono">30 min</span>
                         </div>
-                    </motion.div>
-                    <motion.h1
-                        variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
-                        className="text-4xl font-semibold mb-5 leading-tight"
-                    >
+                    </div>
+                    <h1 className="text-4xl font-semibold mb-5 leading-tight">
                         Smart Agriculture Sensor Node
-                    </motion.h1>
-                    <motion.p
-                        variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
-                        className="text-lg text-white/55 leading-relaxed max-w-2xl"
-                    >
+                    </h1>
+                    <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
                         Build a ruggedized, solar-powered sensor node for precision agriculture &mdash; soil moisture,
                         NPK nutrients, and weather monitoring with cellular connectivity for remote fields.
-                    </motion.p>
-                </motion.div>
-                <motion.div
-                    className="hidden lg:flex justify-center items-center"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-                >
+                    </p>
+                </div>
+                <div className="hidden lg:flex justify-center items-center">
                     <img
                         src="/smart_agriculture_hero.png"
                         alt="Smart Agriculture Illustration"
@@ -366,7 +348,7 @@ export default function SmartAgriculturePage() {
                             WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
                         }}
                     />
-                </motion.div>
+                </div>
             </div>
 
             {/* Step Progress Bar */}

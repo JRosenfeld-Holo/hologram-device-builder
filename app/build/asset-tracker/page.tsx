@@ -311,13 +311,8 @@ export default function AssetTrackerPage() {
 
       {/* Header */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center mb-12">
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
-        >
-          <motion.div
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
+        <div>
+          <div
             className="flex items-center gap-3 mb-4"
           >
             <div
@@ -335,28 +330,21 @@ export default function AssetTrackerPage() {
               </span>
               <span className="text-[11px] text-white/30 font-mono">45 min</span>
             </div>
-          </motion.div>
-          <motion.h1
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
+          </div>
+          <h1
             className="text-4xl font-semibold mb-5 leading-tight"
           >
             Global Asset Tracker
-          </motion.h1>
-          <motion.p
-            variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } }}
+          </h1>
+          <p
             className="text-lg text-white/55 leading-relaxed max-w-2xl"
           >
             Build a cellular-connected GPS tracker from scratch. Covers hardware selection, AT command
             configuration, MicroPython and C++ firmware, GPS parsing, and security hardening.
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
-        <motion.div
-          className="hidden lg:flex justify-center items-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-        >
+        <div className="hidden lg:flex justify-center items-center">
           <img
             src="/asset_tracker_hero.png"
             alt="Asset Tracker Illustration"
@@ -366,7 +354,7 @@ export default function AssetTrackerPage() {
               WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
             }}
           />
-        </motion.div>
+        </div>
       </div>
 
       {/* Step Progress Bar */}
