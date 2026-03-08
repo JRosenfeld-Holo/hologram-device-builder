@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ArrowLeft, ChevronRight, Check, Activity, RefreshCw, Package, Trash2, AlertTriangle, Brain, HardDrive, Lock } from "lucide-react";
 import InfoCallout from "@/components/ui/InfoCallout";
+import FreePilotCTA from "@/components/ui/FreePilotCTA";
 
 /* ── Monitoring KPIs ── */
 const monitoringKPIs = [
@@ -346,6 +347,11 @@ export default function LifecyclePage() {
           </ul>
         </div>
       </section>
+
+      {/* Free Pilot CTA */}
+      <div className="mt-16">
+        <FreePilotCTA />
+      </div>
 
       {/* Navigation */}
       <div className="pt-8 border-t border-[#3A3C46]/30 flex justify-between items-center">

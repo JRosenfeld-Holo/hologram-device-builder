@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Radio, Camera, Building2, Leaf, Bike, Check } from "lucide-react";
+import { ArrowRight, Radio, Camera, Building2, Leaf, Bike, HeartPulse, Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { staggerContainer, staggerItem, fadeUp } from "@/lib/animations";
 
@@ -106,6 +106,26 @@ const guides = [
       "PTCRB certification guide",
     ],
   },
+  {
+    href: "/build/remote-patient-monitoring",
+    icon: HeartPulse,
+    label: "BUILD GUIDE",
+    title: "Remote Patient Monitoring",
+    description:
+      "Cellular-connected blood pressure monitor — oscillometric sensing, HIPAA-compliant MQTT over mTLS, store-and-forward reliability, FDA Class II design controls, and FMEA risk analysis.",
+    tech: "LTE-M",
+    connectivity: "Medical IoT",
+    difficulty: "Advanced",
+    duration: "35 min",
+    accentColor: "#53F2FA",
+    highlights: [
+      "Oscillometric BP algorithm",
+      "HIPAA/GDPR security hardening",
+      "Store-and-forward reliability",
+      "FDA Class II compliance template",
+      "FMEA risk matrix",
+    ],
+  },
 ];
 
 const difficultyColors: Record<string, string> = {
@@ -137,7 +157,7 @@ export default function BuildPage() {
           variants={staggerItem}
           className="text-lg text-white/55 leading-relaxed max-w-2xl"
         >
-          Five complete build guides covering the most common cellular IoT device categories.
+          Six complete build guides covering the most common cellular IoT device categories.
           Each guide walks from hardware selection through firmware and security hardening.
         </motion.p>
       </motion.div>

@@ -74,7 +74,7 @@ export default function Footer() {
 
         <div className="mt-16 pt-8 border-t border-[#3A3C46]/30 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <p className="text-xs text-white/30">
-            © 2025 Hologram Inc. All rights reserved.
+            © 2026 Hologram Inc. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             {[

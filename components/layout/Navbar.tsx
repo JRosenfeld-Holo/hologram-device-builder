@@ -30,6 +30,7 @@ const navItems = [
       { label: "Smart Building", href: "/build/smart-building" },
       { label: "Smart Agriculture", href: "/build/smart-agriculture" },
       { label: "Micromobility", href: "/build/micromobility" },
+      { label: "Patient Monitoring", href: "/build/remote-patient-monitoring" },
     ],
   },
   {
@@ -41,7 +42,14 @@ const navItems = [
       { label: "GPS Parser", href: "/tools/gps-parser" },
     ],
   },
-  { label: "Deploy", href: "/deploy/pilot-playbook" },
+  {
+    label: "Deploy",
+    href: "/deploy",
+    children: [
+      { label: "Pilot Playbook", href: "/deploy/pilot-playbook" },
+      { label: "Lifecycle Management", href: "/deploy/lifecycle" },
+    ],
+  },
 ];
 
 export default function Navbar() {
