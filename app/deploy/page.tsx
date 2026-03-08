@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { ArrowRight, Rocket, RefreshCw, ChevronRight } from "lucide-react";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "Deploy — Hologram IoT Device Builder",
+  description: "Pilot playbook and device lifecycle management guides for cellular IoT deployments at scale.",
 };
 
 const deployLessons = [
