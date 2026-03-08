@@ -485,7 +485,7 @@ export default function AssetTrackerPage() {
 
               <button
                 onClick={() => markComplete("connectivity")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
               >
                 Got it — Next Step →
               </button>
@@ -505,7 +505,7 @@ export default function AssetTrackerPage() {
               <BOMTable items={bomItems} title="Asset Tracker BOM" />
               <button
                 onClick={() => markComplete("hardware")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
               >
                 BOM Reviewed — Next Step →
               </button>
@@ -561,7 +561,7 @@ export default function AssetTrackerPage() {
 
               <button
                 onClick={() => markComplete("power")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
               >
                 Power Configured — Next Step →
               </button>
@@ -605,7 +605,7 @@ export default function AssetTrackerPage() {
 
               <button
                 onClick={() => markComplete("connectivity-setup")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
               >
                 Connectivity Configured — Next Step →
               </button>
@@ -652,7 +652,7 @@ export default function AssetTrackerPage() {
 
               <button
                 onClick={() => markComplete("firmware")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
               >
                 Firmware Written — Next Step →
               </button>
@@ -736,7 +736,7 @@ def to_decimal(ddmm: str, direction: str) -> float:
 
               <button
                 onClick={() => markComplete("gps")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
               >
                 GPS Parsing Ready — Next Step →
               </button>
@@ -816,7 +816,7 @@ def to_decimal(ddmm: str, direction: str) -> float:
 
               <button
                 onClick={() => markComplete("security")}
-                className="mt-4 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                className="mt-4 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
               >
                 Security Hardened — Final Step →
               </button>
@@ -863,7 +863,7 @@ def to_decimal(ddmm: str, direction: str) -> float:
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/deploy/pilot-playbook"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                 >
                   View Pilot Playbook <ArrowRight size={14} />
                 </Link>
@@ -887,7 +887,7 @@ def to_decimal(ddmm: str, direction: str) -> float:
               {completedSteps.size === steps.length - 1 && (
                 <button
                   onClick={() => markComplete("deploy")}
-                  className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                  className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                 >
                   <CheckCircle size={14} className="shrink-0" aria-hidden="true" />
                   Mark Build Complete
@@ -903,7 +903,7 @@ def to_decimal(ddmm: str, direction: str) -> float:
                   <p className="text-sm text-white/50 mb-5">You&apos;ve completed all steps for the Global Asset Tracker.</p>
                   <Link
                     href="/build"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                   >
                     ← Back to Build Guides
                   </Link>

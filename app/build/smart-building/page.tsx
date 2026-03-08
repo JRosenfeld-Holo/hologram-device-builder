@@ -784,7 +784,7 @@ export default function BuildSmartBuildingPage() {
                   a module (Bands 3, 8, 20, and 28 are most common globally).
                 </InfoCallout>
               </div>
-              <button onClick={() => markComplete("why-nbiot")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer">Complete Step → Coverage & Protocol</button>
+              <button onClick={() => markComplete("why-nbiot")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">Complete Step → Coverage & Protocol</button>
             </section>
           )}
 
@@ -872,7 +872,7 @@ export default function BuildSmartBuildingPage() {
                   }}
                 </InteractiveToggle>
               </div>
-              <button onClick={() => markComplete("coverage-protocol")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer">Complete Step → Payload Optimization</button>
+              <button onClick={() => markComplete("coverage-protocol")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">Complete Step → Payload Optimization</button>
             </section>
           )}
 
@@ -920,7 +920,7 @@ export default function BuildSmartBuildingPage() {
                   ]}
                 />
               </div>
-              <button onClick={() => markComplete("payload")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer">Complete Step → Deployment Planning</button>
+              <button onClick={() => markComplete("payload")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">Complete Step → Deployment Planning</button>
             </section>
           )}
 
@@ -949,7 +949,7 @@ export default function BuildSmartBuildingPage() {
                   </div>
                 ))}
               </div>
-              <button onClick={() => markComplete("deployment")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer">Complete Step → Power & Hardware</button>
+              <button onClick={() => markComplete("deployment")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">Complete Step → Power & Hardware</button>
             </section>
           )}
 
@@ -1019,7 +1019,7 @@ export default function BuildSmartBuildingPage() {
                 current — these cells have relatively high internal resistance and voltage may sag during
                 TX without a local reservoir.
               </InfoCallout>
-              <button onClick={() => markComplete("power-hardware")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer">Complete Step → Security & Deploy</button>
+              <button onClick={() => markComplete("power-hardware")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">Complete Step → Security & Deploy</button>
             </section>
           )}
 
@@ -1064,7 +1064,7 @@ export default function BuildSmartBuildingPage() {
                   ))}
                 </div>
               </div>
-              <button onClick={() => markComplete("security")} className="mt-4 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer">
+              <button onClick={() => markComplete("security")} className="mt-4 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">
                 {completedSteps.size === buildingSteps.length - 1 ? "🎉 Complete Guide" : "Mark Complete"}
               </button>
             </section>

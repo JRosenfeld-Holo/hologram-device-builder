@@ -167,7 +167,7 @@ export default function GPSParserPage() {
             href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 rounded-lg bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer shrink-0"
+            className="px-4 py-2 rounded-lg bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer shrink-0"
           >
             Open in Maps ↗
           </a>

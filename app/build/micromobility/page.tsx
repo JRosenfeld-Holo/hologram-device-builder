@@ -461,7 +461,7 @@ export default function MicromobilityPage() {
                             section prevents RF interference with the cellular and GNSS radios.
                         </InfoCallout>
 
-                        <button onClick={() => markComplete("architecture")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer">
+                        <button onClick={() => markComplete("architecture")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">
                             Architecture Understood — Next Step →
                         </button>
                     </section>
@@ -545,7 +545,7 @@ export default function MicromobilityPage() {
                             and increased power drain. LTE-M supports full handover.
                         </InfoCallout>
 
-                        <button onClick={() => markComplete("connectivity")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer">
+                        <button onClick={() => markComplete("connectivity")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">
                             Connectivity Configured — Next Step →
                         </button>
                     </section>
@@ -571,7 +571,7 @@ export default function MicromobilityPage() {
                             />
                         </div>
 
-                        <button onClick={() => markComplete("hardware")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer">
+                        <button onClick={() => markComplete("hardware")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">
                             Hardware Selected — Next Step →
                         </button>
                     </section>
@@ -625,7 +625,7 @@ export default function MicromobilityPage() {
                             </Link>
                         </div>
 
-                        <button onClick={() => markComplete("positioning")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer">
+                        <button onClick={() => markComplete("positioning")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">
                             Positioning Configured — Next Step →
                         </button>
                     </section>
@@ -717,7 +717,7 @@ export default function MicromobilityPage() {
                             </Link>
                         </div>
 
-                        <button onClick={() => markComplete("firmware")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer">
+                        <button onClick={() => markComplete("firmware")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">
                             Firmware Ready — Next Step →
                         </button>
                     </section>
@@ -793,7 +793,7 @@ export default function MicromobilityPage() {
                             reducing cost from $500K+ to $10K–$50K.
                         </InfoCallout>
 
-                        <button onClick={() => markComplete("security")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer">
+                        <button onClick={() => markComplete("security")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">
                             Security Hardened — Final Step →
                         </button>
                     </section>
@@ -853,7 +853,7 @@ export default function MicromobilityPage() {
                         <div className="flex flex-wrap gap-4">
                             <Link
                                 href="/deploy/pilot-playbook"
-                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                             >
                                 View Pilot Playbook <ArrowRight size={14} />
                             </Link>
@@ -879,7 +879,7 @@ export default function MicromobilityPage() {
                         {completedSteps.size === steps.length - 1 && (
                             <button
                                 onClick={() => markComplete("deploy")}
-                                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                             >
                                 ✓ Mark Build Complete
                             </button>
@@ -891,7 +891,7 @@ export default function MicromobilityPage() {
                                 <p className="text-sm text-white/50 mb-5">You&apos;ve completed all steps for the Connected Micromobility Vehicle.</p>
                                 <Link
                                     href="/build"
-                                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                                 >
                                     ← Back to Build Guides
                                 </Link>

@@ -163,7 +163,7 @@ export default function FreePilotCTA() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 px-7 py-4 rounded-xl bg-[#BFFD11] text-[#00040F] font-semibold text-base transition-colors duration-200 cursor-pointer w-fit"
-                whileHover={{ scale: 1.04, backgroundColor: "#d4ff3d" }}
+                whileHover={{ scale: 1.04, backgroundColor: "#BFFD11" }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: "spring", stiffness: 350, damping: 22 }}
               >

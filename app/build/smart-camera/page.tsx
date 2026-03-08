@@ -530,7 +530,7 @@ export default function SmartCameraPage() {
 
               <button
                 onClick={() => markComplete("architecture")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
               >
                 Complete Step → Network Selection
               </button>
@@ -589,7 +589,7 @@ export default function SmartCameraPage() {
 
               <button
                 onClick={() => markComplete("network")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
               >
                 Complete Step → Bandwidth Planning
               </button>
@@ -612,7 +612,7 @@ export default function SmartCameraPage() {
 
               <button
                 onClick={() => markComplete("bandwidth")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
               >
                 Complete Step → Hardware & Security
               </button>
@@ -701,14 +701,14 @@ export default function SmartCameraPage() {
               {completedSteps.size === steps.length - 1 ? (
                 <button
                   onClick={() => markComplete("hardware-security")}
-                  className="mt-4 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                  className="mt-4 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                 >
                   🎉 Complete Guide
                 </button>
               ) : (
                 <button
                   onClick={() => markComplete("hardware-security")}
-                  className="mt-4 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                  className="mt-4 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                 >
                   Mark Complete
                 </button>

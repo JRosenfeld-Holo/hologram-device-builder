@@ -373,7 +373,7 @@ export default function RemotePatientMonitoringPage() {
 
                         <button
                             onClick={() => markComplete("architecture")}
-                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                         >
                             Architecture Reviewed — Next Step →
                         </button>
@@ -418,7 +418,7 @@ export default function RemotePatientMonitoringPage() {
 
                         <button
                             onClick={() => markComplete("hardware")}
-                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                         >
                             Hardware Designed — Next Step →
                         </button>
@@ -495,7 +495,7 @@ export default function RemotePatientMonitoringPage() {
 
                         <button
                             onClick={() => markComplete("firmware")}
-                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                         >
                             Firmware Written — Next Step →
                         </button>
@@ -564,7 +564,7 @@ export default function RemotePatientMonitoringPage() {
 
                         <button
                             onClick={() => markComplete("connectivity")}
-                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                         >
                             Security Hardened — Next Step →
                         </button>
@@ -627,7 +627,7 @@ export default function RemotePatientMonitoringPage() {
 
                         <button
                             onClick={() => markComplete("cloud")}
-                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                         >
                             Cloud Configured — Next Step →
                         </button>
@@ -768,7 +768,7 @@ export default function RemotePatientMonitoringPage() {
                         <div className="flex flex-wrap gap-4">
                             <Link
                                 href="/deploy/pilot-playbook"
-                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                             >
                                 View Pilot Playbook <ArrowRight size={14} />
                             </Link>
@@ -792,7 +792,7 @@ export default function RemotePatientMonitoringPage() {
                         {completedSteps.size === steps.length - 1 && (
                             <button
                                 onClick={() => markComplete("compliance")}
-                                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                             >
                                 ✓ Mark Build Complete
                             </button>
@@ -804,7 +804,7 @@ export default function RemotePatientMonitoringPage() {
                                 <p className="text-sm text-white/50 mb-5">You&apos;ve completed all steps for the Remote Patient Monitoring device.</p>
                                 <Link
                                     href="/build"
-                                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                                 >
                                     ← Back to Build Guides
                                 </Link>

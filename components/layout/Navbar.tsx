@@ -181,7 +181,7 @@ export default function Navbar() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Get Started with Hologram (opens in new tab)"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors duration-200 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors duration-200 cursor-pointer"
             >
               Get Started
               <ExternalLink size={12} aria-hidden="true" />

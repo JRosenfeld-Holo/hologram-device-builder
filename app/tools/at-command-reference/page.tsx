@@ -170,7 +170,7 @@ export default function ATCommandReferencePage() {
                           className={`w-full text-left px-4 py-2.5 flex items-start gap-3 hover:bg-[#BFFD11]/5 transition-colors cursor-pointer group ${expanded === cmd.id ? "bg-[#BFFD11]/5" : ""
                             }`}
                         >
-                          <code className="text-xs font-mono text-[#BFFD11] shrink-0 pt-0.5 group-hover:text-[#d4ff3d] transition-colors">
+                          <code className="text-xs font-mono text-[#BFFD11] shrink-0 pt-0.5 group-hover:text-[#BFFD11] transition-colors">
                             {cmd.command.split("=")[0].split("?")[0]}
                           </code>
                           <span className="text-[11px] text-white/35 leading-snug line-clamp-2 group-hover:text-white/55 transition-colors">

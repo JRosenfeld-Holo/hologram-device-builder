@@ -459,7 +459,7 @@ export default function SmartAgriculturePage() {
 
                         <button
                             onClick={() => markComplete("sensors")}
-                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                         >
                             Sensors Selected — Next Step →
                         </button>
@@ -527,7 +527,7 @@ export default function SmartAgriculturePage() {
 
                         <button
                             onClick={() => markComplete("connectivity")}
-                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                         >
                             Connectivity Chosen — Next Step →
                         </button>
@@ -573,7 +573,7 @@ export default function SmartAgriculturePage() {
 
                         <button
                             onClick={() => markComplete("hardware")}
-                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                         >
                             Hardware Designed — Next Step →
                         </button>
@@ -645,7 +645,7 @@ export default function SmartAgriculturePage() {
 
                         <button
                             onClick={() => markComplete("power")}
-                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                            className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                         >
                             Power Configured — Next Step →
                         </button>
@@ -756,7 +756,7 @@ export default function SmartAgriculturePage() {
 
                         <button
                             onClick={() => markComplete("firmware")}
-                            className="mt-4 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                            className="mt-4 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                         >
                             Firmware & Security Done — Final Step →
                         </button>
@@ -816,7 +816,7 @@ export default function SmartAgriculturePage() {
                         <div className="flex flex-wrap gap-4">
                             <Link
                                 href="/deploy/pilot-playbook"
-                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                             >
                                 View Pilot Playbook <ArrowRight size={14} />
                             </Link>
@@ -840,7 +840,7 @@ export default function SmartAgriculturePage() {
                         {completedSteps.size === steps.length - 1 && (
                             <button
                                 onClick={() => markComplete("lifecycle")}
-                                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                             >
                                 ✓ Mark Build Complete
                             </button>
@@ -852,7 +852,7 @@ export default function SmartAgriculturePage() {
                                 <p className="text-sm text-white/50 mb-5">You&apos;ve completed all steps for the Smart Agriculture Sensor Node.</p>
                                 <Link
                                     href="/build"
-                                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
                                 >
                                     ← Back to Build Guides
                                 </Link>

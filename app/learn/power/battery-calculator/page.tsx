@@ -22,7 +22,7 @@ export default function LearnPowerBatteryCalculatorPage() {
         <p className="text-white/30 text-sm mb-6">This lesson is coming soon.</p>
         <Link
           href="/learn/power/psm-edrx"
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
         >
           PSM / eDRX Simulator <ArrowRight size={14} />
         </Link>
