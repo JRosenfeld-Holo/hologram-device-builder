@@ -55,6 +55,7 @@ const navItems = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileAccordion, setMobileAccordion] = useState<Set<string>>(new Set());
   const pathname = usePathname();
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -74,6 +75,15 @@ export default function Navbar() {
       setActiveDropdown(null);
       closeTimerRef.current = null;
     }, 150);
+  };
+
+  const toggleMobileSection = (label: string) => {
+    setMobileAccordion((prev) => {
+      const next = new Set(prev);
+      if (next.has(label)) next.delete(label);
+      else next.add(label);
+      return next;
+    });
   };
 
   return (
@@ -192,38 +202,64 @@ export default function Navbar() {
 
         {/* Mobile Nav */}
         {mobileOpen && (
-          <div id="mobile-nav" className="md:hidden py-4 border-t border-[#3A3C46]/40 space-y-1">
-            {navItems.map((item) => (
-              <div key={item.href}>
-                <Link
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`block px-3 py-2.5 rounded-md text-sm font-medium cursor-pointer transition-colors duration-200 ${isActive(item.href)
-                    ? "text-[#BFFD11] font-semibold"
-                    : "text-white/70 hover:text-white"
-                    }`}
-                >
-                  {item.label}
-                </Link>
-                {item.children && (
-                  <div className="pl-4 space-y-0.5">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        onClick={() => setMobileOpen(false)}
-                        className={`block px-3 py-2.5 text-sm cursor-pointer transition-colors duration-150 ${isActive(child.href)
-                          ? "text-[#BFFD11] font-medium"
-                          : "text-white/50 hover:text-white/80"
-                          }`}
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+          <div id="mobile-nav" className="md:hidden py-4 border-t border-[#3A3C46]/40 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto">
+            {navItems.map((item) => {
+              const isExpanded = mobileAccordion.has(item.label);
+              return (
+                <div key={item.href}>
+                  {/* Accordion header — tapping toggles open/close */}
+                  <button
+                    onClick={() => item.children ? toggleMobileSection(item.label) : undefined}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-medium cursor-pointer transition-colors duration-200 ${isActive(item.href)
+                      ? "text-[#BFFD11] font-semibold"
+                      : "text-white/70 hover:text-white"
+                      }`}
+                    aria-expanded={item.children ? isExpanded : undefined}
+                  >
+                    <Link
+                      href={item.href}
+                      onClick={(e) => { e.stopPropagation(); setMobileOpen(false); }}
+                      className="hover:text-white transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                    {item.children && (
+                      <ChevronDown
+                        size={14}
+                        className={`text-white/40 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+                        aria-hidden="true"
+                      />
+                    )}
+                  </button>
+                  {/* Collapsible children */}
+                  {item.children && (
+                    <div
+                      className="overflow-hidden transition-all duration-200 ease-in-out"
+                      style={{
+                        maxHeight: isExpanded ? `${item.children.length * 44}px` : "0px",
+                        opacity: isExpanded ? 1 : 0,
+                      }}
+                    >
+                      <div className="pl-4 space-y-0.5 pb-1">
+                        {item.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => setMobileOpen(false)}
+                            className={`block px-3 py-2.5 text-sm cursor-pointer transition-colors duration-150 ${isActive(child.href)
+                              ? "text-[#BFFD11] font-medium"
+                              : "text-white/50 hover:text-white/80"
+                              }`}
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
             <div className="pt-3 border-t border-[#3A3C46]/40">
               <a
                 href="https://dashboard.hologram.io"

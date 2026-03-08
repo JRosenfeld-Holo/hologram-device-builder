@@ -1,15 +1,51 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, ArrowLeft, ArrowRight, Check, Camera } from "lucide-react";
-import { motion } from "framer-motion";
+import { ChevronRight, ChevronLeft, ArrowLeft, ArrowRight, Check, Camera, Shield, Wifi, Eye } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import InfoCallout from "@/components/ui/InfoCallout";
 import ComparisonTable from "@/components/ui/ComparisonTable";
 import InteractiveToggle from "@/components/ui/InteractiveToggle";
 import FreePilotCTA from "@/components/ui/FreePilotCTA";
 
-// Bandwidth calculator
+/* ── Steps ── */
+const steps = [
+  { id: "architecture", label: "Architecture Decision" },
+  { id: "network", label: "Network Selection" },
+  { id: "bandwidth", label: "Bandwidth Planning" },
+  { id: "hardware-security", label: "Hardware & Security" },
+];
+
+/* ── Architecture Data ── */
+const archColumns = [
+  { key: "edge", label: "Edge Processing", recommended: true },
+  { key: "cloud", label: "Cloud Processing" },
+];
+
+const archRows = [
+  { metric: "Data uploaded", edge: "Event clips only", cloud: "Full raw stream" },
+  { metric: "Monthly data (20 events/day)", edge: "~200 MB", cloud: "~500 GB" },
+  { metric: "Latency to action", edge: "<100 ms (on-device)", cloud: "500 ms–2 s" },
+  { metric: "Privacy", edge: "Data stays on device", cloud: "Raw video to cloud" },
+  { metric: "Cost", edge: "Higher BOM (~$20 more)", cloud: "Higher data + cloud compute" },
+  { metric: "Power consumption", edge: "Higher (ML inference)", cloud: "Lower (dumb capture)" },
+  { metric: "Connectivity requirement", edge: "LTE-M / LTE Cat 1", cloud: "5G NR / LTE Cat 4+" },
+  { metric: "FOTA complexity", edge: "High (ML model updates)", cloud: "Low (camera firmware only)" },
+];
+
+/* ── Security Checklist ── */
+const securityChecklist = [
+  { label: "TLS 1.2/1.3 for all cloud comms (no plaintext HTTP)", cmd: "Use port 443 exclusively" },
+  { label: "On-device model encryption at rest", cmd: "AES-256 encrypted model blobs" },
+  { label: "FOTA image signing with ECDSA", cmd: "Verify signature before flashing" },
+  { label: "Video stream encryption (SRTP or TLS tunnel)", cmd: "No unencrypted video over cellular" },
+  { label: "Tamper detection (light sensor / accelerometer)", cmd: "Alert on enclosure breach" },
+  { label: "eSIM MFF2 soldered — no removable SIM slot", cmd: "Eliminate physical SIM theft vector" },
+  { label: "Privacy: no raw video stored on device", cmd: "Process & discard — transmit metadata only" },
+];
+
+/* ── Bandwidth Calculator ── */
 function BandwidthCalculator() {
   const [resolution, setResolution] = useState<"720p" | "1080p" | "4K">("1080p");
   const [fps, setFps] = useState(15);
@@ -19,7 +55,6 @@ function BandwidthCalculator() {
   const [eventsPerDay, setEventsPerDay] = useState(20);
   const [eventDurationSec, setEventDurationSec] = useState(10);
 
-  // Bitrate lookup table (Mbps)
   const bitrates: Record<string, Record<string, number>> = {
     "720p": { "H.264": 2.5, "H.265": 1.5, "AV1": 1.0 },
     "1080p": { "H.264": 6.0, "H.265": 3.5, "AV1": 2.2 },
@@ -33,7 +68,7 @@ function BandwidthCalculator() {
 
   if (mode === "continuous") {
     const dailySeconds = hoursPerDay * 3600;
-    const dailyMB = (baseBitrateMbps / 8) * dailySeconds * 1000; // bytes → MB
+    const dailyMB = (baseBitrateMbps / 8) * dailySeconds * 1000;
     dailyGB = dailyMB / 1024;
     monthlyGB = dailyGB * 30;
   } else {
@@ -64,7 +99,6 @@ function BandwidthCalculator() {
       <div className="p-6 grid sm:grid-cols-2 gap-6">
         {/* Inputs */}
         <div className="space-y-5">
-          {/* Mode toggle */}
           <div>
             <label className="text-sm text-white/55 block mb-2">Streaming mode</label>
             <div className="flex gap-2">
@@ -80,8 +114,6 @@ function BandwidthCalculator() {
               ))}
             </div>
           </div>
-
-          {/* Resolution */}
           <div>
             <label className="text-sm text-white/55 block mb-2">Resolution</label>
             <div className="flex gap-2">
@@ -97,8 +129,6 @@ function BandwidthCalculator() {
               ))}
             </div>
           </div>
-
-          {/* Compression */}
           <div>
             <label className="text-sm text-white/55 block mb-2">Codec</label>
             <div className="flex gap-2">
@@ -114,8 +144,6 @@ function BandwidthCalculator() {
               ))}
             </div>
           </div>
-
-          {/* FPS slider */}
           <div>
             <div className="flex justify-between mb-2">
               <label className="text-sm text-white/55">Frame rate</label>
@@ -128,8 +156,6 @@ function BandwidthCalculator() {
               style={{ background: `linear-gradient(to right, #BFFD11 ${(fps / 30) * 100}%, #3A3C46 ${(fps / 30) * 100}%)` }}
             />
           </div>
-
-          {/* Conditional: continuous vs event */}
           {mode === "continuous" ? (
             <div>
               <div className="flex justify-between mb-2">
@@ -212,23 +238,71 @@ function BandwidthCalculator() {
   );
 }
 
-const archColumns = [
-  { key: "edge", label: "Edge Processing", recommended: true },
-  { key: "cloud", label: "Cloud Processing" },
-];
+/* ── Animated Score Hook ── */
+function useAnimatedScore(target: number) {
+  const [val, setVal] = useState(0);
+  const ref = useRef(0);
+  useEffect(() => {
+    const start = ref.current;
+    const diff = target - start;
+    if (diff === 0) return;
+    const startTime = performance.now();
+    const duration = 400;
+    const raf = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(start + diff * eased);
+      setVal(current);
+      ref.current = current;
+      if (progress < 1) requestAnimationFrame(raf);
+    };
+    requestAnimationFrame(raf);
+  }, [target]);
+  return val;
+}
 
-const archRows = [
-  { metric: "Data uploaded", edge: "Event clips only", cloud: "Full raw stream" },
-  { metric: "Monthly data (20 events/day)", edge: "~200 MB", cloud: "~500 GB" },
-  { metric: "Latency to action", edge: "<100 ms (on-device)", cloud: "500 ms–2 s" },
-  { metric: "Privacy", edge: "Data stays on device", cloud: "Raw video to cloud" },
-  { metric: "Cost", edge: "Higher BOM (~$20 more)", cloud: "Higher data + cloud compute" },
-  { metric: "Power consumption", edge: "Higher (ML inference)", cloud: "Lower (dumb capture)" },
-  { metric: "Connectivity requirement", edge: "LTE-M / LTE Cat 1", cloud: "5G NR / LTE Cat 4+" },
-  { metric: "FOTA complexity", edge: "High (ML model updates)", cloud: "Low (camera firmware only)" },
-];
-
+/* ── Page ── */
 export default function SmartCameraPage() {
+  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
+  const [activeStep, setActiveStep] = useState("architecture");
+  const [direction, setDirection] = useState(1);
+  const [checkedSecurity, setCheckedSecurity] = useState<Set<number>>(new Set());
+
+  const goToStep = (stepId: string) => {
+    const fromIdx = steps.findIndex((s) => s.id === activeStep);
+    const toIdx = steps.findIndex((s) => s.id === stepId);
+    setDirection(toIdx >= fromIdx ? 1 : -1);
+    setActiveStep(stepId);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const markComplete = (stepId: string) => {
+    setCompletedSteps((prev) => {
+      const next = new Set(prev);
+      next.add(stepId);
+      return next;
+    });
+    const idx = steps.findIndex((s) => s.id === stepId);
+    if (idx < steps.length - 1) {
+      setDirection(1);
+      setActiveStep(steps[idx + 1].id);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const toggleSecurity = (idx: number) => {
+    setCheckedSecurity((prev) => {
+      const next = new Set(prev);
+      if (next.has(idx)) next.delete(idx);
+      else next.add(idx);
+      return next;
+    });
+  };
+
+  const securityScore = Math.round((checkedSecurity.size / securityChecklist.length) * 100);
+  const displayedScore = useAnimatedScore(securityScore);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
       {/* Breadcrumb */}
@@ -295,160 +369,369 @@ export default function SmartCameraPage() {
         </motion.div>
       </div>
 
-      {/* ── Architecture Decision ── */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-semibold mb-2">Core Architecture Decision</h2>
-        <p className="text-white/45 text-sm leading-relaxed mb-8">
-          This choice drives your connectivity spec, BOM cost, and monthly data bill. There is no
-          universally correct answer — it depends on privacy requirements, latency needs, and scale.
+      {/* ── Step Progress Bar ── */}
+      <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] p-4 mb-12">
+        {/* Mobile step nav */}
+        <div className="flex items-center gap-3 sm:hidden mb-3">
+          <button
+            onClick={() => {
+              const idx = steps.findIndex((s) => s.id === activeStep);
+              if (idx > 0) goToStep(steps[idx - 1].id);
+            }}
+            disabled={steps.findIndex((s) => s.id === activeStep) === 0}
+            className="p-2 rounded-lg border border-[#3A3C46]/40 text-white/50 hover:text-white hover:border-white/20 disabled:opacity-25 disabled:cursor-not-allowed transition-colors cursor-pointer"
+            aria-label="Previous step"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <div className="flex-1 text-center">
+            <p className="text-[10px] font-mono font-semibold tracking-widest uppercase text-[#BFFD11]">
+              Step {steps.findIndex((s) => s.id === activeStep) + 1} of {steps.length}
+            </p>
+            <p className="text-sm font-medium text-white mt-0.5">
+              {steps.find((s) => s.id === activeStep)?.label}
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              const idx = steps.findIndex((s) => s.id === activeStep);
+              if (idx < steps.length - 1) goToStep(steps[idx + 1].id);
+            }}
+            disabled={steps.findIndex((s) => s.id === activeStep) === steps.length - 1}
+            className="p-2 rounded-lg border border-[#3A3C46]/40 text-white/50 hover:text-white hover:border-white/20 disabled:opacity-25 disabled:cursor-not-allowed transition-colors cursor-pointer"
+            aria-label="Next step"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+        {/* Desktop step tabs */}
+        <div className="hidden sm:flex gap-1 overflow-x-auto pb-1">
+          {steps.map((step, idx) => {
+            const isComplete = completedSteps.has(step.id);
+            const isActive = activeStep === step.id;
+            return (
+              <button
+                key={step.id}
+                onClick={() => goToStep(step.id)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg whitespace-nowrap text-xs font-medium transition-all duration-200 cursor-pointer shrink-0 ${isActive
+                  ? "bg-[#BFFD11] text-[#00040F]"
+                  : isComplete
+                    ? "text-[#BFFD11]/70 bg-[#BFFD11]/8"
+                    : "text-white/35 hover:text-white/60"
+                  }`}
+              >
+                {isComplete ? (
+                  <Check size={11} className="shrink-0" />
+                ) : (
+                  <span className="w-4 h-4 rounded-full border border-current flex items-center justify-center text-[10px]">
+                    {idx + 1}
+                  </span>
+                )}
+                {step.label}
+              </button>
+            );
+          })}
+        </div>
+        <div className="mt-3 h-1 bg-[#3A3C46]/30 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-[#BFFD11] rounded-full transition-all duration-500"
+            style={{ width: `${(completedSteps.size / steps.length) * 100}%` }}
+          />
+        </div>
+        <p className="text-xs text-white/25 mt-2">
+          {completedSteps.size}/{steps.length} steps complete
         </p>
+      </div>
 
-        <InteractiveToggle
-          label="View data flow"
-          tabs={[
-            { key: "edge", label: "Edge Processing" },
-            { key: "cloud", label: "Cloud Processing" },
-          ]}
-          defaultTab="edge"
+      {/* ── Step Content ── */}
+      <AnimatePresence mode="wait" custom={direction}>
+        <motion.div
+          key={activeStep}
+          custom={direction}
+          initial={{ opacity: 0, x: direction * 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: direction * -40 }}
+          transition={{ duration: 0.28, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          {{
-            edge: (
-              <div className="rounded-xl border border-[#BFFD11]/20 bg-[#060a14] p-6 mb-6">
-                <p className="font-mono text-[10px] tracking-widest uppercase text-[#BFFD11] mb-4">Edge — Data flow</p>
-                <div className="flex items-center gap-2 flex-wrap text-sm">
-                  {["Camera sensor", "→", "On-device AI inference", "→", "Event detected?", "→", "Upload clip only", "→", "Cloud storage"].map((s, i) => (
-                    <span
-                      key={i}
-                      className={s === "→" ? "text-white/20" : i === 4 ? "text-[#f59e0b]" : i === 2 ? "text-[#BFFD11] font-medium" : "text-white/65"}
-                    >
-                      {s}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-4 grid sm:grid-cols-3 gap-3 text-xs">
-                  {[
-                    ["Network used", "~200 MB/month", "#BFFD11"],
-                    ["Connectivity", "LTE-M sufficient", "#BFFD11"],
-                    ["Privacy", "Raw video never leaves device", "#4ade80"],
-                  ].map(([k, v, c]) => (
-                    <div key={k} className="rounded-lg bg-[#030710] px-3 py-2.5">
-                      <p className="text-white/30 mb-1">{k}</p>
-                      <p className="font-medium" style={{ color: c }}>{v}</p>
+
+          {/* ── STEP 1: Architecture Decision ── */}
+          {activeStep === "architecture" && (
+            <section>
+              <div className="flex items-center gap-3 mb-6">
+                <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 1</span>
+                <h2 className="text-2xl font-semibold">Core Architecture Decision</h2>
+              </div>
+
+              <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+                This choice drives your connectivity spec, BOM cost, and monthly data bill. There is no
+                universally correct answer — it depends on privacy requirements, latency needs, and scale.
+              </p>
+
+              <InteractiveToggle
+                label="View data flow"
+                tabs={[
+                  { key: "edge", label: "Edge Processing" },
+                  { key: "cloud", label: "Cloud Processing" },
+                ]}
+                defaultTab="edge"
+              >
+                {{
+                  edge: (
+                    <div className="rounded-xl border border-[#BFFD11]/20 bg-[#060a14] p-6 mb-6">
+                      <p className="font-mono text-[10px] tracking-widest uppercase text-[#BFFD11] mb-4">Edge — Data flow</p>
+                      <div className="flex items-center gap-2 flex-wrap text-sm">
+                        {["Camera sensor", "→", "On-device AI inference", "→", "Event detected?", "→", "Upload clip only", "→", "Cloud storage"].map((s, i) => (
+                          <span
+                            key={i}
+                            className={s === "→" ? "text-white/20" : i === 4 ? "text-[#f59e0b]" : i === 2 ? "text-[#BFFD11] font-medium" : "text-white/65"}
+                          >
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="mt-4 grid sm:grid-cols-3 gap-3 text-xs">
+                        {[
+                          ["Network used", "~200 MB/month", "#BFFD11"],
+                          ["Connectivity", "LTE-M sufficient", "#BFFD11"],
+                          ["Privacy", "Raw video never leaves device", "#4ade80"],
+                        ].map(([k, v, c]) => (
+                          <div key={k} className="rounded-lg bg-[#030710] px-3 py-2.5">
+                            <p className="text-white/30 mb-1">{k}</p>
+                            <p className="font-medium" style={{ color: c }}>{v}</p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
+                  ),
+                  cloud: (
+                    <div className="rounded-xl border border-[#53F2FA]/15 bg-[#060a14] p-6 mb-6">
+                      <p className="font-mono text-[10px] tracking-widest uppercase text-[#53F2FA] mb-4">Cloud — Data flow</p>
+                      <div className="flex items-center gap-2 flex-wrap text-sm">
+                        {["Camera sensor", "→", "Raw stream upload", "→", "5G NR required", "→", "Cloud ML inference", "→", "Event flagged"].map((s, i) => (
+                          <span
+                            key={i}
+                            className={s === "→" ? "text-white/20" : i === 4 ? "text-[#ef4444]" : i === 2 ? "text-[#53F2FA] font-medium" : "text-white/65"}
+                          >
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="mt-4 grid sm:grid-cols-3 gap-3 text-xs">
+                        {[
+                          ["Network used", "~500 GB/month", "#ef4444"],
+                          ["Connectivity", "5G NR / LTE Cat 4+ required", "#f59e0b"],
+                          ["Privacy", "Raw video in cloud", "#f97316"],
+                        ].map(([k, v, c]) => (
+                          <div key={k} className="rounded-lg bg-[#030710] px-3 py-2.5">
+                            <p className="text-white/30 mb-1">{k}</p>
+                            <p className="font-medium" style={{ color: c }}>{v}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ),
+                }}
+              </InteractiveToggle>
+
+              <ComparisonTable
+                columns={archColumns}
+                rows={archRows}
+                caption="Edge vs Cloud architecture — full comparison"
+              />
+
+              <button
+                onClick={() => markComplete("architecture")}
+                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+              >
+                Complete Step → Network Selection
+              </button>
+            </section>
+          )}
+
+          {/* ── STEP 2: Network Selection ── */}
+          {activeStep === "network" && (
+            <section>
+              <div className="flex items-center gap-3 mb-6">
+                <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 2</span>
+                <h2 className="text-2xl font-semibold">Network Selection</h2>
+              </div>
+
+              <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+                The right cellular standard depends entirely on your streaming mode and data volume.
+              </p>
+
+              <div className="grid sm:grid-cols-2 gap-5 mb-8">
+                <div className="rounded-xl border border-[#BFFD11]/20 bg-[#BFFD11]/4 p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 rounded-full bg-[#BFFD11]" />
+                    <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11]">LTE Cat 1 / LTE-M</p>
+                  </div>
+                  <p className="text-sm text-white/60 leading-relaxed mb-4">
+                    For event-based cameras uploading short clips. Monthly data stays under 1–5 GB. Widely available, lower cost modules, good enough for 720p at low FPS.
+                  </p>
+                  <ul className="space-y-1.5 text-xs text-white/50">
+                    <li className="flex gap-2"><Check size={11} className="text-[#BFFD11] shrink-0 mt-0.5" />Motion-triggered clip upload</li>
+                    <li className="flex gap-2"><Check size={11} className="text-[#BFFD11] shrink-0 mt-0.5" />Periodic snapshot (time-lapse, construction)</li>
+                    <li className="flex gap-2"><Check size={11} className="text-[#BFFD11] shrink-0 mt-0.5" />License plate / face detection snapshots</li>
+                  </ul>
+                </div>
+
+                <div className="rounded-xl border border-[#53F2FA]/15 bg-[#53F2FA]/3 p-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 rounded-full bg-[#53F2FA]" />
+                    <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#53F2FA]">5G NR / LTE Cat 4+</p>
+                  </div>
+                  <p className="text-sm text-white/60 leading-relaxed mb-4">
+                    Required for continuous 1080p+ streaming or live monitoring. 4×4 MIMO antennas essential for achieving sustained throughput. Higher module and data costs.
+                  </p>
+                  <ul className="space-y-1.5 text-xs text-white/50">
+                    <li className="flex gap-2"><Check size={11} className="text-[#53F2FA] shrink-0 mt-0.5" />Live remote monitoring / security patrol</li>
+                    <li className="flex gap-2"><Check size={11} className="text-[#53F2FA] shrink-0 mt-0.5" />Real-time body-worn camera streaming</li>
+                    <li className="flex gap-2"><Check size={11} className="text-[#53F2FA] shrink-0 mt-0.5" />Cloud-processed video analytics at scale</li>
+                  </ul>
+                </div>
+              </div>
+
+              <InfoCallout type="info">
+                <strong>LTE Cat 1</strong> offers 10 Mbps downlink / 5 Mbps uplink — enough for 720p event clips.
+                For sustained 1080p streaming, you need <strong>LTE Cat 4</strong> (150 Mbps down / 50 Mbps up)
+                or <strong>5G NR</strong> for 4K.
+              </InfoCallout>
+
+              <button
+                onClick={() => markComplete("network")}
+                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+              >
+                Complete Step → Bandwidth Planning
+              </button>
+            </section>
+          )}
+
+          {/* ── STEP 3: Bandwidth Planning ── */}
+          {activeStep === "bandwidth" && (
+            <section>
+              <div className="flex items-center gap-3 mb-6">
+                <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 3</span>
+                <h2 className="text-2xl font-semibold">Bandwidth Planning</h2>
+              </div>
+
+              <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+                Estimate your monthly data usage and get a network recommendation based on your streaming profile.
+              </p>
+
+              <BandwidthCalculator />
+
+              <button
+                onClick={() => markComplete("bandwidth")}
+                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+              >
+                Complete Step → Hardware & Security
+              </button>
+            </section>
+          )}
+
+          {/* ── STEP 4: Hardware & Security ── */}
+          {activeStep === "hardware-security" && (
+            <section>
+              <div className="flex items-center gap-3 mb-6">
+                <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 4</span>
+                <h2 className="text-2xl font-semibold">Hardware & Security</h2>
+              </div>
+
+              <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+                Key hardware considerations and a security hardening checklist for your camera deployment.
+              </p>
+
+              {/* Hardware Notes */}
+              <div className="space-y-4 mb-12">
+                <InfoCallout type="info">
+                  <strong>4×4 MIMO antennas</strong> are critical for 5G NR throughput. Use separate
+                  antenna elements for each spatial stream — stacking all antennas on one connector
+                  destroys throughput. Keep antenna isolation &gt;15 dB between elements.
+                </InfoCallout>
+                <InfoCallout type="tip">
+                  <strong>H.265 (HEVC)</strong> cuts bandwidth by ~40% vs H.264 at equivalent quality.
+                  AV1 cuts it further (~50%) but requires more encode compute. For battery-powered edge
+                  devices, H.265 is the best tradeoff. AV1 suits cloud-side transcoding.
+                </InfoCallout>
+                <InfoCallout type="warning">
+                  Sustained high-throughput 5G transmission generates significant heat. Size your thermal
+                  dissipation for sustained Tx — not just peak burst. Most cellular modules derate above
+                  60°C.
+                </InfoCallout>
+              </div>
+
+              {/* Security Checklist */}
+              <div className="mb-8">
+                <div className="flex items-center justify-between mb-5">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <Shield size={18} className="text-[#BFFD11]" />
+                    Security Hardening Checklist
+                  </h3>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full border-2 border-[#3A3C46]/40 flex items-center justify-center relative">
+                      <svg className="absolute inset-0" viewBox="0 0 48 48">
+                        <circle cx="24" cy="24" r="20" fill="none" stroke="#3A3C46" strokeWidth="2" opacity="0.2" />
+                        <circle
+                          cx="24" cy="24" r="20" fill="none" stroke="#BFFD11" strokeWidth="2"
+                          strokeDasharray={`${(securityScore / 100) * 125.6} 125.6`}
+                          strokeLinecap="round"
+                          transform="rotate(-90 24 24)"
+                          className="transition-all duration-500"
+                        />
+                      </svg>
+                      <span className="text-xs font-mono font-semibold text-[#BFFD11]">{displayedScore}%</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  {securityChecklist.map((item, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => toggleSecurity(idx)}
+                      className={`w-full text-left flex items-start gap-4 px-4 py-3.5 rounded-xl border transition-all duration-200 cursor-pointer ${checkedSecurity.has(idx)
+                        ? "border-[#BFFD11]/25 bg-[#BFFD11]/4"
+                        : "border-[#3A3C46]/25 bg-[#060a14] hover:border-[#3A3C46]/50"
+                        }`}
+                    >
+                      <div className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors ${checkedSecurity.has(idx) ? "border-[#BFFD11] bg-[#BFFD11]" : "border-[#3A3C46]"}`}>
+                        {checkedSecurity.has(idx) && <Check size={12} className="text-[#00040F]" />}
+                      </div>
+                      <div>
+                        <p className={`text-sm font-medium transition-colors ${checkedSecurity.has(idx) ? "text-white" : "text-white/65"}`}>
+                          {item.label}
+                        </p>
+                        <p className="text-xs text-white/30 mt-0.5 font-mono">{item.cmd}</p>
+                      </div>
+                    </button>
                   ))}
                 </div>
               </div>
-            ),
-            cloud: (
-              <div className="rounded-xl border border-[#53F2FA]/15 bg-[#060a14] p-6 mb-6">
-                <p className="font-mono text-[10px] tracking-widest uppercase text-[#53F2FA] mb-4">Cloud — Data flow</p>
-                <div className="flex items-center gap-2 flex-wrap text-sm">
-                  {["Camera sensor", "→", "Raw stream upload", "→", "5G NR required", "→", "Cloud ML inference", "→", "Event flagged"].map((s, i) => (
-                    <span
-                      key={i}
-                      className={s === "→" ? "text-white/20" : i === 4 ? "text-[#ef4444]" : i === 2 ? "text-[#53F2FA] font-medium" : "text-white/65"}
-                    >
-                      {s}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-4 grid sm:grid-cols-3 gap-3 text-xs">
-                  {[
-                    ["Network used", "~500 GB/month", "#ef4444"],
-                    ["Connectivity", "5G NR / LTE Cat 4+ required", "#f59e0b"],
-                    ["Privacy", "Raw video in cloud", "#f97316"],
-                  ].map(([k, v, c]) => (
-                    <div key={k} className="rounded-lg bg-[#030710] px-3 py-2.5">
-                      <p className="text-white/30 mb-1">{k}</p>
-                      <p className="font-medium" style={{ color: c }}>{v}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ),
-          }}
-        </InteractiveToggle>
 
-        <ComparisonTable
-          columns={archColumns}
-          rows={archRows}
-          caption="Edge vs Cloud architecture — full comparison"
-        />
-      </section>
+              {completedSteps.size === steps.length - 1 ? (
+                <button
+                  onClick={() => markComplete("hardware-security")}
+                  className="mt-4 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                >
+                  🎉 Complete Guide
+                </button>
+              ) : (
+                <button
+                  onClick={() => markComplete("hardware-security")}
+                  className="mt-4 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#d4ff3d] transition-colors cursor-pointer"
+                >
+                  Mark Complete
+                </button>
+              )}
+            </section>
+          )}
 
-      {/* ── Network Selection ── */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-semibold mb-2">Network Selection</h2>
-        <p className="text-white/45 text-sm leading-relaxed mb-8">
-          The right cellular standard depends entirely on your streaming mode and data volume.
-        </p>
-
-        <div className="grid sm:grid-cols-2 gap-5">
-          <div className="rounded-xl border border-[#BFFD11]/20 bg-[#BFFD11]/4 p-6">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-2 h-2 rounded-full bg-[#BFFD11]" />
-              <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11]">LTE Cat 1 / LTE-M</p>
-            </div>
-            <p className="text-sm text-white/60 leading-relaxed mb-4">
-              For event-based cameras uploading short clips. Monthly data stays under 1–5 GB. Widely available, lower cost modules, good enough for 720p at low FPS.
-            </p>
-            <ul className="space-y-1.5 text-xs text-white/50">
-              <li className="flex gap-2"><Check size={11} className="text-[#BFFD11] shrink-0 mt-0.5" />Motion-triggered clip upload</li>
-              <li className="flex gap-2"><Check size={11} className="text-[#BFFD11] shrink-0 mt-0.5" />Periodic snapshot (time-lapse, construction)</li>
-              <li className="flex gap-2"><Check size={11} className="text-[#BFFD11] shrink-0 mt-0.5" />License plate / face detection snapshots</li>
-            </ul>
-          </div>
-
-          <div className="rounded-xl border border-[#53F2FA]/15 bg-[#53F2FA]/3 p-6">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-2 h-2 rounded-full bg-[#53F2FA]" />
-              <p className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#53F2FA]">5G NR / LTE Cat 4+</p>
-            </div>
-            <p className="text-sm text-white/60 leading-relaxed mb-4">
-              Required for continuous 1080p+ streaming or live monitoring. 4×4 MIMO antennas essential for achieving sustained throughput. Higher module and data costs.
-            </p>
-            <ul className="space-y-1.5 text-xs text-white/50">
-              <li className="flex gap-2"><Check size={11} className="text-[#53F2FA] shrink-0 mt-0.5" />Live remote monitoring / security patrol</li>
-              <li className="flex gap-2"><Check size={11} className="text-[#53F2FA] shrink-0 mt-0.5" />Real-time body-worn camera streaming</li>
-              <li className="flex gap-2"><Check size={11} className="text-[#53F2FA] shrink-0 mt-0.5" />Cloud-processed video analytics at scale</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Bandwidth Calculator ── */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-semibold mb-2">Bandwidth Calculator</h2>
-        <p className="text-white/45 text-sm leading-relaxed mb-8">
-          Estimate your monthly data usage and get a network recommendation based on your streaming profile.
-        </p>
-        <BandwidthCalculator />
-      </section>
-
-      {/* ── Hardware notes ── */}
-      <section className="mb-16">
-        <h2 className="text-2xl font-semibold mb-6">Hardware Considerations</h2>
-        <div className="space-y-4">
-          <InfoCallout type="info">
-            <strong>4×4 MIMO antennas</strong> are critical for 5G NR throughput. Use separate
-            antenna elements for each spatial stream — stacking all antennas on one connector
-            destroys throughput. Keep antenna isolation &gt;15 dB between elements.
-          </InfoCallout>
-          <InfoCallout type="tip">
-            <strong>H.265 (HEVC)</strong> cuts bandwidth by ~40% vs H.264 at equivalent quality.
-            AV1 cuts it further (~50%) but requires more encode compute. For battery-powered edge
-            devices, H.265 is the best tradeoff. AV1 suits cloud-side transcoding.
-          </InfoCallout>
-          <InfoCallout type="warning">
-            Sustained high-throughput 5G transmission generates significant heat. Size your thermal
-            dissipation for sustained Tx — not just peak burst. Most cellular modules derate above
-            60°C.
-          </InfoCallout>
-        </div>
-      </section>
+        </motion.div>
+      </AnimatePresence>
 
       {/* Navigation */}
-      <div className="pt-8 border-t border-[#3A3C46]/30 flex justify-between items-center mb-16">
+      <div className="pt-8 border-t border-[#3A3C46]/30 flex justify-between items-center mb-16 mt-16">
         <Link
           href="/build"
           className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors cursor-pointer"
@@ -468,6 +751,6 @@ export default function SmartCameraPage() {
       <div className="-mx-4 sm:-mx-6 lg:-mx-8">
         <FreePilotCTA />
       </div>
-    </div >
+    </div>
   );
 }

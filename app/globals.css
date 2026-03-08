@@ -266,3 +266,23 @@ body {
   background: transparent !important;
   padding: 0 !important;
 }
+
+/* ── Table scroll gradient hint (mobile) ─────────────────────────── */
+@media (max-width: 639px) {
+  .overflow-x-auto {
+    position: relative;
+  }
+
+  .overflow-x-auto::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 32px;
+    background: linear-gradient(to right, transparent, #00040F);
+    pointer-events: none;
+    opacity: 0.85;
+    border-radius: 0 0.75rem 0.75rem 0;
+  }
+}
