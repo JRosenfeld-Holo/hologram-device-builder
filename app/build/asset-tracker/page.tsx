@@ -2,13 +2,14 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, ChevronLeft, Check, CheckCircle, Circle, ArrowRight, PartyPopper, Radio } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { ChevronRight, Check, Circle, ArrowRight, PartyPopper, Radio } from "lucide-react";
+import { motion } from "framer-motion";
 import CodeBlock from "@/components/ui/CodeBlock";
 import InfoCallout from "@/components/ui/InfoCallout";
 import BOMTable from "@/components/ui/BOMTable";
 import InteractiveToggle from "@/components/ui/InteractiveToggle";
 import FreePilotCTA from "@/components/ui/FreePilotCTA";
+import BuildGuideShell, { SectionHeader, MarkCompleteButton, useBuildGuide } from "@/components/ui/BuildGuideShell";
 import { staggerContainer, staggerItem } from "@/lib/animations";
 
 const steps = [
@@ -260,34 +261,28 @@ function useAnimatedScore(target: number) {
   return displayed;
 }
 
+function DeployComplete() {
+  const { completedSteps } = useBuildGuide();
+  if (completedSteps.size < steps.length) return null;
+  return (
+    <div className="mt-8 rounded-xl border border-[#BFFD11]/30 bg-[#BFFD11]/5 p-6 text-center">
+      <div className="flex items-center justify-center gap-2 mb-2">
+        <PartyPopper size={18} className="text-[#BFFD11]" aria-hidden="true" />
+        <p className="text-lg font-semibold text-[#BFFD11]">Build Complete!</p>
+      </div>
+      <p className="text-sm text-white/50 mb-5">You&apos;ve completed all steps for the Global Asset Tracker.</p>
+      <Link
+        href="/build"
+        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:opacity-90 transition-opacity cursor-pointer"
+      >
+        ← Back to Build Guides
+      </Link>
+    </div>
+  );
+}
+
 export default function AssetTrackerPage() {
-  const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
-  const [activeStep, setActiveStep] = useState("connectivity");
-  const [direction, setDirection] = useState(1);
   const [checkedSecurity, setCheckedSecurity] = useState<Set<number>>(new Set());
-  const stepRef = useRef<HTMLDivElement>(null);
-
-  const goToStep = (stepId: string) => {
-    const fromIdx = steps.findIndex((s) => s.id === activeStep);
-    const toIdx = steps.findIndex((s) => s.id === stepId);
-    setDirection(toIdx >= fromIdx ? 1 : -1);
-    setActiveStep(stepId);
-    stepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const markComplete = (stepId: string) => {
-    setCompletedSteps((prev) => {
-      const next = new Set(prev);
-      next.add(stepId);
-      return next;
-    });
-    const idx = steps.findIndex((s) => s.id === stepId);
-    if (idx < steps.length - 1) {
-      setDirection(1);
-      setActiveStep(steps[idx + 1].id);
-      stepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
 
   const toggleSecurity = (idx: number) => {
     setCheckedSecurity((prev) => {
@@ -302,396 +297,254 @@ export default function AssetTrackerPage() {
   const displayedScore = useAnimatedScore(securityScore);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
-      {/* Breadcrumb */}
-      <nav className="flex items-center gap-1.5 text-xs text-white/30 mb-10" aria-label="Breadcrumb">
-        <Link href="/build" className="hover:text-white/60 transition-colors cursor-pointer">Build</Link>
-        <ChevronRight size={12} aria-hidden="true" />
-        <span className="text-[#BFFD11]">Asset Tracker</span>
-      </nav>
+    <>
+      {/* Hero section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12">
+        <nav className="flex items-center gap-1.5 text-xs text-white/30 mb-10" aria-label="Breadcrumb">
+          <Link href="/build" className="hover:text-white/60 transition-colors cursor-pointer">Build</Link>
+          <ChevronRight size={12} aria-hidden="true" />
+          <span className="text-[#BFFD11]">Asset Tracker</span>
+        </nav>
 
-      {/* Header */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center mb-12">
-        <div>
-          <div
-            className="flex items-center gap-3 mb-4"
-          >
-            <div
-              className="w-10 h-10 rounded-[8px] flex items-center justify-center"
-              style={{ background: "rgba(191,253,17,0.1)", border: "1px solid rgba(191,253,17,0.2)" }}
-            >
-              <Radio size={18} color="#BFFD11" strokeWidth={1.75} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+          <div>
+            <div className="flex items-center gap-3 mb-4">
+              <div
+                className="w-10 h-10 rounded-[8px] flex items-center justify-center"
+                style={{ background: "rgba(191,253,17,0.1)", border: "1px solid rgba(191,253,17,0.2)" }}
+              >
+                <Radio size={18} color="#BFFD11" strokeWidth={1.75} />
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11]">
+                  Build Guide
+                </span>
+                <span className="text-[10px] font-mono font-semibold tracking-wider uppercase px-2 py-0.5 rounded text-[#BFFD11] bg-[#BFFD11]/10">
+                  Intermediate
+                </span>
+                <span className="text-[11px] text-white/30 font-mono">45 min</span>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11]">
-                Build Guide
-              </span>
-              <span className="text-[10px] font-mono font-semibold tracking-wider uppercase px-2 py-0.5 rounded text-[#BFFD11] bg-[#BFFD11]/10">
-                Intermediate
-              </span>
-              <span className="text-[11px] text-white/30 font-mono">45 min</span>
-            </div>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-5 leading-tight">
+              Global Asset Tracker
+            </h1>
+            <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+              Build a cellular-connected GPS tracker from scratch. Covers hardware selection, AT command
+              configuration, MicroPython and C++ firmware, GPS parsing, and security hardening.
+            </p>
           </div>
-          <h1
-            className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-5 leading-tight"
-          >
-            Global Asset Tracker
-          </h1>
-          <p
-            className="text-lg text-white/55 leading-relaxed max-w-2xl"
-          >
-            Build a cellular-connected GPS tracker from scratch. Covers hardware selection, AT command
-            configuration, MicroPython and C++ firmware, GPS parsing, and security hardening.
+
+          <div className="hidden lg:flex justify-center items-center">
+            <img
+              src="/asset_tracker_hero.png"
+              alt="Asset Tracker Illustration"
+              className="w-full scale-110"
+              style={{
+                maskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
+                WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Docs layout */}
+      <BuildGuideShell steps={steps}>
+
+        {/* STEP 1: Connectivity */}
+        <section id="connectivity" className="scroll-mt-24 pb-16 border-b border-[#3A3C46]/20">
+          <SectionHeader label="Choose Your Connectivity" stepNumber={1} />
+
+          <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+            For a global asset tracker, LTE-M is the clear choice. It supports Connected Mode
+            Mobility (CMM) for seamless handover between towers — critical for moving assets.
+            Pair with NB-IoT fallback via a dual-mode module for maximum coverage.
           </p>
-        </div>
 
-        <div className="hidden lg:flex justify-center items-center">
-          <img
-            src="/asset_tracker_hero.png"
-            alt="Asset Tracker Illustration"
-            className="w-full scale-110"
-            style={{
-              maskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
-              WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
-            }}
-          />
-        </div>
-      </div>
-
-      {/* Step Progress Bar */}
-      <div ref={stepRef} className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] p-4 mb-12">
-        {/* Mobile step nav */}
-        <div className="flex items-center gap-3 sm:hidden mb-3">
-          <button
-            onClick={() => {
-              const idx = steps.findIndex((s) => s.id === activeStep);
-              if (idx > 0) goToStep(steps[idx - 1].id);
-            }}
-            disabled={steps.findIndex((s) => s.id === activeStep) === 0}
-            className="p-2 rounded-lg border border-[#3A3C46]/40 text-white/50 hover:text-white hover:border-white/20 disabled:opacity-25 disabled:cursor-not-allowed transition-colors cursor-pointer"
-            aria-label="Previous step"
-          >
-            <ChevronLeft size={16} />
-          </button>
-          <div className="flex-1 text-center">
-            <p className="text-[10px] font-mono font-semibold tracking-widest uppercase text-[#BFFD11]">
-              Step {steps.findIndex((s) => s.id === activeStep) + 1} of {steps.length}
-            </p>
-            <p className="text-sm font-medium text-white mt-0.5">
-              {steps.find((s) => s.id === activeStep)?.label}
-            </p>
+          <div className="grid sm:grid-cols-2 gap-5 mb-8">
+            <div className="rounded-xl border border-[#BFFD11]/25 bg-[#BFFD11]/4 p-5">
+              <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">Primary: LTE-M</p>
+              <ul className="space-y-2 text-sm text-white/65">
+                <li className="flex items-start gap-2"><Check size={13} className="text-[#BFFD11] shrink-0 mt-0.5" />Connected Mode Mobility (no connection drop while moving)</li>
+                <li className="flex items-start gap-2"><Check size={13} className="text-[#BFFD11] shrink-0 mt-0.5" />~1 Mbps — fast GPS position + firmware updates</li>
+                <li className="flex items-start gap-2"><Check size={13} className="text-[#BFFD11] shrink-0 mt-0.5" />PSM + eDRX support for &gt;5 year battery life</li>
+              </ul>
+            </div>
+            <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] p-5">
+              <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#53F2FA] mb-3">Fallback: NB-IoT</p>
+              <ul className="space-y-2 text-sm text-white/45">
+                <li className="flex items-start gap-2"><Circle size={13} className="text-[#3A3C46] shrink-0 mt-0.5" />Coverage Extension for underground/remote locations</li>
+                <li className="flex items-start gap-2"><Circle size={13} className="text-[#3A3C46] shrink-0 mt-0.5" />Lower module cost (~40% cheaper)</li>
+                <li className="flex items-start gap-2"><Circle size={13} className="text-[#3A3C46] shrink-0 mt-0.5" />Static assets only — no handover support</li>
+              </ul>
+            </div>
           </div>
-          <button
-            onClick={() => {
-              const idx = steps.findIndex((s) => s.id === activeStep);
-              if (idx < steps.length - 1) goToStep(steps[idx + 1].id);
-            }}
-            disabled={steps.findIndex((s) => s.id === activeStep) === steps.length - 1}
-            className="p-2 rounded-lg border border-[#3A3C46]/40 text-white/50 hover:text-white hover:border-white/20 disabled:opacity-25 disabled:cursor-not-allowed transition-colors cursor-pointer"
-            aria-label="Next step"
-          >
-            <ChevronRight size={16} />
-          </button>
-        </div>
 
-        {/* Desktop step tabs */}
-        <div className="hidden sm:flex gap-1 overflow-x-auto pb-1">
-          {steps.map((step, idx) => {
-            const isComplete = completedSteps.has(step.id);
-            const isActive = activeStep === step.id;
-            return (
-              <button
-                key={step.id}
-                onClick={() => goToStep(step.id)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-lg whitespace-nowrap text-xs font-medium transition-all duration-200 cursor-pointer shrink-0 ${isActive
-                  ? "bg-[#BFFD11] text-[#00040F]"
-                  : isComplete
-                    ? "text-[#BFFD11]/70 bg-[#BFFD11]/8"
-                    : "text-white/35 hover:text-white/60"
-                  }`}
-              >
-                {isComplete ? (
-                  <Check size={11} className="shrink-0" />
-                ) : (
-                  <span className="w-4 h-4 rounded-full border border-current flex items-center justify-center text-[10px]">
-                    {idx + 1}
-                  </span>
-                )}
-                {step.label}
-              </button>
-            );
-          })}
-        </div>
-        <div className="mt-3 h-1 bg-[#3A3C46]/30 rounded-full overflow-hidden">
-          <div
-            className="h-full bg-[#BFFD11] rounded-full transition-all duration-500"
-            style={{ width: `${(completedSteps.size / steps.length) * 100}%` }}
+          <InfoCallout type="tip">
+            Use a <strong>dual-mode module</strong> (LTE-M + NB-IoT). Configure LTE-M as primary
+            with NB-IoT fallback using <code className="font-mono bg-white/5 px-1 rounded text-xs">AT+QCFG=&quot;nwscanmode&quot;,0</code> (auto).
+            This single SKU works in any market without hardware changes.
+          </InfoCallout>
+
+          <MarkCompleteButton stepId="connectivity" />
+        </section>
+
+        {/* STEP 2: Hardware BOM */}
+        <section id="hardware" className="scroll-mt-24 pb-16 border-b border-[#3A3C46]/20">
+          <SectionHeader label="Select Your Hardware" stepNumber={2} />
+          <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+            Click any row to expand full details, alternatives, and design rationale.
+          </p>
+          <BOMTable items={bomItems} title="Asset Tracker BOM" />
+          <MarkCompleteButton stepId="hardware" />
+        </section>
+
+        {/* STEP 3: Power */}
+        <section id="power" className="scroll-mt-24 pb-16 border-b border-[#3A3C46]/20">
+          <SectionHeader label="Configure Power" stepNumber={3} />
+
+          <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+            For a once-daily reporting tracker with a Li-SOCl₂ D-cell, configure aggressive PSM.
+            T3412 (TAU) = 24 hours. T3324 (Active Time) = 2 seconds.
+          </p>
+
+          <CodeBlock
+            language="at"
+            title="PSM configuration"
+            code={[
+              { code: `AT+CPSMS=1,,,"00111000","00000001"`, comment: "Enable PSM, T3412=24h, T3324=2s", highlight: true },
+              { code: "" },
+              { code: "// Binary encoding:" },
+              { code: "// T3412 00111000 = Timer unit 011 (6 min) × value 01000 = 8 × 6h = 48h" },
+              { code: "// T3324 00000001 = Timer unit 000 (2 sec) × value 00001 = 1 × 2s = 2s" },
+            ]}
           />
-        </div>
-        <p className="text-xs text-white/25 mt-2">
-          {completedSteps.size}/{steps.length} steps complete
-        </p>
-      </div>
 
-      {/* Step content */}
-      <AnimatePresence mode="wait" custom={direction}>
-        <motion.div
-          key={activeStep}
-          custom={direction}
-          initial={{ opacity: 0, x: direction * 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: direction * -40 }}
-          transition={{ duration: 0.28, ease: [0.25, 0.1, 0.25, 1] }}
-        >
+          <div className="mt-6">
+            <InfoCallout type="tip">
+              Enable Release Assistance Indicator (RAI) to signal the network to release
+              the radio connection immediately after your last uplink. Use{" "}
+              <code className="font-mono bg-white/5 px-1 rounded text-xs">AT+QCFG=&quot;rai&quot;,1</code> — this
+              can save <strong>40% of transmission energy</strong>.
+            </InfoCallout>
+          </div>
 
-          {/* STEP 1: Connectivity */}
-          {activeStep === "connectivity" && (
-            <section>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 1</span>
-                <h2 className="text-2xl font-semibold">Choose Your Connectivity</h2>
-              </div>
+          <div className="mt-6 p-5 rounded-xl border border-[#3A3C46]/40 bg-[#060a14]">
+            <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/30 mb-2">
+              Estimated battery life
+            </p>
+            <p className="text-3xl font-semibold text-[#BFFD11]">~9.2 years</p>
+            <p className="text-sm text-white/35 mt-1">
+              Li-SOCl₂ 19,000 mAh · 1×/day reporting · 2s active window
+            </p>
+            <Link href="/learn/power/psm-edrx" className="inline-flex items-center gap-1.5 mt-3 text-xs text-[#BFFD11] hover:underline cursor-pointer">
+              Run the PSM simulator for your exact parameters <ArrowRight size={11} />
+            </Link>
+          </div>
 
-              <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
-                For a global asset tracker, LTE-M is the clear choice. It supports Connected Mode
-                Mobility (CMM) for seamless handover between towers — critical for moving assets.
-                Pair with NB-IoT fallback via a dual-mode module for maximum coverage.
-              </p>
+          <MarkCompleteButton stepId="power" />
+        </section>
 
-              <div className="grid sm:grid-cols-2 gap-5 mb-8">
-                <div className="rounded-xl border border-[#BFFD11]/25 bg-[#BFFD11]/4 p-5">
-                  <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-3">Primary: LTE-M</p>
-                  <ul className="space-y-2 text-sm text-white/65">
-                    <li className="flex items-start gap-2"><Check size={13} className="text-[#BFFD11] shrink-0 mt-0.5" />Connected Mode Mobility (no connection drop while moving)</li>
-                    <li className="flex items-start gap-2"><Check size={13} className="text-[#BFFD11] shrink-0 mt-0.5" />~1 Mbps — fast GPS position + firmware updates</li>
-                    <li className="flex items-start gap-2"><Check size={13} className="text-[#BFFD11] shrink-0 mt-0.5" />PSM + eDRX support for &gt;5 year battery life</li>
-                  </ul>
-                </div>
-                <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] p-5">
-                  <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#53F2FA] mb-3">Fallback: NB-IoT</p>
-                  <ul className="space-y-2 text-sm text-white/45">
-                    <li className="flex items-start gap-2"><Circle size={13} className="text-[#3A3C46] shrink-0 mt-0.5" />Coverage Extension for underground/remote locations</li>
-                    <li className="flex items-start gap-2"><Circle size={13} className="text-[#3A3C46] shrink-0 mt-0.5" />Lower module cost (~40% cheaper)</li>
-                    <li className="flex items-start gap-2"><Circle size={13} className="text-[#3A3C46] shrink-0 mt-0.5" />Static assets only — no handover support</li>
-                  </ul>
-                </div>
-              </div>
+        {/* STEP 4: Connectivity Setup */}
+        <section id="connectivity-setup" className="scroll-mt-24 pb-16 border-b border-[#3A3C46]/20">
+          <SectionHeader label="Set Up Connectivity" stepNumber={4} />
 
-              <InfoCallout type="tip">
-                Use a <strong>dual-mode module</strong> (LTE-M + NB-IoT). Configure LTE-M as primary
-                with NB-IoT fallback using <code className="font-mono bg-white/5 px-1 rounded text-xs">AT+QCFG="nwscanmode",0</code> (auto).
-                This single SKU works in any market without hardware changes.
-              </InfoCallout>
+          <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+            Walk through the full AT command initialization sequence. Replace{" "}
+            <code className="font-mono bg-white/5 px-1 rounded text-xs">your.private.apn</code> with
+            your actual APN. For Hologram, use <code className="font-mono bg-white/5 px-1 rounded text-xs">hologram</code>.
+          </p>
 
-              <button
-                onClick={() => markComplete("connectivity")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
-              >
-                Got it — Next Step →
-              </button>
-            </section>
-          )}
+          <CodeBlock
+            language="at"
+            title="Full initialization sequence"
+            code={atCommandSteps}
+          />
 
-          {/* STEP 2: Hardware BOM */}
-          {activeStep === "hardware" && (
-            <section>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 2</span>
-                <h2 className="text-2xl font-semibold">Select Your Hardware</h2>
-              </div>
-              <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
-                Click any row to expand full details, alternatives, and design rationale.
-              </p>
-              <BOMTable items={bomItems} title="Asset Tracker BOM" />
-              <button
-                onClick={() => markComplete("hardware")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
-              >
-                BOM Reviewed — Next Step →
-              </button>
-            </section>
-          )}
+          <div className="mt-6 space-y-4">
+            <InfoCallout type="info">
+              <strong>What is an APN?</strong> Access Point Name — the gateway identifier that
+              routes your device traffic to the right network and applies carrier policy rules
+              (IP assignment, firewalling, routing). A private APN isolates your fleet from the
+              public internet.
+            </InfoCallout>
+            <InfoCallout type="warning">
+              Always verify IP assignment with{" "}
+              <code className="font-mono bg-white/5 px-1 rounded text-xs">AT+CGPADDR</code> before
+              attempting to open a socket. If no IP is returned, the PDP context activation failed
+              — check your APN string and SIM provisioning.
+            </InfoCallout>
+          </div>
 
-          {/* STEP 3: Power */}
-          {activeStep === "power" && (
-            <section>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 3</span>
-                <h2 className="text-2xl font-semibold">Configure Power</h2>
-              </div>
+          <MarkCompleteButton stepId="connectivity-setup" />
+        </section>
 
-              <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
-                For a once-daily reporting tracker with a Li-SOCl₂ D-cell, configure aggressive PSM.
-                T3412 (TAU) = 24 hours. T3324 (Active Time) = 2 seconds.
-              </p>
+        {/* STEP 5: Firmware */}
+        <section id="firmware" className="scroll-mt-24 pb-16 border-b border-[#3A3C46]/20">
+          <SectionHeader label="Write Your Firmware" stepNumber={5} />
 
-              <CodeBlock
-                language="at"
-                title="PSM configuration"
-                code={[
-                  { code: `AT+CPSMS=1,,,"00111000","00000001"`, comment: "Enable PSM, T3412=24h, T3324=2s", highlight: true },
-                  { code: "" },
-                  { code: "// Binary encoding:" },
-                  { code: "// T3412 00111000 = Timer unit 011 (6 min) × value 01000 = 8 × 6h = 48h" },
-                  { code: "// T3324 00000001 = Timer unit 000 (2 sec) × value 00001 = 1 × 2s = 2s" },
-                ]}
-              />
+          <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+            Choose your language. Both implementations follow the same initialization sequence:
+            APN → Security mode → PSM → Activate PDP → Enable GNSS → Report loop.
+          </p>
 
-              <div className="mt-6">
-                <InfoCallout type="tip">
-                  Enable Release Assistance Indicator (RAI) to signal the network to release
-                  the radio connection immediately after your last uplink. Use{" "}
-                  <code className="font-mono bg-white/5 px-1 rounded text-xs">AT+QCFG=&quot;rai&quot;,1</code> — this
-                  can save <strong>40% of transmission energy</strong>.
-                </InfoCallout>
-              </div>
-
-              <div className="mt-6 p-5 rounded-xl border border-[#3A3C46]/40 bg-[#060a14]">
-                <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/30 mb-2">
-                  Estimated battery life
-                </p>
-                <p className="text-3xl font-semibold text-[#BFFD11]">~9.2 years</p>
-                <p className="text-sm text-white/35 mt-1">
-                  Li-SOCl₂ 19,000 mAh · 1×/day reporting · 2s active window
-                </p>
-                <Link href="/learn/power/psm-edrx" className="inline-flex items-center gap-1.5 mt-3 text-xs text-[#BFFD11] hover:underline cursor-pointer">
-                  Run the PSM simulator for your exact parameters <ArrowRight size={11} />
-                </Link>
-              </div>
-
-              <button
-                onClick={() => markComplete("power")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
-              >
-                Power Configured — Next Step →
-              </button>
-            </section>
-          )}
-
-          {/* STEP 4: Connectivity Setup */}
-          {activeStep === "connectivity-setup" && (
-            <section>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 4</span>
-                <h2 className="text-2xl font-semibold">Set Up Connectivity</h2>
-              </div>
-
-              <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
-                Walk through the full AT command initialization sequence. Replace{" "}
-                <code className="font-mono bg-white/5 px-1 rounded text-xs">your.private.apn</code> with
-                your actual APN. For Hologram, use <code className="font-mono bg-white/5 px-1 rounded text-xs">hologram</code>.
-              </p>
-
-              <CodeBlock
-                language="at"
-                title="Full initialization sequence"
-                code={atCommandSteps}
-              />
-
-              <div className="mt-6 space-y-4">
-                <InfoCallout type="info">
-                  <strong>What is an APN?</strong> Access Point Name — the gateway identifier that
-                  routes your device traffic to the right network and applies carrier policy rules
-                  (IP assignment, firewalling, routing). A private APN isolates your fleet from the
-                  public internet.
-                </InfoCallout>
-                <InfoCallout type="warning">
-                  Always verify IP assignment with{" "}
-                  <code className="font-mono bg-white/5 px-1 rounded text-xs">AT+CGPADDR</code> before
-                  attempting to open a socket. If no IP is returned, the PDP context activation failed
-                  — check your APN string and SIM provisioning.
-                </InfoCallout>
-              </div>
-
-              <button
-                onClick={() => markComplete("connectivity-setup")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
-              >
-                Connectivity Configured — Next Step →
-              </button>
-            </section>
-          )}
-
-          {/* STEP 5: Firmware */}
-          {activeStep === "firmware" && (
-            <section>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 5</span>
-                <h2 className="text-2xl font-semibold">Write Your Firmware</h2>
-              </div>
-
-              <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
-                Choose your language. Both implementations follow the same initialization sequence:
-                APN → Security mode → PSM → Activate PDP → Enable GNSS → Report loop.
-              </p>
-
-              <InteractiveToggle
-                tabs={[
-                  { key: "python", label: "MicroPython" },
-                  { key: "cpp", label: "C++ / Arduino" },
-                ]}
-                defaultTab="python"
-              >
-                {{
-                  python: (
-                    <CodeBlock
-                      language="python"
-                      filename="firmware/main.py"
-                      code={micropythonFirmware}
-                    />
-                  ),
-                  cpp: (
-                    <CodeBlock
-                      language="cpp"
-                      filename="src/main.cpp"
-                      code={cppFirmware}
-                    />
-                  ),
-                }}
-              </InteractiveToggle>
-
-              <button
-                onClick={() => markComplete("firmware")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
-              >
-                Firmware Written — Next Step →
-              </button>
-            </section>
-          )}
-
-          {/* STEP 6: GPS */}
-          {activeStep === "gps" && (
-            <section>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 6</span>
-                <h2 className="text-2xl font-semibold">Parse GPS Data</h2>
-              </div>
-
-              <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
-                The Quectel module returns coordinates in DDMM.MMMM format (degrees + decimal minutes).
-                You must convert to decimal degrees for most mapping APIs.
-              </p>
-
-              <CodeBlock
-                language="at"
-                title="GNSS AT commands"
-                code={[
-                  { code: "AT+QGPS=1", comment: "Enable GNSS receiver (standalone mode)" },
-                  { code: "AT+QGPSLOC?", comment: "Query current location", highlight: true },
-                  { code: "" },
-                  { code: "+QGPSLOC: 092204.0,3150.7820N,11711.9310E,0.6,121.1,2,0.0,0.0,0.0,250326,04" },
-                  { code: "OK" },
-                  { code: "" },
-                  { code: "// Fields: UTC,LAT[NS],LON[EW],HDOP,ALT,FIX,COG,SpKm,SpKn,DATE,NSAT" },
-                ]}
-              />
-
-              <div className="mt-6">
+          <InteractiveToggle
+            tabs={[
+              { key: "python", label: "MicroPython" },
+              { key: "cpp", label: "C++ / Arduino" },
+            ]}
+            defaultTab="python"
+          >
+            {{
+              python: (
                 <CodeBlock
                   language="python"
-                  filename="lib/gps.py"
-                  title="Coordinate converter"
-                  code={`import re
+                  filename="firmware/main.py"
+                  code={micropythonFirmware}
+                />
+              ),
+              cpp: (
+                <CodeBlock
+                  language="cpp"
+                  filename="src/main.cpp"
+                  code={cppFirmware}
+                />
+              ),
+            }}
+          </InteractiveToggle>
+
+          <MarkCompleteButton stepId="firmware" />
+        </section>
+
+        {/* STEP 6: GPS */}
+        <section id="gps" className="scroll-mt-24 pb-16 border-b border-[#3A3C46]/20">
+          <SectionHeader label="Parse GPS Data" stepNumber={6} />
+
+          <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+            The Quectel module returns coordinates in DDMM.MMMM format (degrees + decimal minutes).
+            You must convert to decimal degrees for most mapping APIs.
+          </p>
+
+          <CodeBlock
+            language="at"
+            title="GNSS AT commands"
+            code={[
+              { code: "AT+QGPS=1", comment: "Enable GNSS receiver (standalone mode)" },
+              { code: "AT+QGPSLOC?", comment: "Query current location", highlight: true },
+              { code: "" },
+              { code: "+QGPSLOC: 092204.0,3150.7820N,11711.9310E,0.6,121.1,2,0.0,0.0,0.0,250326,04" },
+              { code: "OK" },
+              { code: "" },
+              { code: "// Fields: UTC,LAT[NS],LON[EW],HDOP,ALT,FIX,COG,SpKm,SpKn,DATE,NSAT" },
+            ]}
+          />
+
+          <div className="mt-6">
+            <CodeBlock
+              language="python"
+              filename="lib/gps.py"
+              title="Coordinate converter"
+              code={`import re
 
 def parse_gps(response):
     """Parse +QGPSLOC response to decimal degrees."""
@@ -722,232 +575,148 @@ def to_decimal(ddmm: str, direction: str) -> float:
 # Example:
 # 3150.7820N → 31 + 50.7820/60 = 31.846367°N
 # 11711.9310E → 117 + 11.9310/60 = 117.198850°E`}
-                />
-              </div>
-
-              <div className="mt-6">
-                <Link
-                  href="/tools/gps-parser"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#BFFD11]/25 text-[#BFFD11] text-sm font-medium hover:bg-[#BFFD11]/5 transition-colors cursor-pointer"
-                >
-                  Try the interactive GPS Parser tool <ArrowRight size={14} />
-                </Link>
-              </div>
-
-              <button
-                onClick={() => markComplete("gps")}
-                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
-              >
-                GPS Parsing Ready — Next Step →
-              </button>
-            </section>
-          )}
-
-          {/* STEP 7: Security */}
-          {activeStep === "security" && (
-            <section>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 7</span>
-                <h2 className="text-2xl font-semibold">Security Hardening</h2>
-              </div>
-
-              <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
-                Check off each security measure as you implement it. Your security score updates in real time.
-              </p>
-
-              <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] overflow-hidden mb-6">
-                <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#3A3C46]/30 bg-[#0a0e1a]">
-                  <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/40">
-                    Security Checklist
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <div className="w-24 h-1.5 bg-[#3A3C46]/40 rounded-full overflow-hidden">
-                      <div
-                        className="h-full rounded-full transition-all duration-500"
-                        style={{
-                          width: `${securityScore}%`,
-                          background: securityScore === 100 ? "#BFFD11" : securityScore > 50 ? "#f59e0b" : "#ef4444",
-                        }}
-                      />
-                    </div>
-                    <span className="font-mono text-xs text-white/35">{displayedScore}%</span>
-                  </div>
-                </div>
-
-                <motion.div
-                  className="divide-y divide-[#3A3C46]/15"
-                  variants={staggerContainer}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  {securityChecklist.map((item, idx) => (
-                    <motion.div
-                      key={idx}
-                      variants={staggerItem}
-                      className="flex items-start gap-4 px-5 py-4 hover:bg-white/[0.015] transition-colors"
-                    >
-                      <button
-                        onClick={() => toggleSecurity(idx)}
-                        className={`mt-0.5 w-5 h-5 rounded flex items-center justify-center shrink-0 transition-all duration-150 cursor-pointer ${checkedSecurity.has(idx)
-                          ? "bg-[#BFFD11] border-[#BFFD11]"
-                          : "border border-[#3A3C46]/60"
-                          }`}
-                        aria-label={checkedSecurity.has(idx) ? "Uncheck" : "Check"}
-                      >
-                        {checkedSecurity.has(idx) && (
-                          <Check size={11} className="text-[#00040F]" strokeWidth={3} />
-                        )}
-                      </button>
-                      <div className="flex-1">
-                        <p
-                          className={`text-sm font-medium transition-colors ${checkedSecurity.has(idx) ? "text-white/40 line-through" : "text-white/80"
-                            }`}
-                        >
-                          {item.label}
-                        </p>
-                        <code className="text-[11px] font-mono text-[#BFFD11]/50 mt-0.5 block">
-                          {item.cmd}
-                        </code>
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </div>
-
-              <button
-                onClick={() => markComplete("security")}
-                className="mt-4 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
-              >
-                Security Hardened — Final Step →
-              </button>
-            </section>
-          )}
-
-          {/* STEP 8: Deploy */}
-          {activeStep === "deploy" && (
-            <section>
-              <div className="flex items-center gap-3 mb-6">
-                <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 8</span>
-                <h2 className="text-2xl font-semibold">Deploy</h2>
-              </div>
-
-              <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
-                Your tracker is ready. Before mass deployment, follow the pilot playbook to validate
-                signal coverage, battery life, and data ingestion at small scale.
-              </p>
-
-              {/* Summary card */}
-              <div className="rounded-xl border border-[#BFFD11]/20 bg-[#BFFD11]/4 p-6 mb-8">
-                <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-4">
-                  Configuration Summary
-                </p>
-                <div className="grid sm:grid-cols-2 gap-4 text-sm">
-                  {[
-                    ["Connectivity", "LTE-M primary, NB-IoT fallback"],
-                    ["Module", "Nordic nRF9160 SiP"],
-                    ["SIM", "eUICC MFF2 (soldered)"],
-                    ["Battery", "Li-SOCl₂ D-cell, ~9 yr life"],
-                    ["PSM Timer (T3412)", "24 hours"],
-                    ["Active Time (T3324)", "2 seconds"],
-                    ["APN", "Private APN configured"],
-                    ["Security", "PS-only, band-locked, DTLS"],
-                  ].map(([k, v]) => (
-                    <div key={k} className="flex justify-between gap-4">
-                      <span className="text-white/40">{k}</span>
-                      <span className="text-white/75 text-right font-medium">{v}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-4">
-                <Link
-                  href="/deploy/pilot-playbook"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
-                >
-                  View Pilot Playbook <ArrowRight size={14} />
-                </Link>
-                <Link
-                  href="/learn/security/endpoint"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#3A3C46] text-white/70 text-sm font-semibold hover:border-white/30 transition-colors cursor-pointer"
-                >
-                  Full Security Audit
-                </Link>
-              </div>
-
-              {completedSteps.size < steps.length - 1 && (
-                <div className="mt-6">
-                  <InfoCallout type="warning">
-                    You haven&apos;t completed all previous steps. Go back and mark each step complete
-                    before deploying to production.
-                  </InfoCallout>
-                </div>
-              )}
-
-              {completedSteps.size === steps.length - 1 && (
-                <button
-                  onClick={() => markComplete("deploy")}
-                  className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
-                >
-                  <CheckCircle size={14} className="shrink-0" aria-hidden="true" />
-                  Mark Build Complete
-                </button>
-              )}
-
-              {completedSteps.size === steps.length && (
-                <div className="mt-8 rounded-xl border border-[#BFFD11]/30 bg-[#BFFD11]/5 p-6 text-center">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <PartyPopper size={18} className="text-[#BFFD11]" aria-hidden="true" />
-                    <p className="text-lg font-semibold text-[#BFFD11]">Build Complete!</p>
-                  </div>
-                  <p className="text-sm text-white/50 mb-5">You&apos;ve completed all steps for the Global Asset Tracker.</p>
-                  <Link
-                    href="/build"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
-                  >
-                    ← Back to Build Guides
-                  </Link>
-                </div>
-              )}
-            </section>
-          )}
-        </motion.div>
-      </AnimatePresence>
-
-      {/* All steps summary nav */}
-      {activeStep !== steps[0].id && (
-        <div className="mt-16 pt-8 border-t border-[#3A3C46]/30">
-          <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/25 mb-4">All Steps</p>
-          <div className="grid sm:grid-cols-2 gap-2">
-            {steps.map((step, idx) => (
-              <button
-                key={step.id}
-                onClick={() => goToStep(step.id)}
-                className={`flex items-center gap-3 p-3 rounded-lg text-sm text-left cursor-pointer transition-colors ${completedSteps.has(step.id)
-                  ? "text-[#BFFD11]/60 hover:text-[#BFFD11]"
-                  : activeStep === step.id
-                    ? "text-white"
-                    : "text-white/30 hover:text-white/60"
-                  }`}
-              >
-                {completedSteps.has(step.id) ? (
-                  <Check size={13} className="text-[#BFFD11] shrink-0" />
-                ) : (
-                  <span className="w-5 h-5 rounded-full border border-current flex items-center justify-center text-[10px] shrink-0">
-                    {idx + 1}
-                  </span>
-                )}
-                {step.label}
-              </button>
-            ))}
+            />
           </div>
-        </div>
-      )}
 
-      {/* CTA */}
-      <div className="mt-20 -mx-4 sm:-mx-6 lg:-mx-8">
+          <div className="mt-6">
+            <Link
+              href="/tools/gps-parser"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#BFFD11]/25 text-[#BFFD11] text-sm font-medium hover:bg-[#BFFD11]/5 transition-colors cursor-pointer"
+            >
+              Try the interactive GPS Parser tool <ArrowRight size={14} />
+            </Link>
+          </div>
+
+          <MarkCompleteButton stepId="gps" />
+        </section>
+
+        {/* STEP 7: Security */}
+        <section id="security" className="scroll-mt-24 pb-16 border-b border-[#3A3C46]/20">
+          <SectionHeader label="Security Hardening" stepNumber={7} />
+
+          <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+            Check off each security measure as you implement it. Your security score updates in real time.
+          </p>
+
+          <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] overflow-hidden mb-6">
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#3A3C46]/30 bg-[#0a0e1a]">
+              <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/40">
+                Security Checklist
+              </p>
+              <div className="flex items-center gap-2">
+                <div className="w-24 h-1.5 bg-[#3A3C46]/40 rounded-full overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: `${securityScore}%`,
+                      background: securityScore === 100 ? "#BFFD11" : securityScore > 50 ? "#f59e0b" : "#ef4444",
+                    }}
+                  />
+                </div>
+                <span className="font-mono text-xs text-white/35">{displayedScore}%</span>
+              </div>
+            </div>
+
+            <motion.div
+              className="divide-y divide-[#3A3C46]/15"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              {securityChecklist.map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  variants={staggerItem}
+                  className="flex items-start gap-4 px-5 py-4 hover:bg-white/[0.015] transition-colors"
+                >
+                  <button
+                    onClick={() => toggleSecurity(idx)}
+                    className={`mt-0.5 w-5 h-5 rounded flex items-center justify-center shrink-0 transition-all duration-150 cursor-pointer ${checkedSecurity.has(idx)
+                      ? "bg-[#BFFD11] border-[#BFFD11]"
+                      : "border border-[#3A3C46]/60"
+                      }`}
+                    aria-label={checkedSecurity.has(idx) ? "Uncheck" : "Check"}
+                  >
+                    {checkedSecurity.has(idx) && (
+                      <Check size={11} className="text-[#00040F]" strokeWidth={3} />
+                    )}
+                  </button>
+                  <div className="flex-1">
+                    <p
+                      className={`text-sm font-medium transition-colors ${checkedSecurity.has(idx) ? "text-white/40 line-through" : "text-white/80"
+                        }`}
+                    >
+                      {item.label}
+                    </p>
+                    <code className="text-[11px] font-mono text-[#BFFD11]/50 mt-0.5 block">
+                      {item.cmd}
+                    </code>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+
+          <MarkCompleteButton stepId="security" />
+        </section>
+
+        {/* STEP 8: Deploy */}
+        <section id="deploy" className="scroll-mt-24 pb-16">
+          <SectionHeader label="Deploy" stepNumber={8} />
+
+          <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+            Your tracker is ready. Before mass deployment, follow the pilot playbook to validate
+            signal coverage, battery life, and data ingestion at small scale.
+          </p>
+
+          <div className="rounded-xl border border-[#BFFD11]/20 bg-[#BFFD11]/4 p-6 mb-8">
+            <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-4">
+              Configuration Summary
+            </p>
+            <div className="grid sm:grid-cols-2 gap-4 text-sm">
+              {[
+                ["Connectivity", "LTE-M primary, NB-IoT fallback"],
+                ["Module", "Nordic nRF9160 SiP"],
+                ["SIM", "eUICC MFF2 (soldered)"],
+                ["Battery", "Li-SOCl₂ D-cell, ~9 yr life"],
+                ["PSM Timer (T3412)", "24 hours"],
+                ["Active Time (T3324)", "2 seconds"],
+                ["APN", "Private APN configured"],
+                ["Security", "PS-only, band-locked, DTLS"],
+              ].map(([k, v]) => (
+                <div key={k} className="flex justify-between gap-4">
+                  <span className="text-white/40">{k}</span>
+                  <span className="text-white/75 text-right font-medium">{v}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-4">
+            <Link
+              href="/deploy/pilot-playbook"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:opacity-90 transition-opacity cursor-pointer"
+            >
+              View Pilot Playbook <ArrowRight size={14} />
+            </Link>
+            <Link
+              href="/learn/security/endpoint"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#3A3C46] text-white/70 text-sm font-semibold hover:border-white/30 transition-colors cursor-pointer"
+            >
+              Full Security Audit
+            </Link>
+          </div>
+
+          <MarkCompleteButton stepId="deploy" />
+          <DeployComplete />
+        </section>
+
+      </BuildGuideShell>
+
+      <div className="max-w-7xl mx-auto">
         <FreePilotCTA />
       </div>
-    </div>
+    </>
   );
 }

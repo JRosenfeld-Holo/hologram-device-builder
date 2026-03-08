@@ -47,13 +47,22 @@ const messinaMono = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://iotbuilder.hologram.io"),
   title: "Hologram IoT Device Builder",
   description:
     "An interactive learning platform that teaches engineers how to build cellular-connected devices. From selecting the right network technology to deploying securely at scale.",
+  robots: { index: true, follow: true },
   openGraph: {
     title: "Hologram IoT Device Builder",
-    description: "Build Connected Devices That Just Work",
+    description: "Build cellular-connected IoT devices. Step-by-step guides for LTE-M, NB-IoT, and Cat-1 hardware.",
     type: "website",
+    url: "https://iotbuilder.hologram.io",
+    siteName: "Hologram IoT Device Builder",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hologram IoT Device Builder",
+    description: "Build cellular-connected IoT devices. Step-by-step guides for LTE-M, NB-IoT, and Cat-1 hardware.",
   },
   icons: {
     icon: "/hologram-mark.svg",

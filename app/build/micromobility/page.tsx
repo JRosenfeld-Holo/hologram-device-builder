@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { ChevronRight, Check, Circle, ArrowRight, Bike, Cpu, Battery, Radio, MapPin, Shield, Wifi, Cloud, Lock, FileCheck, Zap, Settings } from "lucide-react";
-import { motion } from "framer-motion";
+import { ChevronRight, Check, ArrowLeft, ArrowRight, Bike, Cpu, Battery, Radio, MapPin, Wifi, Zap, Settings } from "lucide-react";
 import CodeBlock from "@/components/ui/CodeBlock";
 import InfoCallout from "@/components/ui/InfoCallout";
 import BOMTable from "@/components/ui/BOMTable";
 import InteractiveToggle from "@/components/ui/InteractiveToggle";
+import FreePilotCTA from "@/components/ui/FreePilotCTA";
+import BuildGuideShell, { SectionHeader, MarkCompleteButton } from "@/components/ui/BuildGuideShell";
 
 const steps = [
     { id: "architecture", label: "System Architecture" },
@@ -270,23 +271,7 @@ const certificationSteps = [
 ];
 
 export default function MicromobilityPage() {
-    const [completedSteps, setCompletedSteps] = useState<Set<string>>(new Set());
-    const [activeStep, setActiveStep] = useState("architecture");
     const [checkedSecurity, setCheckedSecurity] = useState<Set<number>>(new Set());
-    const stepRef = useRef<HTMLDivElement>(null);
-
-    const markComplete = (stepId: string) => {
-        setCompletedSteps((prev) => {
-            const next = new Set(prev);
-            next.add(stepId);
-            return next;
-        });
-        const idx = steps.findIndex((s) => s.id === stepId);
-        if (idx < steps.length - 1) {
-            setActiveStep(steps[idx + 1].id);
-            stepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-    };
 
     const toggleSecurity = (idx: number) => {
         setCheckedSecurity((prev) => {
@@ -300,635 +285,504 @@ export default function MicromobilityPage() {
     const securityScore = Math.round((checkedSecurity.size / securityChecklist.length) * 100);
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-24">
-            {/* Breadcrumb */}
-            <nav className="flex items-center gap-1.5 text-xs text-white/30 mb-10" aria-label="Breadcrumb">
-                <Link href="/build" className="hover:text-white/60 transition-colors cursor-pointer">Build</Link>
-                <ChevronRight size={12} aria-hidden="true" />
-                <span className="text-[#BFFD11]">Micromobility</span>
-            </nav>
+        <>
+            {/* Hero */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-12">
+                <nav className="flex items-center gap-1.5 text-xs text-white/30 mb-10" aria-label="Breadcrumb">
+                    <Link href="/build" className="hover:text-white/60 transition-colors cursor-pointer">Build</Link>
+                    <ChevronRight size={12} aria-hidden="true" />
+                    <span className="text-[#BFFD11]">Micromobility</span>
+                </nav>
 
-            {/* Header */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center mb-12">
-                <div>
-                    <div className="flex items-center gap-3 mb-4">
-                        <div
-                            className="w-10 h-10 rounded-[8px] flex items-center justify-center"
-                            style={{ background: "rgba(83,242,250,0.1)", border: "1px solid rgba(83,242,250,0.2)" }}
-                        >
-                            <Bike size={18} color="#53F2FA" strokeWidth={1.75} />
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11]">
-                                Build Guide
-                            </span>
-                            <span className="text-[10px] font-mono font-semibold tracking-wider uppercase px-2 py-0.5 rounded text-[#ef4444] bg-[#ef4444]/10">
-                                Advanced
-                            </span>
-                            <span className="text-[11px] text-white/30 font-mono">40 min</span>
-                        </div>
-                    </div>
-                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-5 leading-tight">
-                        Connected Micromobility Vehicle
-                    </h1>
-                    <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
-                        Build a cellular IoT-enabled electric scooter or e-bike from motor control and BMS
-                        through global connectivity, centimeter-level positioning, and fleet-scale cloud
-                        management.
-                    </p>
-                </div>
-                <div className="hidden lg:flex justify-center items-center">
-                    <img
-                        src="/micromobility_hero.png"
-                        alt="Micromobility Illustration"
-                        className="w-full scale-110"
-                        style={{
-                            maskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
-                            WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
-                        }}
-                    />
-                </div>
-            </div>
-
-            {/* Step Progress Bar */}
-            <div ref={stepRef} className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] p-4 mb-12">
-                <div className="flex gap-1 overflow-x-auto pb-1">
-                    {steps.map((step, idx) => {
-                        const isComplete = completedSteps.has(step.id);
-                        const isActive = activeStep === step.id;
-                        return (
-                            <button
-                                key={step.id}
-                                onClick={() => { setActiveStep(step.id); stepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }}
-                                className={`flex items-center gap-2 px-3 py-2 rounded-lg whitespace-nowrap text-xs font-medium transition-all duration-200 cursor-pointer shrink-0 ${isActive
-                                    ? "bg-[#BFFD11] text-[#00040F]"
-                                    : isComplete
-                                        ? "text-[#BFFD11]/70 bg-[#BFFD11]/8"
-                                        : "text-white/35 hover:text-white/60"
-                                    }`}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+                    <div>
+                        <div className="flex items-center gap-3 mb-4">
+                            <div
+                                className="w-10 h-10 rounded-[8px] flex items-center justify-center"
+                                style={{ background: "rgba(83,242,250,0.1)", border: "1px solid rgba(83,242,250,0.2)" }}
                             >
-                                {isComplete ? (
-                                    <Check size={11} className="shrink-0" />
-                                ) : (
-                                    <span className="w-4 h-4 rounded-full border border-current flex items-center justify-center text-[10px]">
-                                        {idx + 1}
-                                    </span>
-                                )}
-                                {step.label}
-                            </button>
-                        );
-                    })}
+                                <Bike size={18} color="#53F2FA" strokeWidth={1.75} />
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11]">
+                                    Build Guide
+                                </span>
+                                <span className="text-[10px] font-mono font-semibold tracking-wider uppercase px-2 py-0.5 rounded text-[#ef4444] bg-[#ef4444]/10">
+                                    Advanced
+                                </span>
+                                <span className="text-[11px] text-white/30 font-mono">40 min</span>
+                            </div>
+                        </div>
+                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-5 leading-tight">
+                            Connected Micromobility Vehicle
+                        </h1>
+                        <p className="text-lg text-white/55 leading-relaxed max-w-2xl">
+                            Build a cellular IoT-enabled electric scooter or e-bike from motor control and BMS
+                            through global connectivity, centimeter-level positioning, and fleet-scale cloud
+                            management.
+                        </p>
+                    </div>
+                    <div className="hidden lg:flex justify-center items-center">
+                        <img
+                            src="/micromobility_hero.png"
+                            alt="Micromobility Illustration"
+                            className="w-full scale-110"
+                            style={{
+                                maskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
+                                WebkitMaskImage: "radial-gradient(ellipse 80% 75% at 50% 50%, black 40%, transparent 72%)",
+                            }}
+                        />
+                    </div>
                 </div>
-                <div className="mt-3 h-1 bg-[#3A3C46]/30 rounded-full overflow-hidden">
-                    <div
-                        className="h-full bg-[#BFFD11] rounded-full transition-all duration-500"
-                        style={{ width: `${(completedSteps.size / steps.length) * 100}%` }}
-                    />
-                </div>
-                <p className="text-xs text-white/25 mt-2">
-                    {completedSteps.size}/{steps.length} steps complete
-                </p>
             </div>
 
-            {/* Step content */}
-            <div className="space-y-16">
+            <BuildGuideShell steps={steps}>
 
                 {/* ── STEP 1: System Architecture ── */}
-                {activeStep === "architecture" && (
-                    <section>
-                        <div className="flex items-center gap-3 mb-6">
-                            <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 1</span>
-                            <h2 className="text-2xl font-semibold">System Architecture</h2>
-                        </div>
+                <section id="architecture" className="scroll-mt-24 pb-16 border-b border-[#3A3C46]/20">
+                    <SectionHeader label="System Architecture" stepNumber={1} />
 
-                        <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
-                            A micromobility vehicle is a tripartite hardware system: the Motor Control Unit (MCU),
-                            Battery Management System (BMS), and IoT Controller (&quot;Brain&quot;). These communicate
-                            over CAN bus or UART for real-time responsiveness.
-                        </p>
+                    <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+                        A micromobility vehicle is a tripartite hardware system: the Motor Control Unit (MCU),
+                        Battery Management System (BMS), and IoT Controller (&quot;Brain&quot;). These communicate
+                        over CAN bus or UART for real-time responsiveness.
+                    </p>
 
-                        <div className="grid sm:grid-cols-3 gap-5 mb-8">
-                            {[
-                                { icon: Zap, title: "Motor Control (MCU)", detail: "Field-Oriented Control (FOC) with Clarke & Park transforms. 95–98% efficiency vs 85–90% for trapezoidal. ARM Cortex-M4 with DSP.", color: "#BFFD11" },
-                                { icon: Battery, title: "Battery Management (BMS)", detail: "Per-cell voltage monitoring, SOC via Coulomb counting + OCV, SOH tracking, cell balancing, and thermal protection for 36V/48V packs.", color: "#53F2FA" },
-                                { icon: Wifi, title: 'IoT Controller ("Brain")', detail: "Bridges vehicle to cloud. LTE-M connectivity, GNSS positioning, device shadow sync, geofence enforcement, and FOTA updates.", color: "#BFFD11" },
-                            ].map((item) => {
-                                const Icon = item.icon;
-                                return (
-                                    <div key={item.title} className="rounded-xl border p-5" style={{ borderColor: `${item.color}20`, background: `${item.color}04` }}>
-                                        <div className="flex items-center gap-2 mb-3">
-                                            <Icon size={16} style={{ color: item.color }} strokeWidth={1.5} />
-                                            <p className="font-semibold text-white text-sm">{item.title}</p>
-                                        </div>
-                                        <p className="text-xs text-white/45 leading-relaxed">{item.detail}</p>
+                    <div className="grid sm:grid-cols-3 gap-5 mb-8">
+                        {[
+                            { icon: Zap, title: "Motor Control (MCU)", detail: "Field-Oriented Control (FOC) with Clarke & Park transforms. 95–98% efficiency vs 85–90% for trapezoidal. ARM Cortex-M4 with DSP.", color: "#BFFD11" },
+                            { icon: Battery, title: "Battery Management (BMS)", detail: "Per-cell voltage monitoring, SOC via Coulomb counting + OCV, SOH tracking, cell balancing, and thermal protection for 36V/48V packs.", color: "#53F2FA" },
+                            { icon: Wifi, title: 'IoT Controller ("Brain")', detail: "Bridges vehicle to cloud. LTE-M connectivity, GNSS positioning, device shadow sync, geofence enforcement, and FOTA updates.", color: "#BFFD11" },
+                        ].map((item) => {
+                            const Icon = item.icon;
+                            return (
+                                <div key={item.title} className="rounded-xl border p-5" style={{ borderColor: `${item.color}20`, background: `${item.color}04` }}>
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <Icon size={16} style={{ color: item.color }} strokeWidth={1.5} />
+                                        <p className="font-semibold text-white text-sm">{item.title}</p>
                                     </div>
-                                );
-                            })}
-                        </div>
+                                    <p className="text-xs text-white/45 leading-relaxed">{item.detail}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
 
-                        {/* Motor Control Comparison Table */}
-                        <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] overflow-hidden mb-6">
-                            <div className="px-5 py-3.5 border-b border-[#3A3C46]/30 bg-[#0a0e1a]">
-                                <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/40">
-                                    Motor Control: FOC vs Trapezoidal
-                                </p>
-                            </div>
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-sm">
-                                    <thead>
-                                        <tr className="border-b border-[#3A3C46]/20">
-                                            <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Feature</th>
-                                            <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Trapezoidal</th>
-                                            <th className="text-left px-5 py-3 text-xs font-mono font-semibold text-[#BFFD11]/60">FOC (Recommended)</th>
+                    {/* Motor Control Comparison Table */}
+                    <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] overflow-hidden mb-6">
+                        <div className="px-5 py-3.5 border-b border-[#3A3C46]/30 bg-[#0a0e1a]">
+                            <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/40">
+                                Motor Control: FOC vs Trapezoidal
+                            </p>
+                        </div>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                                <thead>
+                                    <tr className="border-b border-[#3A3C46]/20">
+                                        <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Feature</th>
+                                        <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Trapezoidal</th>
+                                        <th className="text-left px-5 py-3 text-xs font-mono font-semibold text-[#BFFD11]/60">FOC (Recommended)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {motorControlComparison.map((row) => (
+                                        <tr key={row.feature} className="border-b border-[#3A3C46]/10 last:border-0">
+                                            <td className="px-5 py-3 text-white/60 font-medium">{row.feature}</td>
+                                            <td className="px-5 py-3 text-white/35">{row.trapezoidal}</td>
+                                            <td className="px-5 py-3 text-white/55">{row.foc}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {motorControlComparison.map((row) => (
-                                            <tr key={row.feature} className="border-b border-[#3A3C46]/10 last:border-0">
-                                                <td className="px-5 py-3 text-white/60 font-medium">{row.feature}</td>
-                                                <td className="px-5 py-3 text-white/35">{row.trapezoidal}</td>
-                                                <td className="px-5 py-3 text-white/55">{row.foc}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
 
-                        <InfoCallout type="tip">
-                            Separate the power electronics (MCU board) from the IoT logic. The motor controller handles
-                            high-current MOSFETs and generates EMI — isolating the IoT SoC on a separate board or shielded
-                            section prevents RF interference with the cellular and GNSS radios.
-                        </InfoCallout>
+                    <InfoCallout type="tip">
+                        Separate the power electronics (MCU board) from the IoT logic. The motor controller handles
+                        high-current MOSFETs and generates EMI — isolating the IoT SoC on a separate board or shielded
+                        section prevents RF interference with the cellular and GNSS radios.
+                    </InfoCallout>
 
-                        <button onClick={() => markComplete("architecture")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">
-                            Architecture Understood — Next Step →
-                        </button>
-                    </section>
-                )}
+                    <MarkCompleteButton stepId="architecture" />
+                </section>
 
                 {/* ── STEP 2: Cellular & SIM ── */}
-                {activeStep === "connectivity" && (
-                    <section>
-                        <div className="flex items-center gap-3 mb-6">
-                            <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 2</span>
-                            <h2 className="text-2xl font-semibold">Cellular Connectivity & SIM</h2>
+                <section id="connectivity" className="scroll-mt-24 pb-16 border-b border-[#3A3C46]/20">
+                    <SectionHeader label="Cellular Connectivity & SIM" stepNumber={2} />
+
+                    <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+                        Micromobility <strong className="text-white/70">requires LTE-M</strong> for seamless tower handoffs
+                        during movement. NB-IoT lacks mobility support and is unsuitable for scooters.
+                        For higher throughput, Cat 1bis provides 10 Mbps on a single antenna.
+                    </p>
+
+                    {/* Network Comparison Table */}
+                    <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] overflow-hidden mb-8">
+                        <div className="px-5 py-3.5 border-b border-[#3A3C46]/30 bg-[#0a0e1a]">
+                            <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/40">
+                                Cellular Standard Comparison
+                            </p>
                         </div>
-
-                        <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
-                            Micromobility <strong className="text-white/70">requires LTE-M</strong> for seamless tower handoffs
-                            during movement. NB-IoT lacks mobility support and is unsuitable for scooters.
-                            For higher throughput, Cat 1bis provides 10 Mbps on a single antenna.
-                        </p>
-
-                        {/* Network Comparison Table */}
-                        <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] overflow-hidden mb-8">
-                            <div className="px-5 py-3.5 border-b border-[#3A3C46]/30 bg-[#0a0e1a]">
-                                <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/40">
-                                    Cellular Standard Comparison
-                                </p>
-                            </div>
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-sm">
-                                    <thead>
-                                        <tr className="border-b border-[#3A3C46]/20">
-                                            <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Standard</th>
-                                            <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Bandwidth</th>
-                                            <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Latency</th>
-                                            <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Mobility</th>
-                                            <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Power</th>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                                <thead>
+                                    <tr className="border-b border-[#3A3C46]/20">
+                                        <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Standard</th>
+                                        <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Bandwidth</th>
+                                        <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Latency</th>
+                                        <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Mobility</th>
+                                        <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Power</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {networkComparison.map((row) => (
+                                        <tr key={row.standard} className={`border-b border-[#3A3C46]/10 last:border-0 ${row.standard === "LTE-M (Cat-M1)" ? "bg-[#BFFD11]/4" : ""}`}>
+                                            <td className={`px-5 py-3 font-medium ${row.standard === "LTE-M (Cat-M1)" ? "text-[#BFFD11]" : "text-white/60"}`}>{row.standard}</td>
+                                            <td className="px-5 py-3 text-white/45 font-mono text-xs">{row.bandwidth}</td>
+                                            <td className="px-5 py-3 text-white/45">{row.latency}</td>
+                                            <td className={`px-5 py-3 ${row.mobility === "Full Handover" ? "text-[#BFFD11]/70" : "text-white/30"}`}>{row.mobility}</td>
+                                            <td className="px-5 py-3 text-white/45">{row.power}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {networkComparison.map((row) => (
-                                            <tr key={row.standard} className={`border-b border-[#3A3C46]/10 last:border-0 ${row.standard === "LTE-M (Cat-M1)" ? "bg-[#BFFD11]/4" : ""}`}>
-                                                <td className={`px-5 py-3 font-medium ${row.standard === "LTE-M (Cat-M1)" ? "text-[#BFFD11]" : "text-white/60"}`}>{row.standard}</td>
-                                                <td className="px-5 py-3 text-white/45 font-mono text-xs">{row.bandwidth}</td>
-                                                <td className="px-5 py-3 text-white/45">{row.latency}</td>
-                                                <td className={`px-5 py-3 ${row.mobility === "Full Handover" ? "text-[#BFFD11]/70" : "text-white/30"}`}>{row.mobility}</td>
-                                                <td className="px-5 py-3 text-white/45">{row.power}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
 
-                        {/* SIM Architecture */}
-                        <h3 className="text-base font-semibold text-white/70 mb-4">SIM Architecture: From Plastic to iSIM</h3>
-                        <p className="text-sm text-white/45 leading-relaxed mb-4 max-w-2xl">
-                            Physical SIM cards are a liability in high-vibration scooters — prone to corrosion, failure,
-                            and theft (can be removed and used in other devices).
-                        </p>
-                        <div className="grid sm:grid-cols-2 gap-4 mb-6">
-                            <div className="rounded-xl border border-[#BFFD11]/20 bg-[#BFFD11]/4 p-5">
-                                <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-2">eSIM (MFF2) — Recommended</p>
-                                <p className="text-sm text-white/55 leading-relaxed">
-                                    Soldered to motherboard. Superior physical durability and tamper resistance.
-                                    eUICC standard enables remote carrier switching OTA — critical for international fleets
-                                    to avoid permanent roaming restrictions and optimize data pricing.
-                                </p>
-                            </div>
-                            <div className="rounded-xl border border-[#53F2FA]/15 bg-[#53F2FA]/3 p-5">
-                                <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#53F2FA] mb-2">iSIM (Integrated SIM) — Future</p>
-                                <p className="text-sm text-white/55 leading-relaxed">
-                                    SIM functionality embedded in the modem SoC silicon. Eliminates all external SIM hardware.
-                                    Leverages processor&apos;s Trusted Execution Environment (TEE) for hardware-rooted identity
-                                    that is virtually impossible to clone.
-                                </p>
-                            </div>
+                    {/* SIM Architecture */}
+                    <h3 className="text-base font-semibold text-white/70 mb-4">SIM Architecture: From Plastic to iSIM</h3>
+                    <p className="text-sm text-white/45 leading-relaxed mb-4 max-w-2xl">
+                        Physical SIM cards are a liability in high-vibration scooters — prone to corrosion, failure,
+                        and theft (can be removed and used in other devices).
+                    </p>
+                    <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                        <div className="rounded-xl border border-[#BFFD11]/20 bg-[#BFFD11]/4 p-5">
+                            <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-2">eSIM (MFF2) — Recommended</p>
+                            <p className="text-sm text-white/55 leading-relaxed">
+                                Soldered to motherboard. Superior physical durability and tamper resistance.
+                                eUICC standard enables remote carrier switching OTA — critical for international fleets
+                                to avoid permanent roaming restrictions and optimize data pricing.
+                            </p>
                         </div>
+                        <div className="rounded-xl border border-[#53F2FA]/15 bg-[#53F2FA]/3 p-5">
+                            <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#53F2FA] mb-2">iSIM (Integrated SIM) — Future</p>
+                            <p className="text-sm text-white/55 leading-relaxed">
+                                SIM functionality embedded in the modem SoC silicon. Eliminates all external SIM hardware.
+                                Leverages processor&apos;s Trusted Execution Environment (TEE) for hardware-rooted identity
+                                that is virtually impossible to clone.
+                            </p>
+                        </div>
+                    </div>
 
-                        <InfoCallout type="warning">
-                            <strong>NB-IoT cannot be used for scooters.</strong> It lacks connected mode mobility — when moving
-                            between cell towers, the connection drops and must be re-established, causing latency spikes
-                            and increased power drain. LTE-M supports full handover.
-                        </InfoCallout>
+                    <InfoCallout type="warning">
+                        <strong>NB-IoT cannot be used for scooters.</strong> It lacks connected mode mobility — when moving
+                        between cell towers, the connection drops and must be re-established, causing latency spikes
+                        and increased power drain. LTE-M supports full handover.
+                    </InfoCallout>
 
-                        <button onClick={() => markComplete("connectivity")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">
-                            Connectivity Configured — Next Step →
-                        </button>
-                    </section>
-                )}
+                    <MarkCompleteButton stepId="connectivity" />
+                </section>
 
                 {/* ── STEP 3: Hardware BOM ── */}
-                {activeStep === "hardware" && (
-                    <section>
-                        <div className="flex items-center gap-3 mb-6">
-                            <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 3</span>
-                            <h2 className="text-2xl font-semibold">Select Your Hardware</h2>
-                        </div>
-                        <p className="text-white/55 leading-relaxed mb-4 max-w-2xl">
-                            Click any row to expand full details, alternatives, and design rationale.
-                        </p>
-                        <BOMTable items={bomItems} title="Micromobility BOM" />
+                <section id="hardware" className="scroll-mt-24 pb-16 border-b border-[#3A3C46]/20">
+                    <SectionHeader label="Select Your Hardware" stepNumber={3} />
+                    <p className="text-white/55 leading-relaxed mb-4 max-w-2xl">
+                        Click any row to expand full details, alternatives, and design rationale.
+                    </p>
+                    <BOMTable items={bomItems} title="Micromobility BOM" />
 
-                        <div className="mt-6">
-                            <CodeBlock
-                                language="at"
-                                title="Modem initialization sequence"
-                                code={atCommandSteps}
-                            />
-                        </div>
+                    <div className="mt-6">
+                        <CodeBlock
+                            language="at"
+                            title="Modem initialization sequence"
+                            code={atCommandSteps}
+                        />
+                    </div>
 
-                        <button onClick={() => markComplete("hardware")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">
-                            Hardware Selected — Next Step →
-                        </button>
-                    </section>
-                )}
+                    <MarkCompleteButton stepId="hardware" />
+                </section>
 
                 {/* ── STEP 4: GNSS & Positioning ── */}
-                {activeStep === "positioning" && (
-                    <section>
-                        <div className="flex items-center gap-3 mb-6">
-                            <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 4</span>
-                            <h2 className="text-2xl font-semibold">GNSS & Positioning</h2>
-                        </div>
+                <section id="positioning" className="scroll-mt-24 pb-16 border-b border-[#3A3C46]/20">
+                    <SectionHeader label="GNSS & Positioning" stepNumber={4} />
 
-                        <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
-                            Reliable positioning is the most critical feature for shared mobility — it enables
-                            geofenced no-ride zones, parking enforcement, and sidewalk detection.
-                            Standard GNSS (3–5 m) is insufficient; dual-band + RTK achieves centimeter accuracy.
-                        </p>
+                    <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+                        Reliable positioning is the most critical feature for shared mobility — it enables
+                        geofenced no-ride zones, parking enforcement, and sidewalk detection.
+                        Standard GNSS (3–5 m) is insufficient; dual-band + RTK achieves centimeter accuracy.
+                    </p>
 
-                        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                            {[
-                                { icon: MapPin, title: "Dual-Band GNSS", detail: "L1+L5 concurrent reception. Faster lock-on in dense cities, eliminates multipath errors.", color: "#BFFD11" },
-                                { icon: Radio, title: "RTK Correction", detail: "RTCM stream via cellular. Centimeter-level precision for parking corral enforcement.", color: "#53F2FA" },
-                                { icon: Settings, title: "6-Axis IMU (DR)", detail: "Accelerometer + gyroscope for dead reckoning when GNSS is unavailable (tunnels, alleys).", color: "#BFFD11" },
-                                { icon: Cpu, title: "Sensor Fusion", detail: "GNSS data continuously recalibrates IMU drift. Seamless position tracking across all environments.", color: "#53F2FA" },
-                            ].map((item) => {
-                                const Icon = item.icon;
-                                return (
-                                    <div key={item.title} className="rounded-xl border p-5" style={{ borderColor: `${item.color}20`, background: `${item.color}04` }}>
-                                        <Icon size={16} style={{ color: item.color }} strokeWidth={1.5} className="mb-3" />
-                                        <p className="font-semibold text-white text-sm mb-2">{item.title}</p>
-                                        <p className="text-xs text-white/45 leading-relaxed">{item.detail}</p>
-                                    </div>
-                                );
-                            })}
-                        </div>
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                        {[
+                            { icon: MapPin, title: "Dual-Band GNSS", detail: "L1+L5 concurrent reception. Faster lock-on in dense cities, eliminates multipath errors.", color: "#BFFD11" },
+                            { icon: Radio, title: "RTK Correction", detail: "RTCM stream via cellular. Centimeter-level precision for parking corral enforcement.", color: "#53F2FA" },
+                            { icon: Settings, title: "6-Axis IMU (DR)", detail: "Accelerometer + gyroscope for dead reckoning when GNSS is unavailable (tunnels, alleys).", color: "#BFFD11" },
+                            { icon: Cpu, title: "Sensor Fusion", detail: "GNSS data continuously recalibrates IMU drift. Seamless position tracking across all environments.", color: "#53F2FA" },
+                        ].map((item) => {
+                            const Icon = item.icon;
+                            return (
+                                <div key={item.title} className="rounded-xl border p-5" style={{ borderColor: `${item.color}20`, background: `${item.color}04` }}>
+                                    <Icon size={16} style={{ color: item.color }} strokeWidth={1.5} className="mb-3" />
+                                    <p className="font-semibold text-white text-sm mb-2">{item.title}</p>
+                                    <p className="text-xs text-white/45 leading-relaxed">{item.detail}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
 
-                        <InfoCallout type="info">
-                            <strong>Urban canyon problem:</strong> Standard GNSS cannot determine if a scooter is
-                            parked on a sidewalk or in a designated corral (3–5 m accuracy). Dual-band L1+L5 + RTK
-                            correction achieves centimeter-level positioning, enabling precise parking zone enforcement
-                            and sidewalk riding detection.
-                        </InfoCallout>
+                    <InfoCallout type="info">
+                        <strong>Urban canyon problem:</strong> Standard GNSS cannot determine if a scooter is
+                        parked on a sidewalk or in a designated corral (3–5 m accuracy). Dual-band L1+L5 + RTK
+                        correction achieves centimeter-level positioning, enabling precise parking zone enforcement
+                        and sidewalk riding detection.
+                    </InfoCallout>
 
-                        <div className="mt-6">
-                            <Link
-                                href="/tools/gps-parser"
-                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#BFFD11]/25 text-[#BFFD11] text-sm font-medium hover:bg-[#BFFD11]/5 transition-colors cursor-pointer"
-                            >
-                                Try the interactive GPS Parser tool <ArrowRight size={14} />
-                            </Link>
-                        </div>
+                    <div className="mt-6">
+                        <Link
+                            href="/tools/gps-parser"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#BFFD11]/25 text-[#BFFD11] text-sm font-medium hover:bg-[#BFFD11]/5 transition-colors cursor-pointer"
+                        >
+                            Try the interactive GPS Parser tool <ArrowRight size={14} />
+                        </Link>
+                    </div>
 
-                        <button onClick={() => markComplete("positioning")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">
-                            Positioning Configured — Next Step →
-                        </button>
-                    </section>
-                )}
+                    <MarkCompleteButton stepId="positioning" />
+                </section>
 
                 {/* ── STEP 5: Firmware & Protocols ── */}
-                {activeStep === "firmware" && (
-                    <section>
-                        <div className="flex items-center gap-3 mb-6">
-                            <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 5</span>
-                            <h2 className="text-2xl font-semibold">Firmware & Protocols</h2>
+                <section id="firmware" className="scroll-mt-24 pb-16 border-b border-[#3A3C46]/20">
+                    <SectionHeader label="Firmware & Protocols" stepNumber={5} />
+
+                    <p className="text-white/55 leading-relaxed mb-4 max-w-2xl">
+                        Zephyr RTOS is the dominant OS for micromobility — modular networking stack, MCUboot
+                        secure bootloader for FOTA, and first-class support for nRF9160. Choose LwM2M over
+                        MQTT for built-in device management and FOTA.
+                    </p>
+
+                    {/* Protocol Comparison Table */}
+                    <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] overflow-hidden mb-8">
+                        <div className="px-5 py-3.5 border-b border-[#3A3C46]/30 bg-[#0a0e1a]">
+                            <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/40">
+                                MQTT vs LwM2M for Fleet Communication
+                            </p>
                         </div>
-
-                        <p className="text-white/55 leading-relaxed mb-4 max-w-2xl">
-                            Zephyr RTOS is the dominant OS for micromobility — modular networking stack, MCUboot
-                            secure bootloader for FOTA, and first-class support for nRF9160. Choose LwM2M over
-                            MQTT for built-in device management and FOTA.
-                        </p>
-
-                        {/* Protocol Comparison Table */}
-                        <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] overflow-hidden mb-8">
-                            <div className="px-5 py-3.5 border-b border-[#3A3C46]/30 bg-[#0a0e1a]">
-                                <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/40">
-                                    MQTT vs LwM2M for Fleet Communication
-                                </p>
-                            </div>
-                            <div className="overflow-x-auto">
-                                <table className="w-full text-sm">
-                                    <thead>
-                                        <tr className="border-b border-[#3A3C46]/20">
-                                            <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Feature</th>
-                                            <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">MQTT (TCP)</th>
-                                            <th className="text-left px-5 py-3 text-xs font-mono font-semibold text-[#BFFD11]/60">LwM2M (UDP)</th>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                                <thead>
+                                    <tr className="border-b border-[#3A3C46]/20">
+                                        <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">Feature</th>
+                                        <th className="text-left px-5 py-3 text-xs text-white/30 font-mono font-semibold">MQTT (TCP)</th>
+                                        <th className="text-left px-5 py-3 text-xs font-mono font-semibold text-[#BFFD11]/60">LwM2M (UDP)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {protocolComparison.map((row) => (
+                                        <tr key={row.feature} className="border-b border-[#3A3C46]/10 last:border-0">
+                                            <td className="px-5 py-3 text-white/60 font-medium">{row.feature}</td>
+                                            <td className="px-5 py-3 text-white/35">{row.mqtt}</td>
+                                            <td className="px-5 py-3 text-white/55">{row.lwm2m}</td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {protocolComparison.map((row) => (
-                                            <tr key={row.feature} className="border-b border-[#3A3C46]/10 last:border-0">
-                                                <td className="px-5 py-3 text-white/60 font-medium">{row.feature}</td>
-                                                <td className="px-5 py-3 text-white/35">{row.mqtt}</td>
-                                                <td className="px-5 py-3 text-white/55">{row.lwm2m}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
 
-                        <InteractiveToggle
-                            tabs={[
-                                { key: "zephyr", label: "Zephyr RTOS (nRF9160)" },
-                                { key: "can", label: "CAN Bus Interface" },
-                            ]}
-                            defaultTab="zephyr"
+                    <InteractiveToggle
+                        tabs={[
+                            { key: "zephyr", label: "Zephyr RTOS (nRF9160)" },
+                            { key: "can", label: "CAN Bus Interface" },
+                        ]}
+                        defaultTab="zephyr"
+                    >
+                        {{
+                            zephyr: (
+                                <CodeBlock
+                                    language="cpp"
+                                    filename="src/main.c"
+                                    code={zephyrFirmware}
+                                />
+                            ),
+                            can: (
+                                <CodeBlock
+                                    language="cpp"
+                                    filename="src/can_interface.c"
+                                    code={canBusFirmware}
+                                />
+                            ),
+                        }}
+                    </InteractiveToggle>
+
+                    <div className="mt-6">
+                        <InfoCallout type="tip">
+                            <strong>Device Shadows</strong> decouple the cloud from the scooter&apos;s sleep schedule.
+                            When a user taps &quot;unlock,&quot; the cloud updates the shadow&apos;s &quot;desired&quot; state.
+                            The scooter checks the shadow delta on wake-up and executes the unlock — no need
+                            for the device to be online at the exact moment of the request.
+                        </InfoCallout>
+                    </div>
+
+                    <div className="mt-4">
+                        <Link
+                            href="/tools/protocol-picker"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#BFFD11]/25 text-[#BFFD11] text-sm font-medium hover:bg-[#BFFD11]/5 transition-colors cursor-pointer"
                         >
-                            {{
-                                zephyr: (
-                                    <CodeBlock
-                                        language="cpp"
-                                        filename="src/main.c"
-                                        code={zephyrFirmware}
-                                    />
-                                ),
-                                can: (
-                                    <CodeBlock
-                                        language="cpp"
-                                        filename="src/can_interface.c"
-                                        code={canBusFirmware}
-                                    />
-                                ),
-                            }}
-                        </InteractiveToggle>
+                            Run the Protocol Picker quiz <ArrowRight size={14} />
+                        </Link>
+                    </div>
 
-                        <div className="mt-6">
-                            <InfoCallout type="tip">
-                                <strong>Device Shadows</strong> decouple the cloud from the scooter&apos;s sleep schedule.
-                                When a user taps &quot;unlock,&quot; the cloud updates the shadow&apos;s &quot;desired&quot; state.
-                                The scooter checks the shadow delta on wake-up and executes the unlock — no need
-                                for the device to be online at the exact moment of the request.
-                            </InfoCallout>
-                        </div>
-
-                        <div className="mt-4">
-                            <Link
-                                href="/tools/protocol-picker"
-                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#BFFD11]/25 text-[#BFFD11] text-sm font-medium hover:bg-[#BFFD11]/5 transition-colors cursor-pointer"
-                            >
-                                Run the Protocol Picker quiz <ArrowRight size={14} />
-                            </Link>
-                        </div>
-
-                        <button onClick={() => markComplete("firmware")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">
-                            Firmware Ready — Next Step →
-                        </button>
-                    </section>
-                )}
+                    <MarkCompleteButton stepId="firmware" />
+                </section>
 
                 {/* ── STEP 6: Security & Certification ── */}
-                {activeStep === "security" && (
-                    <section>
-                        <div className="flex items-center gap-3 mb-6">
-                            <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 6</span>
-                            <h2 className="text-2xl font-semibold">Security & Certification</h2>
-                        </div>
+                <section id="security" className="scroll-mt-24 pb-16 border-b border-[#3A3C46]/20">
+                    <SectionHeader label="Security & Certification" stepNumber={6} />
 
-                        <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
-                            Scooters operate in public spaces and are vulnerable to &quot;jailbreaking&quot; —
-                            disabling cellular tracking to use as personal vehicles. Security must be
-                            hardware-rooted, not just software.
-                        </p>
+                    <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+                        Scooters operate in public spaces and are vulnerable to &quot;jailbreaking&quot; —
+                        disabling cellular tracking to use as personal vehicles. Security must be
+                        hardware-rooted, not just software.
+                    </p>
 
-                        {/* Security Checklist */}
-                        <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] overflow-hidden mb-8">
-                            <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#3A3C46]/30 bg-[#0a0e1a]">
-                                <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/40">Security Checklist</p>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-24 h-1.5 bg-[#3A3C46]/40 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full rounded-full transition-all duration-500"
-                                            style={{
-                                                width: `${securityScore}%`,
-                                                background: securityScore === 100 ? "#BFFD11" : securityScore > 50 ? "#f59e0b" : "#ef4444",
-                                            }}
-                                        />
-                                    </div>
-                                    <span className="font-mono text-xs text-white/35">{securityScore}%</span>
+                    {/* Security Checklist */}
+                    <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] overflow-hidden mb-8">
+                        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#3A3C46]/30 bg-[#0a0e1a]">
+                            <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/40">Security Checklist</p>
+                            <div className="flex items-center gap-2">
+                                <div className="w-24 h-1.5 bg-[#3A3C46]/40 rounded-full overflow-hidden">
+                                    <div
+                                        className="h-full rounded-full transition-all duration-500"
+                                        style={{
+                                            width: `${securityScore}%`,
+                                            background: securityScore === 100 ? "#BFFD11" : securityScore > 50 ? "#f59e0b" : "#ef4444",
+                                        }}
+                                    />
                                 </div>
-                            </div>
-                            <div className="divide-y divide-[#3A3C46]/15">
-                                {securityChecklist.map((item, idx) => (
-                                    <div key={idx} className="flex items-start gap-4 px-5 py-4 hover:bg-white/[0.015] transition-colors">
-                                        <button
-                                            onClick={() => toggleSecurity(idx)}
-                                            className={`mt-0.5 w-5 h-5 rounded flex items-center justify-center shrink-0 transition-all duration-150 cursor-pointer ${checkedSecurity.has(idx) ? "bg-[#BFFD11] border-[#BFFD11]" : "border border-[#3A3C46]/60"
-                                                }`}
-                                            aria-label={checkedSecurity.has(idx) ? "Uncheck" : "Check"}
-                                        >
-                                            {checkedSecurity.has(idx) && <Check size={11} className="text-[#00040F]" strokeWidth={3} />}
-                                        </button>
-                                        <div className="flex-1">
-                                            <p className={`text-sm font-medium transition-colors ${checkedSecurity.has(idx) ? "text-white/40 line-through" : "text-white/80"}`}>
-                                                {item.label}
-                                            </p>
-                                            <code className="text-[11px] font-mono text-[#BFFD11]/50 mt-0.5 block">{item.cmd}</code>
-                                        </div>
-                                    </div>
-                                ))}
+                                <span className="font-mono text-xs text-white/35">{securityScore}%</span>
                             </div>
                         </div>
-
-                        {/* Certification */}
-                        <h3 className="text-base font-semibold text-white/70 mb-4">Regulatory Certification</h3>
-                        <div className="space-y-3 mb-6">
-                            {certificationSteps.map((item) => (
-                                <div key={item.title} className="rounded-xl border p-5" style={{ borderColor: `${item.color}20`, background: `${item.color}04` }}>
-                                    <p className="text-sm font-semibold text-white/80 mb-2">{item.title}</p>
-                                    <p className="text-sm text-white/45 leading-relaxed">{item.detail}</p>
+                        <div className="divide-y divide-[#3A3C46]/15">
+                            {securityChecklist.map((item, idx) => (
+                                <div key={idx} className="flex items-start gap-4 px-5 py-4 hover:bg-white/[0.015] transition-colors">
+                                    <button
+                                        onClick={() => toggleSecurity(idx)}
+                                        className={`mt-0.5 w-5 h-5 rounded flex items-center justify-center shrink-0 transition-all duration-150 cursor-pointer ${checkedSecurity.has(idx) ? "bg-[#BFFD11] border-[#BFFD11]" : "border border-[#3A3C46]/60"
+                                            }`}
+                                        aria-label={checkedSecurity.has(idx) ? "Uncheck" : "Check"}
+                                    >
+                                        {checkedSecurity.has(idx) && <Check size={11} className="text-[#00040F]" strokeWidth={3} />}
+                                    </button>
+                                    <div className="flex-1">
+                                        <p className={`text-sm font-medium transition-colors ${checkedSecurity.has(idx) ? "text-white/40 line-through" : "text-white/80"}`}>
+                                            {item.label}
+                                        </p>
+                                        <code className="text-[11px] font-mono text-[#BFFD11]/50 mt-0.5 block">{item.cmd}</code>
+                                    </div>
                                 </div>
                             ))}
                         </div>
+                    </div>
 
-                        <InfoCallout type="info">
-                            Using a <strong>pre-certified cellular module</strong> (e.g., nRF9160) significantly reduces
-                            PTCRB testing scope. Your &quot;integrated device&quot; inherits the module&apos;s certification,
-                            reducing cost from $500K+ to $10K–$50K.
-                        </InfoCallout>
-
-                        <button onClick={() => markComplete("security")} className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer">
-                            Security Hardened — Final Step →
-                        </button>
-                    </section>
-                )}
-
-                {/* ── STEP 7: Deploy ── */}
-                {activeStep === "deploy" && (
-                    <section>
-                        <div className="flex items-center gap-3 mb-6">
-                            <span className="font-mono text-[11px] font-semibold tracking-widest uppercase text-[#BFFD11] bg-[#BFFD11]/10 px-2 py-1 rounded">Step 7</span>
-                            <h2 className="text-2xl font-semibold">Deploy</h2>
-                        </div>
-
-                        <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
-                            Your connected vehicle is ready. Scale from prototype to fleet with Just-in-Time
-                            Provisioning and resilient cloud architecture.
-                        </p>
-
-                        <div className="space-y-4 mb-8">
-                            {[
-                                { title: "Just-in-Time Provisioning (JITP)", detail: "Each scooter is provisioned in the factory with a unique certificate signed by your Device CA. When it first connects to AWS IoT Core, it\u2019s automatically registered — no manual IMEI registration needed at scale.", color: "#BFFD11" },
-                                { title: "Device Shadows (AWS IoT Core)", detail: "The cloud maintains persistent vehicle state. Unlock commands update the \u201cdesired\u201d state; the scooter syncs on wake-up. This asynchronous model works perfectly with PSM sleep cycles.", color: "#53F2FA" },
-                                { title: "Offline BLE Fallback", detail: "If cellular connectivity is down, users can still unlock via local Bluetooth Low Energy from the mobile app. An independent watchdog timer reboots the IoT module if the cellular stack hangs.", color: "#BFFD11" },
-                                { title: "5G RedCap & Satellite IoT (Future)", detail: "Next-gen deployments will leverage 5G RedCap for higher density with LTE-M power profile. Non-Terrestrial Network (NTN) support enables satellite connectivity for rural or low-coverage areas.", color: "#53F2FA" },
-                            ].map((item) => (
-                                <div key={item.title} className="rounded-xl border p-5" style={{ borderColor: `${item.color}20`, background: `${item.color}04` }}>
-                                    <p className="text-sm font-semibold text-white/80 mb-2">{item.title}</p>
-                                    <p className="text-sm text-white/45 leading-relaxed">{item.detail}</p>
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Configuration Summary */}
-                        <div className="rounded-xl border border-[#BFFD11]/20 bg-[#BFFD11]/4 p-6 mb-8">
-                            <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-4">
-                                Configuration Summary
-                            </p>
-                            <div className="grid sm:grid-cols-2 gap-4 text-sm">
-                                {[
-                                    ["IoT SoC", "Nordic nRF9160 SiP"],
-                                    ["Connectivity", "LTE-M (full mobility)"],
-                                    ["SIM", "eSIM MFF2 (eUICC)"],
-                                    ["Motor Control", "FOC (ARM Cortex-M4)"],
-                                    ["GNSS", "Dual-band L1+L5 + RTK"],
-                                    ["Battery", "36V/48V Li-ion + BMS"],
-                                    ["Protocol", "LwM2M over CoAP/DTLS"],
-                                    ["Security", "mTLS + Secure Boot + Anti-tamper"],
-                                ].map(([k, v]) => (
-                                    <div key={k} className="flex justify-between gap-4">
-                                        <span className="text-white/40">{k}</span>
-                                        <span className="text-white/75 text-right font-medium">{v}</span>
-                                    </div>
-                                ))}
+                    {/* Certification */}
+                    <h3 className="text-base font-semibold text-white/70 mb-4">Regulatory Certification</h3>
+                    <div className="space-y-3 mb-6">
+                        {certificationSteps.map((item) => (
+                            <div key={item.title} className="rounded-xl border p-5" style={{ borderColor: `${item.color}20`, background: `${item.color}04` }}>
+                                <p className="text-sm font-semibold text-white/80 mb-2">{item.title}</p>
+                                <p className="text-sm text-white/45 leading-relaxed">{item.detail}</p>
                             </div>
-                        </div>
-
-                        <div className="flex flex-wrap gap-4">
-                            <Link
-                                href="/deploy/pilot-playbook"
-                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
-                            >
-                                View Pilot Playbook <ArrowRight size={14} />
-                            </Link>
-                            <a
-                                href="https://store.hologram.io/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#3A3C46] text-white/70 text-sm font-semibold hover:border-white/30 transition-colors cursor-pointer"
-                            >
-                                Ready to start building?
-                            </a>
-                        </div>
-
-                        {completedSteps.size < steps.length - 1 && (
-                            <div className="mt-6">
-                                <InfoCallout type="warning">
-                                    You haven&apos;t completed all previous steps. Go back and mark each step complete
-                                    before deploying to production.
-                                </InfoCallout>
-                            </div>
-                        )}
-
-                        {completedSteps.size === steps.length - 1 && (
-                            <button
-                                onClick={() => markComplete("deploy")}
-                                className="mt-8 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
-                            >
-                                ✓ Mark Build Complete
-                            </button>
-                        )}
-
-                        {completedSteps.size === steps.length && (
-                            <div className="mt-8 rounded-xl border border-[#BFFD11]/30 bg-[#BFFD11]/5 p-6 text-center">
-                                <p className="text-lg font-semibold text-[#BFFD11] mb-2">🎉 Build Complete!</p>
-                                <p className="text-sm text-white/50 mb-5">You&apos;ve completed all steps for the Connected Micromobility Vehicle.</p>
-                                <Link
-                                    href="/build"
-                                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
-                                >
-                                    ← Back to Build Guides
-                                </Link>
-                            </div>
-                        )}
-                    </section>
-                )}
-            </div>
-
-            {/* All Steps Summary Nav */}
-            {activeStep !== steps[0].id && (
-                <div className="mt-16 pt-8 border-t border-[#3A3C46]/30">
-                    <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-white/25 mb-4">All Steps</p>
-                    <div className="grid sm:grid-cols-2 gap-2">
-                        {steps.map((step, idx) => (
-                            <button
-                                key={step.id}
-                                onClick={() => setActiveStep(step.id)}
-                                className={`flex items-center gap-3 p-3 rounded-lg text-sm text-left cursor-pointer transition-colors ${completedSteps.has(step.id)
-                                    ? "text-[#BFFD11]/60 hover:text-[#BFFD11]"
-                                    : activeStep === step.id
-                                        ? "text-white"
-                                        : "text-white/30 hover:text-white/60"
-                                    }`}
-                            >
-                                {completedSteps.has(step.id) ? (
-                                    <Check size={13} className="text-[#BFFD11] shrink-0" />
-                                ) : (
-                                    <Circle size={13} className="text-[#3A3C46] shrink-0" />
-                                )}
-                                <span className="font-mono text-xs text-white/25 mr-1">{idx + 1}.</span>
-                                {step.label}
-                            </button>
                         ))}
                     </div>
+
+                    <InfoCallout type="info">
+                        Using a <strong>pre-certified cellular module</strong> (e.g., nRF9160) significantly reduces
+                        PTCRB testing scope. Your &quot;integrated device&quot; inherits the module&apos;s certification,
+                        reducing cost from $500K+ to $10K–$50K.
+                    </InfoCallout>
+
+                    <MarkCompleteButton stepId="security" />
+                </section>
+
+                {/* ── STEP 7: Deploy ── */}
+                <section id="deploy" className="scroll-mt-24 pb-16">
+                    <SectionHeader label="Deploy" stepNumber={7} />
+
+                    <p className="text-white/55 leading-relaxed mb-8 max-w-2xl">
+                        Your connected vehicle is ready. Scale from prototype to fleet with Just-in-Time
+                        Provisioning and resilient cloud architecture.
+                    </p>
+
+                    <div className="space-y-4 mb-8">
+                        {[
+                            { title: "Just-in-Time Provisioning (JITP)", detail: "Each scooter is provisioned in the factory with a unique certificate signed by your Device CA. When it first connects to AWS IoT Core, it\u2019s automatically registered — no manual IMEI registration needed at scale.", color: "#BFFD11" },
+                            { title: "Device Shadows (AWS IoT Core)", detail: "The cloud maintains persistent vehicle state. Unlock commands update the \u201cdesired\u201d state; the scooter syncs on wake-up. This asynchronous model works perfectly with PSM sleep cycles.", color: "#53F2FA" },
+                            { title: "Offline BLE Fallback", detail: "If cellular connectivity is down, users can still unlock via local Bluetooth Low Energy from the mobile app. An independent watchdog timer reboots the IoT module if the cellular stack hangs.", color: "#BFFD11" },
+                            { title: "5G RedCap & Satellite IoT (Future)", detail: "Next-gen deployments will leverage 5G RedCap for higher density with LTE-M power profile. Non-Terrestrial Network (NTN) support enables satellite connectivity for rural or low-coverage areas.", color: "#53F2FA" },
+                        ].map((item) => (
+                            <div key={item.title} className="rounded-xl border p-5" style={{ borderColor: `${item.color}20`, background: `${item.color}04` }}>
+                                <p className="text-sm font-semibold text-white/80 mb-2">{item.title}</p>
+                                <p className="text-sm text-white/45 leading-relaxed">{item.detail}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Configuration Summary */}
+                    <div className="rounded-xl border border-[#BFFD11]/20 bg-[#BFFD11]/4 p-6 mb-8">
+                        <p className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11] mb-4">
+                            Configuration Summary
+                        </p>
+                        <div className="grid sm:grid-cols-2 gap-4 text-sm">
+                            {[
+                                ["IoT SoC", "Nordic nRF9160 SiP"],
+                                ["Connectivity", "LTE-M (full mobility)"],
+                                ["SIM", "eSIM MFF2 (eUICC)"],
+                                ["Motor Control", "FOC (ARM Cortex-M4)"],
+                                ["GNSS", "Dual-band L1+L5 + RTK"],
+                                ["Battery", "36V/48V Li-ion + BMS"],
+                                ["Protocol", "LwM2M over CoAP/DTLS"],
+                                ["Security", "mTLS + Secure Boot + Anti-tamper"],
+                            ].map(([k, v]) => (
+                                <div key={k} className="flex justify-between gap-4">
+                                    <span className="text-white/40">{k}</span>
+                                    <span className="text-white/75 text-right font-medium">{v}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-4">
+                        <Link
+                            href="/deploy/pilot-playbook"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#BFFD11] text-[#00040F] text-sm font-semibold hover:bg-[#BFFD11] transition-colors cursor-pointer"
+                        >
+                            View Pilot Playbook <ArrowRight size={14} />
+                        </Link>
+                        <a
+                            href="https://store.hologram.io/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-[#3A3C46] text-white/70 text-sm font-semibold hover:border-white/30 transition-colors cursor-pointer"
+                        >
+                            Ready to start building?
+                        </a>
+                    </div>
+
+                    <MarkCompleteButton stepId="deploy" />
+                </section>
+
+            </BuildGuideShell>
+
+            {/* Navigation + CTA */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center justify-between pt-6 border-t border-[#3A3C46]/30 mb-16 mt-8">
+                    <Link href="/build/smart-agriculture" className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white transition-colors cursor-pointer">
+                        <ArrowLeft size={16} /> Prev: Smart Agriculture
+                    </Link>
+                    <Link href="/build/remote-patient-monitoring" className="inline-flex items-center gap-2 text-sm font-medium text-[#BFFD11] hover:gap-3 transition-all duration-200 cursor-pointer">
+                        Next: Remote Patient Monitoring <ArrowRight size={16} />
+                    </Link>
                 </div>
-            )}
-        </div>
+                <FreePilotCTA />
+            </div>
+        </>
     );
 }

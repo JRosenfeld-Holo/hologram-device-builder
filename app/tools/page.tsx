@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { ArrowRight, Terminal, GitBranch, MapPin } from "lucide-react";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
   title: "Developer Tools — Hologram IoT Device Builder",
+  description: "Interactive tools for IoT engineers: AT command reference, GPS coordinate parser, and cellular protocol picker.",
 };
 
 const tools = [
