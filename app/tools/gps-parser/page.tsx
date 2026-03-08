@@ -18,22 +18,35 @@ const PARSER_CODE = `import re
 
 def parse_gps(response: str) -> dict | None:
     """Parse +QGPSLOC response to structured object."""
-    pattern = r"\+QGPSLOC: ([\d.]+),([\d.]+)([NS]),([\d.]+)([EW]),(.*)"
+    pattern = (
+        r"\\+QGPSLOC:\\s*"
+        r"([\\d.]+),"       # UTC time
+        r"([\\d.]+)([NS])," # latitude + direction
+        r"([\\d.]+)([EW])," # longitude + direction
+        r"([\\d.]+),"       # HDOP
+        r"([\\d.-]+),"      # altitude
+        r"(\\d+),"          # fix type (1=none, 2=2D, 3=3D)
+        r"([\\d.]+),"       # COG (course over ground)
+        r"([\\d.]+),"       # speed km/h
+        r"([\\d.]+),"       # speed knots
+        r"(\\d{6}),"        # date (DDMMYY)
+        r"(\\d+)"           # satellites
+    )
     m = re.search(pattern, response)
     if not m:
         return None
-    fields = m.group(6).split(",")
     return {
-        "utc":      m.group(1),
-        "lat":      to_decimal(m.group(2), m.group(3)),
-        "lon":      to_decimal(m.group(4), m.group(5)),
-        "hdop":     float(fields[0]) if fields else None,
-        "altitude": float(fields[1]) if len(fields) > 1 else None,
-        "fix_type": int(fields[2]) if len(fields) > 2 else None,
-        "cog":      float(fields[3]) if len(fields) > 3 else None,
-        "speed_kmh":float(fields[4]) if len(fields) > 4 else None,
-        "date":     fields[6] if len(fields) > 6 else None,
-        "nsat":     int(fields[7]) if len(fields) > 7 else None,
+        "utc":       m.group(1),
+        "lat":       to_decimal(m.group(2), m.group(3)),
+        "lon":       to_decimal(m.group(4), m.group(5)),
+        "hdop":      float(m.group(6)),
+        "altitude":  float(m.group(7)),
+        "fix_type":  int(m.group(8)),
+        "cog":       float(m.group(9)),
+        "speed_kmh": float(m.group(10)),
+        "speed_kn":  float(m.group(11)),
+        "date":      m.group(12),
+        "nsat":      int(m.group(13)),
     }
 
 def to_decimal(ddmm: str, direction: str) -> float:
@@ -116,7 +129,7 @@ export default function GPSParserPage() {
                   ["Fix Type", `${parsed.fixType} — ${FIX_TYPES[parsed.fixType] || "Unknown"}`],
                   ["Speed", `${parsed.speedKmh.toFixed(1)} km/h (${parsed.speedKnots.toFixed(1)} kn)`],
                   ["Course (COG)", `${parsed.cogDegrees}°`],
-                  ["Date", parsed.date ? `${parsed.date.slice(0,2)}/${parsed.date.slice(2,4)}/20${parsed.date.slice(4)}` : "—"],
+                  ["Date", parsed.date ? `${parsed.date.slice(0, 2)}/${parsed.date.slice(2, 4)}/20${parsed.date.slice(4)}` : "—"],
                   ["Satellites", `${parsed.satellites} visible`],
                 ].map(([k, v]) => (
                   <div key={k} className="flex justify-between items-start gap-4 px-4 py-2.5 text-sm">

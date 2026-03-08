@@ -115,12 +115,12 @@ export function parseQGPSLOC(response: string): {
   satellites: number;
 } | null {
   const match = response.match(
-    /\+QGPSLOC:\s*(\d{6}\.\d+),([\d.]+)([NS]),([\d.]+)([EW]),([\d.]+),([\d.-]+),(\d+),([\d.]+),([\d.]+),(\d{6}),(\d+)/
+    /\+QGPSLOC:\s*(\d{6}\.\d+),([\d.]+)([NS]),([\d.]+)([EW]),([\d.]+),([\d.-]+),(\d+),([\d.]+),([\d.]+),([\d.]+),(\d{6}),(\d+)/
   );
 
   if (!match) return null;
 
-  const [, utc, latRaw, latDir, lonRaw, lonDir, hdop, alt, fix, cog, spkm, date, nsat] = match;
+  const [, utc, latRaw, latDir, lonRaw, lonDir, hdop, alt, fix, cog, spkm, spkn, date, nsat] = match;
 
   return {
     utc,
@@ -135,7 +135,7 @@ export function parseQGPSLOC(response: string): {
     fixType: parseInt(fix),
     cogDegrees: parseFloat(cog),
     speedKmh: parseFloat(spkm),
-    speedKnots: parseFloat(spkm) * 0.539957,
+    speedKnots: parseFloat(spkn),
     date,
     satellites: parseInt(nsat),
   };
