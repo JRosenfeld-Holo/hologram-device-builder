@@ -304,7 +304,7 @@ export default function MicromobilityPage() {
             {/* Breadcrumb */}
             <nav className="flex items-center gap-1.5 text-xs text-white/30 mb-10" aria-label="Breadcrumb">
                 <Link href="/build" className="hover:text-white/60 transition-colors cursor-pointer">Build</Link>
-                <ChevronRight size={12} />
+                <ChevronRight size={12} aria-hidden="true" />
                 <span className="text-[#BFFD11]">Micromobility</span>
             </nav>
 
@@ -328,7 +328,7 @@ export default function MicromobilityPage() {
                             <span className="text-[11px] text-white/30 font-mono">40 min</span>
                         </div>
                     </div>
-                    <h1 className="text-4xl font-semibold mb-5 leading-tight">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-5 leading-tight">
                         Connected Micromobility Vehicle
                     </h1>
                     <p className="text-lg text-white/55 leading-relaxed max-w-2xl">

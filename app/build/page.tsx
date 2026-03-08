@@ -253,6 +253,7 @@ export default function BuildPage() {
                   </div>
                   <ArrowRight
                     size={18}
+                    aria-hidden="true"
                     className="text-white/20 group-hover:text-[#BFFD11] group-hover:translate-x-1 transition-all duration-200"
                   />
                 </div>

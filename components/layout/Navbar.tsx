@@ -132,6 +132,7 @@ export default function Navbar() {
                     role="menuitem"
                     aria-haspopup={item.children ? "true" : undefined}
                     aria-expanded={item.children ? isOpen : undefined}
+                    aria-current={active ? "page" : undefined}
                     className={`inline-flex items-center gap-1 px-3 py-2 rounded-md text-sm transition-colors duration-200 cursor-pointer ${active
                       ? "text-[#BFFD11] font-semibold"
                       : "text-white/70 font-medium hover:text-white"
@@ -158,6 +159,7 @@ export default function Navbar() {
                             key={child.href}
                             href={child.href}
                             role="menuitem"
+                            aria-current={isActive(child.href) ? "page" : undefined}
                             className={`block px-4 py-2.5 text-sm transition-colors duration-150 cursor-pointer ${isActive(child.href)
                               ? "text-[#BFFD11] bg-[#BFFD11]/5 font-medium"
                               : "text-white/70 hover:text-white hover:bg-white/5"
@@ -191,7 +193,7 @@ export default function Navbar() {
           {/* Mobile toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 rounded-md text-white/70 hover:text-white cursor-pointer transition-colors duration-200"
+            className={`md:hidden p-2 rounded-md cursor-pointer transition-colors duration-200 ${mobileOpen ? "text-white bg-white/10" : "text-white/70 hover:text-white"}`}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-nav"
@@ -246,6 +248,7 @@ export default function Navbar() {
                             key={child.href}
                             href={child.href}
                             onClick={() => setMobileOpen(false)}
+                            aria-current={isActive(child.href) ? "page" : undefined}
                             className={`block px-3 py-2.5 text-sm cursor-pointer transition-colors duration-150 ${isActive(child.href)
                               ? "text-[#BFFD11] font-medium"
                               : "text-white/50 hover:text-white/80"

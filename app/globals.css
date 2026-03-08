@@ -197,7 +197,13 @@ body {
   color: #00040F;
 }
 
-/* Scrollbar */
+/* Scrollbar — Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3A3C46 #00040F;
+}
+
+/* Scrollbar — WebKit */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

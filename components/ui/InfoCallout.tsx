@@ -96,7 +96,7 @@ export default function InfoCallout({ type = "info", title, children }: InfoCall
         >
           {title || config.label}
         </p>
-        <div className="text-sm text-white/60 leading-relaxed">{children}</div>
+        <div className="text-sm text-white/75 leading-relaxed">{children}</div>
       </div>
     </motion.div>
   );

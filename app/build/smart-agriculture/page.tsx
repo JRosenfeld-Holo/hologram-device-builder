@@ -307,7 +307,7 @@ export default function SmartAgriculturePage() {
             {/* Breadcrumb */}
             <nav className="flex items-center gap-1.5 text-xs text-white/30 mb-10" aria-label="Breadcrumb">
                 <Link href="/build" className="hover:text-white/60 transition-colors cursor-pointer">Build</Link>
-                <ChevronRight size={12} />
+                <ChevronRight size={12} aria-hidden="true" />
                 <span className="text-[#BFFD11]">Smart Agriculture</span>
             </nav>
 
@@ -325,13 +325,13 @@ export default function SmartAgriculturePage() {
                             <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11]">
                                 Build Guide
                             </span>
-                            <span className="text-[10px] font-mono font-semibold tracking-wider uppercase px-2 py-0.5 rounded text-[#eab308] bg-[#eab308]/10">
+                            <span className="text-[10px] font-mono font-semibold tracking-wider uppercase px-2 py-0.5 rounded text-[#BFFD11] bg-[#BFFD11]/10">
                                 Intermediate
                             </span>
                             <span className="text-[11px] text-white/30 font-mono">30 min</span>
                         </div>
                     </div>
-                    <h1 className="text-4xl font-semibold mb-5 leading-tight">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-5 leading-tight">
                         Smart Agriculture Sensor Node
                     </h1>
                     <p className="text-lg text-white/55 leading-relaxed max-w-2xl">

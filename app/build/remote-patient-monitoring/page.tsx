@@ -239,7 +239,7 @@ export default function RemotePatientMonitoringPage() {
             {/* Breadcrumb */}
             <nav className="flex items-center gap-1.5 text-xs text-white/30 mb-10" aria-label="Breadcrumb">
                 <Link href="/build" className="hover:text-white/60 transition-colors cursor-pointer">Build</Link>
-                <ChevronRight size={12} />
+                <ChevronRight size={12} aria-hidden="true" />
                 <span className="text-[#BFFD11]">Remote Patient Monitoring</span>
             </nav>
 
@@ -263,7 +263,7 @@ export default function RemotePatientMonitoringPage() {
                             <span className="text-[11px] text-white/30 font-mono">35 min</span>
                         </div>
                     </div>
-                    <h1 className="text-4xl font-semibold mb-5 leading-tight">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-5 leading-tight">
                         Remote Patient Monitoring
                     </h1>
                     <p className="text-lg text-white/55 leading-relaxed max-w-2xl">

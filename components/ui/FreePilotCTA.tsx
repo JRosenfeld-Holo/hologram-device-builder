@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
 import { fadeUp, staggerContainer, staggerItem, inView } from "@/lib/animations";
 
@@ -30,10 +30,10 @@ function PromoCodeCopy() {
         href={STORE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-1.5 px-3 py-3 text-xs text-[#BFFD11]/50 hover:text-[#BFFD11] hover:bg-[#BFFD11]/5 transition-all duration-150 cursor-pointer"
-        aria-label="Visit Hologram store"
+        className="flex items-center gap-1.5 px-3 py-3 text-xs text-[#BFFD11]/50 hover:text-[#BFFD11] hover:bg-[#BFFD11]/5 transition-all duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BFFD11] focus-visible:ring-inset"
+        aria-label="Visit Hologram store (opens in new tab)"
       >
-        <ArrowRight size={14} />
+        <ArrowRight size={14} aria-hidden="true" />
       </a>
     </div>
   );
@@ -162,13 +162,14 @@ export default function FreePilotCTA() {
                 href={STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 px-7 py-4 rounded-xl bg-[#BFFD11] text-[#00040F] font-semibold text-base transition-colors duration-200 cursor-pointer w-fit"
+                className="inline-flex items-center gap-2.5 px-7 py-4 rounded-xl bg-[#BFFD11] text-[#00040F] font-semibold text-base transition-colors duration-200 cursor-pointer w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#BFFD11] focus-visible:ring-offset-[#030810]"
                 whileHover={{ scale: 1.04, backgroundColor: "#BFFD11" }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: "spring", stiffness: 350, damping: 22 }}
+                aria-label="Claim Your Free SIM (opens in new tab)"
               >
                 Claim Your Free SIM
-                <ArrowRight size={18} />
+                <ExternalLink size={16} aria-hidden="true" />
               </motion.a>
             </motion.div>
 

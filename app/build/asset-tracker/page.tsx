@@ -306,7 +306,7 @@ export default function AssetTrackerPage() {
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-xs text-white/30 mb-10" aria-label="Breadcrumb">
         <Link href="/build" className="hover:text-white/60 transition-colors cursor-pointer">Build</Link>
-        <ChevronRight size={12} />
+        <ChevronRight size={12} aria-hidden="true" />
         <span className="text-[#BFFD11]">Asset Tracker</span>
       </nav>
 
@@ -326,14 +326,14 @@ export default function AssetTrackerPage() {
               <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11]">
                 Build Guide
               </span>
-              <span className="text-[10px] font-mono font-semibold tracking-wider uppercase px-2 py-0.5 rounded text-[#eab308] bg-[#eab308]/10">
+              <span className="text-[10px] font-mono font-semibold tracking-wider uppercase px-2 py-0.5 rounded text-[#BFFD11] bg-[#BFFD11]/10">
                 Intermediate
               </span>
               <span className="text-[11px] text-white/30 font-mono">45 min</span>
             </div>
           </div>
           <h1
-            className="text-4xl font-semibold mb-5 leading-tight"
+            className="text-2xl sm:text-3xl lg:text-4xl font-semibold mb-5 leading-tight"
           >
             Global Asset Tracker
           </h1>
