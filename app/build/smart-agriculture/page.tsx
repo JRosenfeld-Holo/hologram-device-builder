@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight, Check, Circle, ArrowRight, Leaf, Droplets, Sun, Thermometer, Wind, Radio, Shield, Cpu, Battery, Zap } from "lucide-react";
 import { motion } from "framer-motion";
@@ -276,6 +276,7 @@ export default function SmartAgriculturePage() {
     const [activeStep, setActiveStep] = useState("sensors");
     const [checkedSecurity, setCheckedSecurity] = useState<Set<number>>(new Set());
     const [expandedSensor, setExpandedSensor] = useState<number | null>(null);
+    const stepRef = useRef<HTMLDivElement>(null);
 
     const markComplete = (stepId: string) => {
         setCompletedSteps((prev) => {
@@ -286,7 +287,7 @@ export default function SmartAgriculturePage() {
         const idx = steps.findIndex((s) => s.id === stepId);
         if (idx < steps.length - 1) {
             setActiveStep(steps[idx + 1].id);
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            stepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
         }
     };
 
@@ -352,7 +353,7 @@ export default function SmartAgriculturePage() {
             </div>
 
             {/* Step Progress Bar */}
-            <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] p-4 mb-12">
+            <div ref={stepRef} className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] p-4 mb-12">
                 <div className="flex gap-1 overflow-x-auto pb-1">
                     {steps.map((step, idx) => {
                         const isComplete = completedSteps.has(step.id);
@@ -360,7 +361,7 @@ export default function SmartAgriculturePage() {
                         return (
                             <button
                                 key={step.id}
-                                onClick={() => { setActiveStep(step.id); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                                onClick={() => { setActiveStep(step.id); stepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }}
                                 className={`flex items-center gap-2 px-3 py-2 rounded-lg whitespace-nowrap text-xs font-medium transition-all duration-200 cursor-pointer shrink-0 ${isActive
                                     ? "bg-[#BFFD11] text-[#00040F]"
                                     : isComplete

@@ -265,13 +265,14 @@ export default function AssetTrackerPage() {
   const [activeStep, setActiveStep] = useState("connectivity");
   const [direction, setDirection] = useState(1);
   const [checkedSecurity, setCheckedSecurity] = useState<Set<number>>(new Set());
+  const stepRef = useRef<HTMLDivElement>(null);
 
   const goToStep = (stepId: string) => {
     const fromIdx = steps.findIndex((s) => s.id === activeStep);
     const toIdx = steps.findIndex((s) => s.id === stepId);
     setDirection(toIdx >= fromIdx ? 1 : -1);
     setActiveStep(stepId);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    stepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const markComplete = (stepId: string) => {
@@ -284,7 +285,7 @@ export default function AssetTrackerPage() {
     if (idx < steps.length - 1) {
       setDirection(1);
       setActiveStep(steps[idx + 1].id);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      stepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
@@ -358,7 +359,7 @@ export default function AssetTrackerPage() {
       </div>
 
       {/* Step Progress Bar */}
-      <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] p-4 mb-12">
+      <div ref={stepRef} className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] p-4 mb-12">
         {/* Mobile step nav */}
         <div className="flex items-center gap-3 sm:hidden mb-3">
           <button

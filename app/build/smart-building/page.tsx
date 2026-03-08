@@ -654,19 +654,20 @@ export default function BuildSmartBuildingPage() {
   const [activeStep, setActiveStep] = useState("why-nbiot");
   const [direction, setDirection] = useState(1);
   const [checkedSecurity, setCheckedSecurity] = useState<Set<number>>(new Set());
+  const stepRef = useRef<HTMLDivElement>(null);
 
   const goToStep = (stepId: string) => {
     const fromIdx = buildingSteps.findIndex((s) => s.id === activeStep);
     const toIdx = buildingSteps.findIndex((s) => s.id === stepId);
     setDirection(toIdx >= fromIdx ? 1 : -1);
     setActiveStep(stepId);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    stepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const markComplete = (stepId: string) => {
     setCompletedSteps((prev) => { const next = new Set(prev); next.add(stepId); return next; });
     const idx = buildingSteps.findIndex((s) => s.id === stepId);
-    if (idx < buildingSteps.length - 1) { setDirection(1); setActiveStep(buildingSteps[idx + 1].id); window.scrollTo({ top: 0, behavior: "smooth" }); }
+    if (idx < buildingSteps.length - 1) { setDirection(1); setActiveStep(buildingSteps[idx + 1].id); stepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }
   };
 
   const toggleSecurity = (idx: number) => {
@@ -716,7 +717,7 @@ export default function BuildSmartBuildingPage() {
       </div>
 
       {/* Step Progress Bar */}
-      <div className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] p-4 mb-12">
+      <div ref={stepRef} className="rounded-xl border border-[#3A3C46]/40 bg-[#060a14] p-4 mb-12">
         <div className="flex items-center gap-3 sm:hidden mb-3">
           <button onClick={() => { const idx = buildingSteps.findIndex((s) => s.id === activeStep); if (idx > 0) goToStep(buildingSteps[idx - 1].id); }} disabled={buildingSteps.findIndex((s) => s.id === activeStep) === 0} className="p-2 rounded-lg border border-[#3A3C46]/40 text-white/50 hover:text-white hover:border-white/20 disabled:opacity-25 disabled:cursor-not-allowed transition-colors cursor-pointer" aria-label="Previous step"><ChevronLeft size={16} /></button>
           <div className="flex-1 text-center">
