@@ -328,7 +328,7 @@ export default function AssetTrackerPage() {
             </div>
             <div className="flex items-center gap-3">
               <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-[#BFFD11]">
-                Flagship Guide
+                Build Guide
               </span>
               <span className="text-[10px] font-mono font-semibold tracking-wider uppercase px-2 py-0.5 rounded text-[#eab308] bg-[#eab308]/10">
                 Intermediate
