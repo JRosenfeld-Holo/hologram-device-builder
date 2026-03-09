@@ -83,13 +83,13 @@ function Sidebar({
     <nav aria-label="Guide sections">
       {/* Progress bar */}
       <div className="mb-6">
-        <div className="flex justify-between text-xs text-white/30 font-mono mb-1.5">
+        <div className="flex justify-between text-xs text-[#797C86] font-mono mb-1.5">
           <span>Progress</span>
           <span>
             {done}/{total}
           </span>
         </div>
-        <div className="h-1 rounded-full bg-[#3A3C46]/40 overflow-hidden">
+        <div className="h-1 rounded-full bg-[#3A3C46] overflow-hidden">
           <div
             className="h-full bg-[#BFFD11] rounded-full transition-all duration-500"
             style={{ width: `${total > 0 ? (done / total) * 100 : 0}%` }}
@@ -110,10 +110,10 @@ function Sidebar({
                 aria-current={isActive ? "location" : undefined}
                 className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-colors duration-150 ${
                   isActive
-                    ? "text-white bg-white/5 font-medium"
+                    ? "text-white bg-[#1E212E] font-medium"
                     : isDone
                     ? "text-[#BFFD11]/60 hover:text-[#BFFD11]"
-                    : "text-white/35 hover:text-white/70"
+                    : "text-[#797C86] hover:text-white/70"
                 }`}
               >
                 <span
@@ -170,7 +170,7 @@ function MobileNav({
         aria-expanded={open}
         aria-label="Toggle section navigation"
       >
-        <span className="text-xs text-white/40 font-mono shrink-0">
+        <span className="text-xs text-[#797C86] font-mono shrink-0">
           Step {currentIdx + 1} of {steps.length}
         </span>
         <span className="text-sm font-medium text-white truncate">
@@ -178,7 +178,7 @@ function MobileNav({
         </span>
         <ChevronDown
           size={14}
-          className={`shrink-0 text-white/40 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`shrink-0 text-[#797C86] transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           aria-hidden="true"
         />
       </button>
@@ -194,10 +194,10 @@ function MobileNav({
                 onClick={() => handleClick(step.id)}
                 className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-left transition-colors cursor-pointer ${
                   isActive
-                    ? "text-white bg-white/5 font-medium"
+                    ? "text-white bg-[#1E212E] font-medium"
                     : isDone
                     ? "text-[#BFFD11]/60"
-                    : "text-white/50"
+                    : "text-[#797C86]"
                 }`}
               >
                 <span
